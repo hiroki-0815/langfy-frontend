@@ -1,5 +1,3 @@
-import { Link } from "react-router-dom";
-
 const HomePage = () => {
   return (
     <main className="flex justify-center flex-col min-h-full px-3 py-3 pt-10 pb-20 md:pt-20 md:px-20">
@@ -51,12 +49,6 @@ const HomePage = () => {
               </span>
             </li>
           </ul>
-          <Link
-            to="/"
-            className="outline-2 bg-sky-500 hover:bg-white hover:text-sky-400 text-white hover:outline hover:outline-sky-400 px-4 md:px-6 py-1 md:py-2 rounded font-semibold transition duration-300"
-          >
-            Get Started
-          </Link>
         </div>
       </div>
 
