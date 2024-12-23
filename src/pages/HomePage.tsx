@@ -13,7 +13,7 @@ const HomePage = () => {
             <li className="flex flex-row items-center ">
               <div className="mr-1">
                 <img
-                  src="/src/assets/bulletpoint/Ellipse 2.png"
+                  src="/src/assets/bulletpoint/Ellipse.png"
                   width={7}
                   height={7}
                   alt="blue bullet point"
@@ -26,7 +26,7 @@ const HomePage = () => {
             <li className="flex flex-row items-center">
               <div className="mr-1">
                 <img
-                  src="/src/assets/bulletpoint/Ellipse 2.png"
+                  src="/src/assets/bulletpoint/Ellipse.png"
                   width={7}
                   height={7}
                   alt="blue bullet point"
@@ -37,7 +37,7 @@ const HomePage = () => {
             <li className="flex flex-row items-center">
               <div className="mr-1">
                 <img
-                  src="/src/assets/bulletpoint/Ellipse 2.png"
+                  src="/src/assets/bulletpoint/Ellipse.png"
                   width={7}
                   height={7}
                   alt="blue bullet point"
