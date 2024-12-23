@@ -1,3 +1,4 @@
+import { toast } from "@/hooks/use-toast";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation } from "react-query";
 
@@ -39,5 +40,52 @@ export const useCreateMyUser = () => {
     isLoading,
     isError,
     isSuccess,
+  };
+};
+
+type UpdateUserRequest = {
+  name: string;
+  gender: string;
+  city: string;
+  country: string;
+  age: number;
+  learningLanguage: string;
+  fluencyLevel: string;
+  motivation: string;
+  selfIntroduction: string;
+};
+
+export const useUpdateUser = () => {
+  const { getAccessTokenSilently } = useAuth0();
+
+  const updateMyUserRequest = async (formData: UpdateUserRequest) => {
+    const accessToken = await getAccessTokenSilently();
+    const response = await fetch(`${API_BASE_URL}/api/my/user`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to update user");
+    }
+
+    return response.json();
+  };
+
+  const {
+    mutateAsync: updateUser,
+    isLoading,
+    isSuccess,
+    error,
+    reset,
+  } = useMutation(updateMyUserRequest);
+
+  return {
+    updateUser,
+    isLoading,
   };
 };
