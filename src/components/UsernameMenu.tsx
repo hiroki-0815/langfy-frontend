@@ -12,6 +12,10 @@ import { Button } from "./ui/button";
 
 const UsernameMenu = () => {
   const { user, logout } = useAuth0();
+
+  const logoutUrl =
+    import.meta.env.VITE_AUTH0_CALLBACK_URL ||
+    "https://mern-food-ordering-app-frontend-09fm.onrender.com/";
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="flex items-center px-3 font-bold hover: text-sky-500 gap-2">
@@ -27,10 +31,14 @@ const UsernameMenu = () => {
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           <Button
-            onClick={() => logout()}
-            className="flex flex-1 font-bold bg-blue-500 "
+            onClick={() =>
+              logout({
+                logoutParams: { returnTo: logoutUrl },
+              })
+            }
+            className="flex flex-1 font-bold bg-orange-500"
           >
-            Log Out
+            Log out
           </Button>
         </DropdownMenuItem>
       </DropdownMenuContent>
