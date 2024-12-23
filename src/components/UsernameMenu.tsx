@@ -36,7 +36,7 @@ const UsernameMenu = () => {
                 logoutParams: { returnTo: logoutUrl },
               })
             }
-            className="flex flex-1 font-bold bg-orange-500"
+            className="flex flex-1 font-bold bg-blue-500"
           >
             Log out
           </Button>
