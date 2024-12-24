@@ -9,4 +9,5 @@ export type User = {
   fluencyLevel: "beginner" | "intermediate" | "advanced";
   motivation: "wanna chat" | "wanna call";
   selfIntroduction: string;
+  imageUrl: string;
 };
