@@ -24,32 +24,41 @@ import { Button } from "@/components/ui/button";
 import LoadingButton from "@/components/LoadingButton";
 import { User } from "@/types";
 import { useEffect } from "react";
+import ImageSection from "./ImageSection";
 
-export const formSchema = z.object({
-  name: z.string().min(1, { message: "Name is required." }),
-  gender: z.enum(["male", "female"], {
-    message: "Gender must be either 'male' or 'female'.",
-  }),
-  email: z.string().optional(),
-  city: z.string().min(1, { message: "City is required." }),
-  country: z.string().min(1, { message: "Country is required." }),
-  age: z
-    .union([z.string(), z.number()])
-    .transform((val) => (typeof val === "string" ? parseFloat(val) : val))
-    .refine((val) => val > 0, { message: "Age must be a positive number." }),
-  learningLanguage: z
-    .string()
-    .min(1, { message: "Learning language is required." }),
-  fluencyLevel: z.enum(["beginner", "intermediate", "advanced"], {
-    message: "Fluency level must be 'beginner', 'intermediate', or 'advanced'.",
-  }),
-  motivation: z.enum(["wanna chat", "wanna call"], {
-    message: "Motivation must be 'wanna chat' or 'wanna call'.",
-  }),
-  selfIntroduction: z
-    .string()
-    .min(1, { message: "Self-introduction is required." }),
-});
+export const formSchema = z
+  .object({
+    name: z.string().min(1, { message: "Name is required." }),
+    gender: z.enum(["male", "female"], {
+      message: "Gender must be either 'male' or 'female'.",
+    }),
+    email: z.string().optional(),
+    city: z.string().min(1, { message: "City is required." }),
+    country: z.string().min(1, { message: "Country is required." }),
+    age: z
+      .union([z.string(), z.number()])
+      .transform((val) => (typeof val === "string" ? parseFloat(val) : val))
+      .refine((val) => val > 0, { message: "Age must be a positive number." }),
+    learningLanguage: z
+      .string()
+      .min(1, { message: "Learning language is required." }),
+    fluencyLevel: z.enum(["beginner", "intermediate", "advanced"], {
+      message:
+        "Fluency level must be 'beginner', 'intermediate', or 'advanced'.",
+    }),
+    motivation: z.enum(["wanna chat", "wanna call"], {
+      message: "Motivation must be 'wanna chat' or 'wanna call'.",
+    }),
+    selfIntroduction: z
+      .string()
+      .min(1, { message: "Self-introduction is required." }),
+    imageUrl: z.string().optional(),
+    imageFile: z.instanceof(File, { message: "image is required" }).optional(),
+  })
+  .refine((data) => data.imageUrl || data.imageFile, {
+    message: "Either image URL or image File must be required",
+    path: ["imageFile"],
+  });
 
 type UserFormData = z.infer<typeof formSchema>;
 
@@ -68,10 +77,12 @@ const UserProfileForm = ({ onSave, isLoading, currentUser }: Props) => {
   useEffect(() => {
     form.reset(currentUser);
   }, [currentUser, form]);
+
+  const onSubmit = (formDataJson: UserFormData) => {};
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSave)}
+        onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-6 bg-gray-50 rounded-lg p-4 md:p-10"
       >
         <div className="text-center md:text-left">
@@ -253,14 +264,7 @@ const UserProfileForm = ({ onSave, isLoading, currentUser }: Props) => {
             )}
           />
         </div>
-        <div>
-          <FormLabel>Image</FormLabel>
-          <FormDescription>
-            Add an image that will be displayed on the search results. Adding a
-            new image will overwrite the existing one.
-          </FormDescription>
-          <div className="h-40 max-w-[200px] bg-gray-200 mt-2 rounded-md" />
-        </div>
+        <ImageSection />
         {isLoading ? (
           <LoadingButton />
         ) : (
