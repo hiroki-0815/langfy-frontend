@@ -79,30 +79,17 @@ export const useCreateMyUser = () => {
   };
 };
 
-type UpdateUserRequest = {
-  name: string;
-  gender: string;
-  city: string;
-  country: string;
-  age: number;
-  learningLanguage: string;
-  fluencyLevel: string;
-  motivation: string;
-  selfIntroduction: string;
-};
-
 export const useUpdateUser = () => {
   const { getAccessTokenSilently } = useAuth0();
 
-  const updateMyUserRequest = async (formData: UpdateUserRequest) => {
+  const updateMyUserRequest = async (userFormData: FormData): Promise<User> => {
     const accessToken = await getAccessTokenSilently();
     const response = await fetch(`${API_BASE_URL}/api/my/user`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
       },
-      body: JSON.stringify(formData),
+      body: userFormData,
     });
 
     if (!response.ok) {
