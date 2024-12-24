@@ -63,7 +63,7 @@ export const formSchema = z
 type UserFormData = z.infer<typeof formSchema>;
 
 type Props = {
-  onSave: (userProfileData: UserFormData) => void;
+  onSave: (userProfileData: FormData) => void;
   isLoading: boolean;
   currentUser: User;
 };
@@ -78,7 +78,25 @@ const UserProfileForm = ({ onSave, isLoading, currentUser }: Props) => {
     form.reset(currentUser);
   }, [currentUser, form]);
 
-  const onSubmit = (formDataJson: UserFormData) => {};
+  const onSubmit = (formDataJson: UserFormData) => {
+    const formData = new FormData();
+
+    formData.append("name", formDataJson.name);
+    if (formDataJson.email) formData.append("email", formDataJson.email);
+    formData.append("city", formDataJson.city);
+    formData.append("gender", formDataJson.gender);
+    formData.append("country", formDataJson.country);
+    formData.append("age", formDataJson.age.toString());
+    formData.append("learningLanguage", formDataJson.learningLanguage);
+    formData.append("fluencyLevel", formDataJson.fluencyLevel);
+    formData.append("motivation", formDataJson.motivation);
+    formData.append("selfIntroduction", formDataJson.selfIntroduction);
+    if (formDataJson.imageFile) {
+      formData.append(`imageFile`, formDataJson.imageFile);
+    }
+
+    onSave(formData);
+  };
   return (
     <Form {...form}>
       <form
