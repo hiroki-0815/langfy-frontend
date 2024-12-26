@@ -35,6 +35,7 @@ export const formSchema = z
     email: z.string().optional(),
     city: z.string().min(1, { message: "City is required." }),
     country: z.string().min(1, { message: "Country is required." }),
+    nationality: z.string().min(1, { message: "Nationality is required." }),
     age: z
       .union([z.string(), z.number()])
       .transform((val) => (typeof val === "string" ? parseFloat(val) : val))
@@ -86,6 +87,7 @@ const UserProfileForm = ({ onSave, isLoading, currentUser }: Props) => {
     formData.append("city", formDataJson.city);
     formData.append("gender", formDataJson.gender);
     formData.append("country", formDataJson.country);
+    formData.append("nationality", formDataJson.nationality);
     formData.append("age", formDataJson.age.toString());
     formData.append("learningLanguage", formDataJson.learningLanguage);
     formData.append("fluencyLevel", formDataJson.fluencyLevel);
@@ -144,40 +146,7 @@ const UserProfileForm = ({ onSave, isLoading, currentUser }: Props) => {
             )}
           />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <FormField
-            control={form.control}
-            name="age"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Age</FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    type="number"
-                    className="bg-white"
-                    placeholder="Enter your age"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Mail</FormLabel>
-                <FormControl>
-                  <Input {...field} disabled className="bg-gray-100" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <FormField
             control={form.control}
             name="city"
@@ -197,6 +166,19 @@ const UserProfileForm = ({ onSave, isLoading, currentUser }: Props) => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Country</FormLabel>
+                <FormControl>
+                  <Input {...field} className="bg-white" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="nationality"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Nationality</FormLabel>
                 <FormControl>
                   <Input {...field} className="bg-white" />
                 </FormControl>

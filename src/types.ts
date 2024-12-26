@@ -4,6 +4,7 @@ export type User = {
   email?: string | undefined;
   city: string;
   country: string;
+  nationality: string;
   age: number; 
   learningLanguage: string;
   fluencyLevel: "beginner" | "intermediate" | "advanced";
