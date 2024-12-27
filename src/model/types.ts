@@ -6,7 +6,7 @@ export type User = {
   email?: string | undefined;
   city: string;
   country: string;
-  originCountry: OriginCountry; // Updated field name
+  originCountry: OriginCountry;
   nativeLanguage: Language;
   age: number; 
   learningLanguage: Language;
