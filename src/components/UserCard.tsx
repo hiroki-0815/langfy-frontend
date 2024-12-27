@@ -11,7 +11,6 @@ type UserCardProps = {
   country: string;
   selfIntroduction: string;
   imageUrl: string;
-  onStartChat: () => void;
 };
 
 const UserCard: React.FC<UserCardProps> = ({
@@ -23,7 +22,6 @@ const UserCard: React.FC<UserCardProps> = ({
   country,
   selfIntroduction,
   imageUrl,
-  onStartChat,
 }) => {
   const badgeColor =
     gender === "male" ? "bg-blue-400 text-white" : "bg-pink-400 text-white";
