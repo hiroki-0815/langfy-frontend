@@ -4,7 +4,7 @@ import MainNav from "./MainNav";
 
 const Header = () => {
   return (
-    <div className="border-b-2 shadow-sm py-6">
+    <div className="border-b-2 shadow-sm py-6 px-2">
       <div className="container mx-auto flex justify-between items-center">
         <Link
           to="/"
