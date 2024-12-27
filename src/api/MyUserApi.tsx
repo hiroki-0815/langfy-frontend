@@ -5,6 +5,11 @@ import { toast } from "sonner";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
+type CreateUserRequest = {
+  auth0Id: string;
+  email: string;
+};
+
 export const useGetMyUser = () => {
   const { getAccessTokenSilently } = useAuth0();
 
@@ -28,21 +33,16 @@ export const useGetMyUser = () => {
     data: currentUser,
     isLoading,
     error,
-  } = useQuery("fetchCurrentUser", getMyUserRequest);
+  } = useQuery<User, Error>("fetchCurrentUser", getMyUserRequest);
 
   if (error) {
-    toast.error(error.toString());
+    toast.error(error.message);
   }
 
   return {
     currentUser,
     isLoading,
   };
-};
-
-type CreateUserRequest = {
-  auth0Id: string;
-  email: string;
 };
 
 export const useCreateMyUser = () => {
@@ -69,7 +69,14 @@ export const useCreateMyUser = () => {
     isLoading,
     isError,
     isSuccess,
-  } = useMutation(createMyUserRequest);
+  } = useMutation(createMyUserRequest, {
+    onSuccess: () => {
+      toast.success("User created successfully!");
+    },
+    onError: (error: Error) => {
+      toast.error(error.message);
+    },
+  });
 
   return {
     createUser,
