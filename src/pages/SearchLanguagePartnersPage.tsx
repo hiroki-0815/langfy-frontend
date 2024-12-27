@@ -40,7 +40,6 @@ const LanguagePartnerPage = () => {
                   country={user.country}
                   selfIntroduction={user.selfIntroduction}
                   imageUrl={user.imageUrl}
-                  onStartChat={() => alert(`Chat with ${user.name}`)}
                 />
               ))}
             </div>
