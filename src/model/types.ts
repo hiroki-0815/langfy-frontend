@@ -1,4 +1,4 @@
-import { FluencyLevel, Gender, Language, Motivation, Nationality } from "./constants";
+import { FluencyLevel, Gender, Language, Motivation, OriginCountry } from "./constants";
 
 export type User = {
   name: string;
@@ -6,7 +6,7 @@ export type User = {
   email?: string | undefined;
   city: string;
   country: string;
-  nationality: Nationality;
+  originCountry: OriginCountry; // Updated field name
   nativeLanguage: Language;
   age: number; 
   learningLanguage: Language;

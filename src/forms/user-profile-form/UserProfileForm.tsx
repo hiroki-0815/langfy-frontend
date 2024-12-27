@@ -31,7 +31,7 @@ import {
   GENDERS,
   LANGUAGES,
   MOTIVATIONS,
-  NATIONALITIES,
+  ORIGIN_COUNTRIES,
 } from "@/model/constants";
 
 export const formSchema = z
@@ -46,8 +46,8 @@ export const formSchema = z
       .optional(),
     city: z.string().min(1, { message: "City name is required." }),
     country: z.string().min(1, { message: "Please provide your country." }),
-    nationality: z.enum(NATIONALITIES, {
-      message: "Choose a valid nationality.",
+    originCountry: z.enum(ORIGIN_COUNTRIES, {
+      message: "Choose a valid origin country.",
     }),
     nativeLanguage: z.enum(LANGUAGES, {
       message: "Select your native language.",
@@ -96,14 +96,14 @@ const UserProfileForm: React.FC<Props> = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       ...currentUser,
-      imageFile: undefined, // Files should not have default values
+      imageFile: undefined,
     },
   });
 
   useEffect(() => {
     form.reset({
       ...currentUser,
-      imageFile: undefined, // Ensure imageFile is cleared when resetting
+      imageFile: undefined,
     });
   }, [currentUser, form]);
 
@@ -116,7 +116,7 @@ const UserProfileForm: React.FC<Props> = ({
     formData.append("city", formDataJson.city);
     formData.append("gender", formDataJson.gender);
     formData.append("country", formDataJson.country);
-    formData.append("nationality", formDataJson.nationality);
+    formData.append("originCountry", formDataJson.originCountry);
     formData.append("nativeLanguage", formDataJson.nativeLanguage);
     formData.append("age", formDataJson.age.toString());
     formData.append("learningLanguage", formDataJson.learningLanguage);
@@ -146,7 +146,6 @@ const UserProfileForm: React.FC<Props> = ({
             <FormDescription>Enter the details about yourself</FormDescription>
           </div>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {/* Name Field */}
             <FormField
               control={form.control}
               name="name"
@@ -160,7 +159,6 @@ const UserProfileForm: React.FC<Props> = ({
                 </FormItem>
               )}
             />
-            {/* Gender Field */}
             <FormField
               control={form.control}
               name="gender"
@@ -186,7 +184,6 @@ const UserProfileForm: React.FC<Props> = ({
                 </FormItem>
               )}
             />
-            {/* Age Field */}
             <FormField
               control={form.control}
               name="age"
@@ -207,7 +204,6 @@ const UserProfileForm: React.FC<Props> = ({
               )}
             />
           </div>
-          {/* Email Field */}
           <FormField
             control={form.control}
             name="email"
@@ -222,7 +218,6 @@ const UserProfileForm: React.FC<Props> = ({
             )}
           />
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {/* City Field */}
             <FormField
               control={form.control}
               name="city"
@@ -236,7 +231,6 @@ const UserProfileForm: React.FC<Props> = ({
                 </FormItem>
               )}
             />
-            {/* Country Field */}
             <FormField
               control={form.control}
               name="country"
@@ -250,24 +244,23 @@ const UserProfileForm: React.FC<Props> = ({
                 </FormItem>
               )}
             />
-            {/* Nationality Field */}
             <FormField
               control={form.control}
-              name="nationality"
+              name="originCountry"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Nationality</FormLabel>
+                  <FormLabel>Origin Country</FormLabel>
                   <Select
                     onValueChange={(value) => field.onChange(value)}
                     defaultValue={field.value}
                   >
                     <SelectTrigger className="bg-white">
-                      <SelectValue placeholder="Select your nationality" />
+                      <SelectValue placeholder="Select your origin country" />
                     </SelectTrigger>
                     <SelectContent>
-                      {NATIONALITIES.map((nationality) => (
-                        <SelectItem key={nationality} value={nationality}>
-                          {nationality}
+                      {ORIGIN_COUNTRIES.map((originCountry) => (
+                        <SelectItem key={originCountry} value={originCountry}>
+                          {originCountry}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -278,7 +271,6 @@ const UserProfileForm: React.FC<Props> = ({
             />
           </div>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {/* Native Language Field */}
             <FormField
               control={form.control}
               name="nativeLanguage"
@@ -304,7 +296,6 @@ const UserProfileForm: React.FC<Props> = ({
                 </FormItem>
               )}
             />
-            {/* Learning Language Field */}
             <FormField
               control={form.control}
               name="learningLanguage"
@@ -330,13 +321,12 @@ const UserProfileForm: React.FC<Props> = ({
                 </FormItem>
               )}
             />
-            {/* Fluency Level Field */}
             <FormField
               control={form.control}
               name="fluencyLevel"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Fluency Level</FormLabel>
+                  <FormLabel>Fluency</FormLabel>
                   <Select
                     onValueChange={(value) => field.onChange(value)}
                     defaultValue={field.value}
@@ -356,7 +346,6 @@ const UserProfileForm: React.FC<Props> = ({
                 </FormItem>
               )}
             />
-            {/* Motivation Field */}
             <FormField
               control={form.control}
               name="motivation"
@@ -383,7 +372,6 @@ const UserProfileForm: React.FC<Props> = ({
               )}
             />
           </div>
-          {/* Self Introduction Field */}
           <FormField
             control={form.control}
             name="selfIntroduction"
@@ -402,9 +390,7 @@ const UserProfileForm: React.FC<Props> = ({
               </FormItem>
             )}
           />
-          {/* Image Section */}
           <ImageSection />
-          {/* Submit Button */}
           {isLoading ? (
             <LoadingButton />
           ) : (

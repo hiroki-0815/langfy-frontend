@@ -36,7 +36,7 @@ const LanguagePartnerPage = () => {
                   gender={user.gender}
                   age={user.age}
                   nativeLanguage={user.nativeLanguage}
-                  nationality={user.nationality}
+                  nationality={user.originCountry}
                   country={user.country}
                   selfIntroduction={user.selfIntroduction}
                   imageUrl={user.imageUrl}
