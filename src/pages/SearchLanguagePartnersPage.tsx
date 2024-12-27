@@ -6,7 +6,7 @@ import PaginationSelector from "@/components/PaginationSlector";
 import { useSortUsers } from "@/api/AllUsersApi";
 import { User } from "@/model/types";
 
-const LanguagePartnerPage = () => {
+const SearchLanguagePartnersPage = () => {
   const [page, setPage] = useState(1);
   const pageSize = 10;
   const { results, isLoading } = useSortUsers(page, pageSize);
@@ -16,7 +16,7 @@ const LanguagePartnerPage = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[250px_1fr] gap-[100px]">
+    <div className="grid grid-cols-1 lg:grid-cols-[250px_1fr] gap-[100px] px-6">
       <aside className="col-span-1 bg-lime-200">
         <h2 className="text-lg font-bold mb-4">Filter By Learning Language</h2>
         <LanguageFilterSidebar />
@@ -36,10 +36,10 @@ const LanguagePartnerPage = () => {
                   gender={user.gender}
                   age={user.age}
                   nativeLanguage={user.nativeLanguage}
-                  nationality={user.originCountry}
-                  country={user.country}
+                  countryOrigin={user.originCountry}
                   selfIntroduction={user.selfIntroduction}
                   imageUrl={user.imageUrl}
+                  motivation={user.motivation}
                 />
               ))}
             </div>
@@ -59,4 +59,4 @@ const LanguagePartnerPage = () => {
   );
 };
 
-export default LanguagePartnerPage;
+export default SearchLanguagePartnersPage;
