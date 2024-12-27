@@ -4,6 +4,7 @@ import AuthCallbackPage from "./auth/AuthCallbackPage";
 import UserProfilePage from "./pages/UserProfilePage";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import Layout from "./layouts/layout";
+import SearchLanguagePartners from "./pages/SearchLanguagePartnersPage";
 
 const AppRoutes = () => {
   return (
@@ -23,6 +24,14 @@ const AppRoutes = () => {
           element={
             <Layout>
               <UserProfilePage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/search-language-partners"
+          element={
+            <Layout>
+              <SearchLanguagePartners />
             </Layout>
           }
         />
