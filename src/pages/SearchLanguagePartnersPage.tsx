@@ -1,10 +1,10 @@
 import { useState } from "react";
 import LanguageFilterSidebar from "@/components/LanguageFilterSidebar";
-import UserCard from "@/components/UserCard";
 import Fliters from "@/components/Fliters";
 import PaginationSelector from "@/components/PaginationSlector";
 import { useSortUsers } from "@/api/AllUsersApi";
 import { User } from "@/model/types";
+import UserCard from "@/components/UserCard";
 
 const SearchLanguagePartnersPage = () => {
   const [page, setPage] = useState(1);
@@ -16,7 +16,7 @@ const SearchLanguagePartnersPage = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[250px_1fr] gap-[100px] px-6">
+    <div className="grid grid-cols-1 lg:grid-cols-[250px_1fr] gap-[100px] px-4">
       <aside className="col-span-1 bg-lime-200">
         <h2 className="text-lg font-bold mb-4">Filter By Learning Language</h2>
         <LanguageFilterSidebar />
@@ -40,6 +40,8 @@ const SearchLanguagePartnersPage = () => {
                   selfIntroduction={user.selfIntroduction}
                   imageUrl={user.imageUrl}
                   motivation={user.motivation}
+                  country={user.country}
+                  learningLanguage={user.learningLanguage}
                 />
               ))}
             </div>

@@ -1,3 +1,6 @@
+import { ChevronUp, ChevronDown } from "lucide-react";
+import { useState } from "react";
+
 type UserCardProps = {
   name: string;
   gender: string;
@@ -7,6 +10,8 @@ type UserCardProps = {
   selfIntroduction?: string;
   imageUrl: string;
   motivation: string;
+  country: string;
+  learningLanguage: string;
 };
 
 const UserCard = ({
@@ -18,17 +23,25 @@ const UserCard = ({
   selfIntroduction,
   imageUrl,
   motivation,
+  country,
+  learningLanguage,
 }: UserCardProps) => {
+  const [showFullIntroduction, setShowFullIntroduction] = useState(false);
+
   const badgeColor =
     gender === "male" ? "bg-blue-400 text-white" : "bg-pink-400 text-white";
 
-  const truncatedIntroduction =
+  const shortenedIntroduction =
     selfIntroduction && selfIntroduction.length > 100
       ? `${selfIntroduction.slice(0, 60)}...`
       : selfIntroduction || "No self-introduction provided.";
 
+  const toggleIntroduction = () => {
+    setShowFullIntroduction(!showFullIntroduction);
+  };
+
   return (
-    <div className="py-6 px-3 flex flex-col bg-white shadow rounded-lg border border-gray-200 max-w-[750px]">
+    <div className="py-6 px-3 flex flex-col bg-white shadow rounded-lg border border-gray-200 max-w-[750px] overflow-hidden">
       <div className="flex items-start justify-between">
         <div className="flex gap-3">
           <img
@@ -47,20 +60,53 @@ const UserCard = ({
           Chat
         </button>
       </div>
-      <div className="flex items-center gap-4 mt-2 text-sm text-gray-600">
-        <span className="text-[10px] bg-emerald-100 text-emerald-600 py-[2px] px-[8px] rounded-xl">
-          Speaks: {nativeLanguage}
-        </span>
-        <span className="text-[10px] bg-emerald-100 text-emerald-600 py-[2px] px-[8px] rounded-xl">
-          From: {countryOrigin}
-        </span>
-        <span className="text-[10px] bg-orange-100 text-orange-600 py-[2px] px-[8px] rounded-xl">
-          {motivation}
-        </span>
+      <div className="flex flex-wrap mt-2 text-sm text-gray-600">
+        <div className="grid grid-rows-1 grid-cols-3 gap-4 text-center">
+          <div className="flex flex-col gap-2">
+            <span className="text-[10px] bg-blue-100 text-blue-600 py-[2px] px-[4px] rounded-xl">
+              Speaks: {nativeLanguage}
+            </span>
+            <span className="text-[10px] bg-emerald-100 text-emerald-600 py-[2px] px-[4px] rounded-xl">
+              Motivation: {motivation}
+            </span>
+          </div>
+          <div className="flex flex-col gap-2">
+            <span className="text-[10px] bg-orange-100 text-orange-600 py-[2px] px-[4px] rounded-xl">
+              Lives: {country}
+            </span>
+            <span className="text-[10px] bg-red-100 text-red-600 py-[2px] px-[4px] rounded-xl">
+              From: {countryOrigin}
+            </span>
+          </div>
+          <div className="flex flex-col gap-2">
+            <span className="text-[10px] bg-purple-100 text-purple-600 py-[2px] px-[4px] rounded-xl">
+              Learning: {learningLanguage}
+            </span>
+          </div>
+        </div>
       </div>
+
       <div className="mt-4 hidden md:block">
         <h3 className="font-semibold">Self-Introduction</h3>
-        <p className="text-gray-700 mt-2">{truncatedIntroduction}</p>
+        <p className="text-gray-700 mt-2 break-words">
+          {showFullIntroduction ? selfIntroduction : shortenedIntroduction}
+        </p>
+        {selfIntroduction && selfIntroduction.length > 100 && (
+          <button
+            onClick={toggleIntroduction}
+            className="flex items-center gap-2 text-blue-400 hover:underline mt-2 text-sm"
+          >
+            {showFullIntroduction ? (
+              <>
+                <ChevronUp className="w-4 h-4" /> Show Less
+              </>
+            ) : (
+              <>
+                <ChevronDown className="w-4 h-4" /> Show More
+              </>
+            )}
+          </button>
+        )}
       </div>
     </div>
   );
