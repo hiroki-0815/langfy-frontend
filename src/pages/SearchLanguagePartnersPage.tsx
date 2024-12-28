@@ -1,29 +1,71 @@
 import { useState } from "react";
 import LanguageFilterSidebar from "@/components/LanguageFilterSidebar";
-import Fliters from "@/components/Fliters";
-import PaginationSelector from "@/components/PaginationSlector";
+import Filters from "@/components/Filters";
 import { useSortUsers } from "@/api/AllUsersApi";
 import { User } from "@/model/types";
 import UserCard from "@/components/UserCard";
+import {
+  Language,
+  Gender,
+  OriginCountry,
+  FluencyLevel,
+  Motivation,
+} from "@/model/constants";
+import PaginationSelector from "@/components/PaginationSlector";
 
 const SearchLanguagePartnersPage = () => {
   const [page, setPage] = useState(1);
   const pageSize = 10;
-  const { results, isLoading } = useSortUsers(page, pageSize);
+
+  const [filters, setFilters] = useState<{
+    nativeLanguage: Language | "";
+    gender: Gender | "";
+    country: string | "";
+    originCountry: OriginCountry | "";
+    ageMin: number | undefined;
+    ageMax: number | undefined;
+    fluencyLevel: FluencyLevel | "";
+    motivation: Motivation | "";
+    learningLanguage: Language | "";
+  }>({
+    nativeLanguage: "",
+    gender: "",
+    country: "",
+    originCountry: "",
+    ageMin: undefined,
+    ageMax: undefined,
+    fluencyLevel: "",
+    motivation: "",
+    learningLanguage: "",
+  });
+
+  const { results, isLoading } = useSortUsers(page, pageSize, filters);
 
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
   };
 
+  const handleFilterChange = (filterName: keyof typeof filters, value: any) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [filterName]: value,
+    }));
+    setPage(1);
+  };
+
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[250px_1fr] gap-[100px] px-4">
-      <aside className="col-span-1 bg-lime-200">
-        <h2 className="text-lg font-bold mb-4">Filter By Learning Language</h2>
-        <LanguageFilterSidebar />
+    <div className="grid grid-cols-1 md:grid-cols-[250px_1fr] gap-4 px-16 ">
+      <aside className="col-span-1 px-4">
+        <LanguageFilterSidebar
+          selectedLanguage={filters.nativeLanguage}
+          onLanguageChange={(language) =>
+            handleFilterChange("nativeLanguage", language)
+          }
+        />
       </aside>
       <main>
-        <div className="mb-6 bg-emerald-400">
-          <Fliters />
+        <div className="mb-6">
+          <Filters filters={filters} onFilterChange={handleFilterChange} />
         </div>
         {isLoading ? (
           <div className="text-center text-blue-400">Loading users...</div>
