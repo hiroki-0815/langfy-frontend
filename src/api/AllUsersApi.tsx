@@ -4,16 +4,32 @@ import { useQuery } from "react-query";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-export const useSortUsers = (page: number = 1, pageSize: number = 10) => {
+export const useSortUsers = (
+  page: number = 1,
+  pageSize: number = 10,
+  filters: Record<string, string | number | undefined> = {}
+) => {
   const { getAccessTokenSilently } = useAuth0();
 
-  const createSortUsers = async (): Promise<{
+  const fetchSortedUsers = async (): Promise<{
     data: User[];
-    pagination: { page: number; pages: number };
+    pagination: { total: number; page: number; limit: number; pages: number };
   }> => {
     const accessToken = await getAccessTokenSilently();
+
+    const queryParams = new URLSearchParams();
+
+    queryParams.set("page", page.toString());
+    queryParams.set("limit", pageSize.toString());
+
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value !== undefined && value !== "") {
+        queryParams.set(key, value.toString());
+      }
+    });
+
     const response = await fetch(
-      `${API_BASE_URL}/api/users?page=${page}&limit=${pageSize}`,
+      `${API_BASE_URL}/api/users?${queryParams.toString()}`,
       {
         method: "GET",
         headers: {
@@ -30,14 +46,14 @@ export const useSortUsers = (page: number = 1, pageSize: number = 10) => {
     return response.json();
   };
 
-  const { data: results, isLoading } = useQuery(
-    ["sortUsers", page, pageSize],
-    createSortUsers,
-    {
-      keepPreviousData: true,
-      retry: 1,
-    }
-  );
+  const {
+    data: results,
+    isLoading,
+    error,
+  } = useQuery(["sortUsers", page, pageSize, filters], fetchSortedUsers, {
+    keepPreviousData: true,
+    retry: 1,
+  });
 
-  return { results, isLoading };
+  return { results, isLoading, error };
 };
