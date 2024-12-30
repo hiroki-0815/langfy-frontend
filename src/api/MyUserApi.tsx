@@ -69,14 +69,7 @@ export const useCreateMyUser = () => {
     isLoading,
     isError,
     isSuccess,
-  } = useMutation(createMyUserRequest, {
-    onSuccess: () => {
-      toast.success("User created successfully!");
-    },
-    onError: (error: Error) => {
-      toast.error(error.message);
-    },
-  });
+  } = useMutation(createMyUserRequest);
 
   return {
     createUser,
