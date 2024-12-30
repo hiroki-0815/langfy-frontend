@@ -37,35 +37,42 @@ import {
 export const formSchema = z
   .object({
     name: z.string().min(1, { message: "Please enter your name." }),
-    gender: z.enum(GENDERS, {
-      message: "Please select your gender (male or female).",
-    }),
+    gender: z
+      .enum(GENDERS, { message: "Please select your gender (male or female)." })
+      .optional(),
     email: z
       .string()
       .email({ message: "Please enter a valid email address." })
       .optional(),
-    city: z.string().min(1, { message: "City name is required." }),
-    country: z.string().min(1, { message: "Please provide your country." }),
-    originCountry: z.enum(ORIGIN_COUNTRIES, {
-      message: "Choose a valid origin country.",
-    }),
+    city: z.string().min(1, { message: "City name is required." }).optional(),
+    country: z
+      .string()
+      .min(1, { message: "Please provide your country." })
+      .optional(),
+    originCountry: z
+      .enum(ORIGIN_COUNTRIES, { message: "Choose a valid origin country." })
+      .optional(),
     nativeLanguage: z.enum(LANGUAGES, {
       message: "Select your native language.",
     }),
     age: z
       .union([z.string(), z.number()])
       .transform((val) => (typeof val === "string" ? parseFloat(val) : val))
-      .refine((val) => val > 0, { message: "Age must be a positive number." }),
+      .refine((val) => val > 0, { message: "Age must be a positive number." })
+      .optional(),
     learningLanguage: z.enum(LANGUAGES, {
       message: "Please select a language you are learning.",
     }),
-    fluencyLevel: z.enum(FLUENCY_LEVELS, {
-      message: "Please choose your fluency level.",
+    fluencyLevel: z
+      .enum(FLUENCY_LEVELS, { message: "Please choose your fluency level." })
+      .optional(),
+    motivation: z.enum(MOTIVATIONS, {
+      message: "Tell us what is your motivation.",
     }),
-    motivation: z.enum(MOTIVATIONS, { message: "Tell us what motivates you." }),
     selfIntroduction: z
       .string()
-      .min(1, { message: "Please provide a brief self-introduction." }),
+      .min(1, { message: "Please provide a brief self-introduction." })
+      .optional(),
     imageUrl: z
       .string()
       .url({ message: "Enter a valid image URL." })
@@ -113,16 +120,20 @@ const UserProfileForm: React.FC<Props> = ({
 
     formData.append("name", formDataJson.name);
     if (formDataJson.email) formData.append("email", formDataJson.email);
-    formData.append("city", formDataJson.city);
-    formData.append("gender", formDataJson.gender);
-    formData.append("country", formDataJson.country);
-    formData.append("originCountry", formDataJson.originCountry);
+    if (formDataJson.city) formData.append("city", formDataJson.city);
+    if (formDataJson.gender) formData.append("gender", formDataJson.gender);
+    if (formDataJson.country) formData.append("country", formDataJson.country);
+    if (formDataJson.originCountry)
+      formData.append("originCountry", formDataJson.originCountry);
     formData.append("nativeLanguage", formDataJson.nativeLanguage);
-    formData.append("age", formDataJson.age.toString());
+    if (formDataJson.age !== undefined)
+      formData.append("age", formDataJson.age.toString());
     formData.append("learningLanguage", formDataJson.learningLanguage);
-    formData.append("fluencyLevel", formDataJson.fluencyLevel);
+    if (formDataJson.fluencyLevel)
+      formData.append("fluencyLevel", formDataJson.fluencyLevel);
     formData.append("motivation", formDataJson.motivation);
-    formData.append("selfIntroduction", formDataJson.selfIntroduction);
+    if (formDataJson.selfIntroduction)
+      formData.append("selfIntroduction", formDataJson.selfIntroduction);
     if (formDataJson.imageFile) {
       formData.append("imageFile", formDataJson.imageFile);
     }
@@ -151,7 +162,9 @@ const UserProfileForm: React.FC<Props> = ({
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>
+                    Name <span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
                     <Input {...field} className="bg-white" />
                   </FormControl>
@@ -167,10 +180,10 @@ const UserProfileForm: React.FC<Props> = ({
                   <FormLabel>Gender</FormLabel>
                   <Select
                     onValueChange={(value) => field.onChange(value)}
-                    defaultValue={field.value}
+                    defaultValue={field.value || undefined}
                   >
                     <SelectTrigger className="bg-white">
-                      <SelectValue placeholder="Select your gender" />
+                      <SelectValue placeholder="Select your gender(optinal)" />
                     </SelectTrigger>
                     <SelectContent>
                       {GENDERS.map((gender) => (
@@ -276,7 +289,9 @@ const UserProfileForm: React.FC<Props> = ({
               name="nativeLanguage"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Native Language</FormLabel>
+                  <FormLabel>
+                    Native Language <span className="text-red-500">*</span>
+                  </FormLabel>
                   <Select
                     onValueChange={(value) => field.onChange(value)}
                     defaultValue={field.value}
@@ -301,7 +316,9 @@ const UserProfileForm: React.FC<Props> = ({
               name="learningLanguage"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Learning Language</FormLabel>
+                  <FormLabel>
+                    Learning Language <span className="text-red-500">*</span>
+                  </FormLabel>
                   <Select
                     onValueChange={(value) => field.onChange(value)}
                     defaultValue={field.value}
@@ -351,7 +368,9 @@ const UserProfileForm: React.FC<Props> = ({
               name="motivation"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Motivation</FormLabel>
+                  <FormLabel>
+                    Motivation <span className="text-red-500">*</span>
+                  </FormLabel>
                   <Select
                     onValueChange={(value) => field.onChange(value)}
                     defaultValue={field.value}
