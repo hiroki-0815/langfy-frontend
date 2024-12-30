@@ -29,7 +29,7 @@ const LanguageFilterSidebar = ({
             />
             <Label
               htmlFor={lang}
-              className={`flex flex-1 items-center cursor-pointer text-sm rounded-full px-4 py-2 mb-2 font-semibold gap-2 hover:font-bold hover:shadow-sm ${
+              className={`flex flex-1 items-center cursor-pointer text-sm rounded-full px-4 py-2 mb-2 font-semibold gap-2 bg-white hover:text-blue-400 hover:shadow-sm ${
                 isChecked ? "bg-blue-400 text-white" : "border border-slate-300"
               }`}
             >

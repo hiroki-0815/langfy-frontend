@@ -54,7 +54,7 @@ const SearchLanguagePartnersPage = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[250px_1fr] gap-4 px-16 ">
+    <div className="grid grid-cols-1 md:grid-cols-[250px_1fr] gap-4 py-3 px-5 md:py-6 md:px-16 bg-slate-50">
       <aside className="col-span-1 px-4">
         <LanguageFilterSidebar
           selectedLanguage={filters.nativeLanguage}

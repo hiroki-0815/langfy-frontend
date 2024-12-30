@@ -33,7 +33,7 @@ const UserCard = ({
 
   const shortenedIntroduction =
     selfIntroduction && selfIntroduction.length > 100
-      ? `${selfIntroduction.slice(0, 60)}...`
+      ? `${selfIntroduction.slice(0, 100)}...`
       : selfIntroduction || "No self-introduction provided.";
 
   const toggleIntroduction = () => {
@@ -41,7 +41,7 @@ const UserCard = ({
   };
 
   return (
-    <div className="py-6 px-3 flex flex-col bg-white shadow rounded-lg border border-gray-200 max-w-[750px] overflow-hidden">
+    <div className="py-9 px-3 flex flex-col bg-white shadow rounded-lg border border-gray-200 max-w-[750px] overflow-hidden">
       <div className="flex items-start justify-between">
         <div className="flex gap-3">
           <img
@@ -51,7 +51,9 @@ const UserCard = ({
           />
           <div>
             <h2 className="text-sm md:text-xl font-bold mr-3">{name}</h2>
-            <span className={`px-2 rounded-full text-[12px] ${badgeColor}`}>
+            <span
+              className={`px-2 py-1 rounded-full text-[12px] ${badgeColor}`}
+            >
               {age}
             </span>
           </div>

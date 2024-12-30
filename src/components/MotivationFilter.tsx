@@ -14,7 +14,7 @@ const MotivationFilter = ({ onChange }: Props) => {
   return (
     <div>
       <DropdownMenu>
-        <DropdownMenuTrigger className="w-full text-left rounded-full bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200">
+        <DropdownMenuTrigger className="w-full text-left rounded-full bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200">
           Motivation
         </DropdownMenuTrigger>
         <DropdownMenuContent className="bg-white border border-gray-200 rounded-lg shadow-lg">
