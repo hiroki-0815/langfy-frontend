@@ -72,20 +72,28 @@ const SearchLanguagePartnersPage = () => {
         ) : results?.data?.length ? (
           <div>
             <div className="grid grid-cols-1 gap-6">
-              {results.data.map((user: User) => (
-                <UserCard
-                  name={user.name}
-                  gender={user.gender}
-                  age={user.age}
-                  nativeLanguage={user.nativeLanguage}
-                  countryOrigin={user.originCountry}
-                  selfIntroduction={user.selfIntroduction}
-                  imageUrl={user.imageUrl}
-                  motivation={user.motivation}
-                  country={user.country}
-                  learningLanguage={user.learningLanguage}
-                />
-              ))}
+              {results.data
+                ?.filter(
+                  (user: User) =>
+                    user.name &&
+                    user.nativeLanguage &&
+                    user.learningLanguage &&
+                    user.motivation
+                )
+                .map((user: User) => (
+                  <UserCard
+                    name={user.name}
+                    gender={user.gender}
+                    age={user.age}
+                    nativeLanguage={user.nativeLanguage}
+                    countryOrigin={user.originCountry}
+                    selfIntroduction={user.selfIntroduction}
+                    imageUrl={user.imageUrl}
+                    motivation={user.motivation}
+                    country={user.country}
+                    learningLanguage={user.learningLanguage}
+                  />
+                ))}
             </div>
             <div className="mt-6 flex justify-center">
               <PaginationSelector
