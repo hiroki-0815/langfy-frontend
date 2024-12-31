@@ -39,7 +39,6 @@ const UserCard = ({
   const toggleIntroduction = () => {
     setShowFullIntroduction(!showFullIntroduction);
   };
-
   return (
     <div className="py-9 px-3 flex flex-col bg-white shadow rounded-lg border border-gray-200 max-w-[750px] overflow-hidden">
       <div className="flex items-start justify-between">
