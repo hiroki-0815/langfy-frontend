@@ -5,6 +5,7 @@ import UserProfilePage from "./pages/UserProfilePage";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import Layout from "./layouts/layout";
 import SearchLanguagePartners from "./pages/SearchLanguagePartnersPage";
+import ChatPage from "./pages/ChatPage";
 
 const AppRoutes = () => {
   return (
@@ -27,11 +28,23 @@ const AppRoutes = () => {
             </Layout>
           }
         />
+      </Route>
+      <Route element={<ProtectedRoute />}>
         <Route
           path="/search-language-partners"
           element={
             <Layout>
               <SearchLanguagePartners />
+            </Layout>
+          }
+        />
+      </Route>
+      <Route element={<ProtectedRoute />}>
+        <Route
+          path="/chat"
+          element={
+            <Layout>
+              <ChatPage />
             </Layout>
           }
         />

@@ -1,17 +1,28 @@
 import { FluencyLevel, Gender, Language, Motivation, OriginCountry } from "./constants";
 
 export type User = {
+  _id:string;
   name: string;
-  gender: Gender;
+  gender?: Gender;
   email?: string | undefined;
-  city: string;
-  country: string;
-  originCountry: OriginCountry;
+  city?: string;
+  country?: string;
+  originCountry?: OriginCountry;
   nativeLanguage: Language;
-  age: number; 
+  age?: number; 
   learningLanguage: Language;
-  fluencyLevel: FluencyLevel;
+  fluencyLevel?: FluencyLevel;
   motivation: Motivation;
-  selfIntroduction: string;
+  selfIntroduction?: string;
   imageUrl: string;
+};
+
+export type Message = {
+  _id: string;
+  senderId: string; 
+  receiverId: string; 
+  text?: string; 
+  image?: string; 
+  createdAt: string; 
+  updatedAt: string; 
 };
