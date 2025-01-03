@@ -1,6 +1,6 @@
 import { Message, User } from "@/model/types";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { toast } from "sonner";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -43,7 +43,7 @@ export const useGetChatUser = () => {
 export const useGetMessages = (userId: string) => {
   const { getAccessTokenSilently } = useAuth0();
 
-  const getMessageRequest = async (userId: string) => {
+  const getMessageRequest = async (userId: string): Promise<Message[]> => {
     const accessToken = await getAccessTokenSilently();
     const response = await fetch(`${API_BASE_URL}/api/message/${userId}`, {
       method: "GET",
@@ -60,7 +60,7 @@ export const useGetMessages = (userId: string) => {
   };
 
   const {
-    data: userMessages,
+    data: messages,
     isLoading,
     error,
   } = useQuery<Message[], Error>(
@@ -76,7 +76,56 @@ export const useGetMessages = (userId: string) => {
   }
 
   return {
-    userMessages,
+    messages,
     isLoading,
   };
+};
+
+type SendMessageInput = {
+  receiverId: string;
+  text?: string;
+  image?: string;
+};
+
+export const useSendMessages = () => {
+  const { getAccessTokenSilently } = useAuth0();
+  const sendMessageRequest = async (
+    input: SendMessageInput
+  ): Promise<Message> => {
+    const accessToken = await getAccessTokenSilently();
+    const { receiverId, text, image } = input;
+    const response = await fetch(
+      `${API_BASE_URL}/api/message/send/${receiverId}`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text, image }),
+      }
+    );
+    if (!response.ok) {
+      throw new Error("Filed to send messages");
+    }
+    return response.json();
+  };
+
+  const queryClient = useQueryClient();
+
+  const {
+    mutateAsync: sendMessage,
+    isLoading,
+    isError,
+    isSuccess,
+  } = useMutation<Message, Error, SendMessageInput>(sendMessageRequest, {
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries(["fetchUserChat", variables.receiverId]);
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  return { sendMessage, isLoading, isError, isSuccess };
 };
