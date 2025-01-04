@@ -88,6 +88,7 @@ type SendMessageInput = {
 };
 
 export const useSendMessages = () => {
+  const queryClient = useQueryClient();
   const { getAccessTokenSilently } = useAuth0();
   const sendMessageRequest = async (
     input: SendMessageInput
@@ -110,8 +111,6 @@ export const useSendMessages = () => {
     }
     return response.json();
   };
-
-  const queryClient = useQueryClient();
 
   const {
     mutateAsync: sendMessage,

@@ -4,7 +4,7 @@ import { useState } from "react";
 type UserCardProps = {
   name: string;
   gender?: string;
-  age: number;
+  age?: number;
   nativeLanguage: string;
   countryOrigin?: string;
   selfIntroduction?: string;
