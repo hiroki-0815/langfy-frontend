@@ -1,21 +1,57 @@
+// src/components/ChatContainer.tsx
+import React, { useEffect, useRef, useState } from "react";
 import { useGetMessages } from "@/api/UseChatApi";
+import { useSocket } from "@/context/SocketContext";
+import { Message, User } from "@/model/types";
 import ChatHeader from "./ChatHeader";
-import { User } from "@/model/types";
 import MessageInput from "./MessageInput";
-import { useEffect, useRef } from "react";
 import { formatTime } from "@/lib/utils";
 
 type Props = {
-  user: User;
+  user: User; // The user we’re chatting with
+  currentUserId?: string; // The logged-in user's ID
 };
 
-const ChatContainer = ({ user }: Props) => {
+const ChatContainer: React.FC<Props> = ({ user, currentUserId }) => {
   const { messages, isLoading } = useGetMessages(user._id);
+  const { socket } = useSocket();
+  const [realTimeMessages, setRealTimeMessages] = useState<Message[]>([]);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
+  // On initial load or user change, set the realTimeMessages from fetched messages
+  useEffect(() => {
+    if (messages) {
+      setRealTimeMessages(messages);
+    }
+  }, [messages]);
+
+  // Socket.io "newMessage" listener
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleNewMessage = (newMessage: Message) => {
+      // Only add it if it’s relevant to this chat
+      const isRelevant =
+        (newMessage.senderId === user._id &&
+          newMessage.receiverId === currentUserId) ||
+        (newMessage.senderId === currentUserId &&
+          newMessage.receiverId === user._id);
+      if (isRelevant) {
+        setRealTimeMessages((prev) => [...prev, newMessage]);
+      }
+    };
+
+    socket.on("newMessage", handleNewMessage);
+
+    return () => {
+      socket.off("newMessage", handleNewMessage);
+    };
+  }, [socket, user._id, currentUserId]);
+
+  // Scroll to bottom when messages update
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [realTimeMessages]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -28,26 +64,23 @@ const ChatContainer = ({ user }: Props) => {
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-hide">
-        {messages ? (
-          messages.map((message) => (
+        {realTimeMessages.map((msg) => {
+          const isMine = msg.senderId === currentUserId;
+          return (
             <div
-              key={message._id}
-              className={`flex ${
-                message.senderId === user._id ? "justify-start" : "justify-end"
-              }`}
+              key={msg._id}
+              className={`flex ${isMine ? "justify-end" : "justify-start"}`}
             >
               <div className="flex flex-col space-y-1">
                 <div
                   className={`px-3 py-2 max-w-xs rounded-lg ${
-                    message.senderId === user._id
-                      ? "bg-blue-400 text-white"
-                      : "bg-blue-700 text-white"
+                    isMine ? "bg-blue-700 text-white" : "bg-blue-400 text-white"
                   }`}
                 >
-                  <div>{message.text}</div>
-                  {message.image && (
+                  <div>{msg.text}</div>
+                  {msg.image && (
                     <img
-                      src={message.image}
+                      src={msg.image}
                       alt="Message attachment"
                       className="mt-2 rounded-lg"
                     />
@@ -55,17 +88,15 @@ const ChatContainer = ({ user }: Props) => {
                 </div>
                 <div
                   className={`text-[10px] text-gray-500 ${
-                    message.senderId === user._id ? "text-left" : "text-right"
+                    isMine ? "text-right" : "text-left"
                   }`}
                 >
-                  {formatTime(message.createdAt)}
+                  {formatTime(msg.createdAt)}
                 </div>
               </div>
             </div>
-          ))
-        ) : (
-          <div>No messages found.</div>
-        )}
+          );
+        })}
         <div ref={messagesEndRef}></div>
       </div>
 
