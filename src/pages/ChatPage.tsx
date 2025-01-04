@@ -1,5 +1,4 @@
-// src/pages/ChatPage.tsx
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { useGetMyUser } from "@/api/MyUserApi";
 import { useGetChatUser } from "@/api/UseChatApi";
 import Sidebar from "@/components/Sidebar";
@@ -7,11 +6,20 @@ import ChatContainer from "@/components/ChatContainer";
 import NoChatSelected from "@/components/NoChatSelected";
 import { SocketProvider } from "@/context/SocketContext";
 import { User } from "@/model/types";
+import { useParams } from "react-router-dom";
 
 const ChatPage = () => {
+  const { userId } = useParams<{ userId: string }>();
   const { currentUser, isLoading: isCurrentUserLoading } = useGetMyUser();
-  const { chatUser, isLoading: isChatUserLoading } = useGetChatUser();
+  const { chatUser, isLoading: isChatUserLoading } = useGetChatUser(userId);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    if (userId && chatUser) {
+      const user = chatUser.find((u) => u._id === userId) || null;
+      setSelectedUser(user);
+    }
+  }, [userId, chatUser]);
 
   const handleUserSelect = (userId: string) => {
     const user = chatUser?.find((u) => u._id === userId) || null;

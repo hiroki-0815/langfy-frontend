@@ -1,4 +1,3 @@
-// src/api/MyUserApi.ts
 import { User } from "@/model/types";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation, useQuery } from "react-query";
@@ -20,6 +19,7 @@ export const useGetMyUser = () => {
       method: "GET",
       headers: {
         Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
       },
     });
 
@@ -95,6 +95,7 @@ export const useUpdateUser = () => {
     if (!response.ok) {
       throw new Error("Failed to update user");
     }
+
     return response.json();
   };
 

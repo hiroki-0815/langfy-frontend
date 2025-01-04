@@ -41,7 +41,7 @@ const AppRoutes = () => {
       </Route>
       <Route element={<ProtectedRoute />}>
         <Route
-          path="/chat"
+          path="/chat/:userId"
           element={
             <Layout>
               <ChatPage />

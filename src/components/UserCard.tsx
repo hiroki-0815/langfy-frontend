@@ -1,5 +1,7 @@
 import { ChevronUp, ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useGetChatUser } from "@/api/UseChatApi";
 
 type UserCardProps = {
   name: string;
@@ -12,6 +14,7 @@ type UserCardProps = {
   motivation: string;
   country?: string;
   learningLanguage: string;
+  userId?: string;
 };
 
 const UserCard = ({
@@ -25,8 +28,12 @@ const UserCard = ({
   motivation,
   country,
   learningLanguage,
+  userId,
 }: UserCardProps) => {
   const [showFullIntroduction, setShowFullIntroduction] = useState(false);
+  const navigate = useNavigate();
+
+  const { chatUser, isLoading } = useGetChatUser(userId);
 
   const badgeColor =
     gender === "male" ? "bg-blue-400 text-white" : "bg-pink-400 text-white";
@@ -39,6 +46,23 @@ const UserCard = ({
   const toggleIntroduction = () => {
     setShowFullIntroduction(!showFullIntroduction);
   };
+
+  const handleChatButtonClick = () => {
+    if (userId) {
+      console.log("Navigating to chat with userId:", userId); // Debug log
+      navigate(`/chat/${userId}`); // Navigate to the correct user's chat page
+    } else {
+      console.error("UserId is undefined");
+    }
+  };
+
+  // Debug or perform actions when chatUser updates
+  useEffect(() => {
+    if (!isLoading && chatUser) {
+      console.log("Fetched chat users including clicked user:", chatUser);
+    }
+  }, [chatUser, isLoading]);
+
   return (
     <div className="py-9 px-3 flex flex-col bg-white shadow rounded-lg border border-gray-200 max-w-[750px] overflow-hidden">
       <div className="flex items-start justify-between">
@@ -59,7 +83,10 @@ const UserCard = ({
             )}
           </div>
         </div>
-        <button className="px-2 py-1 font-bold outline outline-2 outline-blue-400 bg-white rounded-full text-blue-400 hover:text-white hover:bg-blue-400 duration-300 ease-in-out text-[12px]">
+        <button
+          onClick={handleChatButtonClick}
+          className="px-2 py-1 font-bold outline outline-2 outline-blue-400 bg-white rounded-full text-blue-400 hover:text-white hover:bg-blue-400 duration-300 ease-in-out text-[12px]"
+        >
           Chat
         </button>
       </div>

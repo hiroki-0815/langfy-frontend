@@ -5,12 +5,19 @@ import { toast } from "sonner";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-export const useGetChatUser = () => {
+export const useGetChatUser = (clickedUserId?: string) => {
   const { getAccessTokenSilently } = useAuth0();
 
-  const getChatUserRequest = async () => {
+  const getChatUserRequest = async (): Promise<User[]> => {
     const accessToken = await getAccessTokenSilently();
-    const response = await fetch(`${API_BASE_URL}/api/message/users`, {
+    const url = new URL(`${API_BASE_URL}/api/message/users`);
+
+    if (clickedUserId) {
+      console.log("Appended clickedUserId to URL:", clickedUserId);
+      url.searchParams.append("clickedUserId", clickedUserId);
+    }
+
+    const response = await fetch(url.toString(), {
       method: "GET",
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -19,7 +26,7 @@ export const useGetChatUser = () => {
     });
 
     if (!response.ok) {
-      throw new Error("Filed to get chat user");
+      throw new Error("Failed to get chat user");
     }
     return response.json();
   };
@@ -28,7 +35,10 @@ export const useGetChatUser = () => {
     data: chatUser,
     isLoading,
     error,
-  } = useQuery<User[], Error>("fetchChatUser", getChatUserRequest);
+  } = useQuery<User[], Error>(
+    ["fetchChatUser", clickedUserId],
+    getChatUserRequest
+  );
 
   if (error) {
     toast.error(error.message);
