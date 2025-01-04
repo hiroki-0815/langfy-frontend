@@ -1,14 +1,15 @@
-import { useSendMessages } from "@/api/UseChatApi";
-import { X, Image, Send } from "lucide-react";
+// src/components/MessageInput.tsx
 import React, { useRef, useState } from "react";
-import { Input } from "./ui/input";
+import { useSendMessages } from "@/api/UseChatApi";
 import { toast } from "sonner";
+import { X, Image, Send } from "lucide-react";
+import { Input } from "./ui/input"; // or your custom Input component
 
 type MessageInputProps = {
   receiverId: string;
 };
 
-const MessageInput = ({ receiverId }: MessageInputProps) => {
+const MessageInput: React.FC<MessageInputProps> = ({ receiverId }) => {
   const [text, setText] = useState("");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -17,12 +18,10 @@ const MessageInput = ({ receiverId }: MessageInputProps) => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) {
-      toast.error("No file selected");
-      return;
+      return toast.error("No file selected");
     }
     if (!file.type.startsWith("image/")) {
-      toast.error("Please select an image file");
-      return;
+      return toast.error("Please select an image file");
     }
     const reader = new FileReader();
     reader.onloadend = () => {
@@ -36,7 +35,7 @@ const MessageInput = ({ receiverId }: MessageInputProps) => {
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  const handleSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!text.trim() && !imagePreview) return;
 
@@ -51,7 +50,7 @@ const MessageInput = ({ receiverId }: MessageInputProps) => {
       if (fileInputRef.current) fileInputRef.current.value = "";
     } catch (error) {
       toast.error("Failed to send message");
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -93,9 +92,7 @@ const MessageInput = ({ receiverId }: MessageInputProps) => {
           />
           <button
             type="button"
-            className={`hidden sm:flex btn btn-circle ${
-              imagePreview ? "text-blue-400" : "text-zinc-600"
-            }`}
+            className="hidden sm:flex btn btn-circle text-zinc-600"
             onClick={() => fileInputRef.current?.click()}
           >
             <Image size={20} />
