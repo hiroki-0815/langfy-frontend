@@ -110,6 +110,7 @@ const SearchLanguagePartnersPage = () => {
                 )
                 .map((user: User) => (
                   <UserCard
+                    key={user._id}
                     name={user.name}
                     gender={user.gender}
                     age={user.age}
@@ -120,6 +121,7 @@ const SearchLanguagePartnersPage = () => {
                     motivation={user.motivation}
                     country={user.country}
                     learningLanguage={user.learningLanguage}
+                    userId={user._id}
                   />
                 ))}
             </div>
