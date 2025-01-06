@@ -92,7 +92,7 @@ const MessageInput: React.FC<MessageInputProps> = ({ receiverId }) => {
           />
           <button
             type="button"
-            className="hidden sm:flex btn btn-circle text-zinc-600 hover:text-black"
+            className="hidden sm:flex btn btn-circle text-zinc-600 hover:text-blue-400"
             onClick={() => fileInputRef.current?.click()}
           >
             <Image size={20} />
