@@ -2,7 +2,7 @@
 import React, { useRef, useState } from "react";
 import { useSendMessages } from "@/api/UseChatApi";
 import { toast } from "sonner";
-import { X, Image, Send } from "lucide-react";
+import { X, Image, ArrowUp } from "lucide-react";
 import { Input } from "./ui/input"; // or your custom Input component
 
 type MessageInputProps = {
@@ -92,7 +92,7 @@ const MessageInput: React.FC<MessageInputProps> = ({ receiverId }) => {
           />
           <button
             type="button"
-            className="hidden sm:flex btn btn-circle text-zinc-600"
+            className="hidden sm:flex btn btn-circle text-zinc-600 hover:text-blue-400"
             onClick={() => fileInputRef.current?.click()}
           >
             <Image size={20} />
@@ -100,10 +100,10 @@ const MessageInput: React.FC<MessageInputProps> = ({ receiverId }) => {
         </div>
         <button
           type="submit"
-          className="btn btn-sm btn-circle"
+          className="bg-slate-200 hover:bg-slate-100 hover:cursor-pointer rounded-full p-[4px]"
           disabled={!text.trim() && !imagePreview}
         >
-          <Send size={22} />
+          <ArrowUp size={20} />
         </button>
       </form>
     </div>

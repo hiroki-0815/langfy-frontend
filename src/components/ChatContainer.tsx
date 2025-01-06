@@ -1,5 +1,4 @@
-// src/components/ChatContainer.tsx
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGetMessages } from "@/api/UseChatApi";
 import { useSocket } from "@/context/SocketContext";
 import { Message, User } from "@/model/types";
@@ -8,29 +7,26 @@ import MessageInput from "./MessageInput";
 import { formatTime } from "@/lib/utils";
 
 type Props = {
-  user: User; // The user we’re chatting with
-  currentUserId?: string; // The logged-in user's ID
+  user: User;
+  currentUserId?: string;
 };
 
-const ChatContainer: React.FC<Props> = ({ user, currentUserId }) => {
+const ChatContainer = ({ user, currentUserId }: Props) => {
   const { messages, isLoading } = useGetMessages(user._id);
   const { socket } = useSocket();
   const [realTimeMessages, setRealTimeMessages] = useState<Message[]>([]);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  // On initial load or user change, set the realTimeMessages from fetched messages
   useEffect(() => {
     if (messages) {
       setRealTimeMessages(messages);
     }
   }, [messages]);
 
-  // Socket.io "newMessage" listener
   useEffect(() => {
     if (!socket) return;
 
     const handleNewMessage = (newMessage: Message) => {
-      // Only add it if it’s relevant to this chat
       const isRelevant =
         (newMessage.senderId === user._id &&
           newMessage.receiverId === currentUserId) ||
@@ -48,9 +44,9 @@ const ChatContainer: React.FC<Props> = ({ user, currentUserId }) => {
     };
   }, [socket, user._id, currentUserId]);
 
-  // Scroll to bottom when messages update
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (messagesEndRef && messages)
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [realTimeMessages]);
 
   if (isLoading) {
@@ -58,11 +54,10 @@ const ChatContainer: React.FC<Props> = ({ user, currentUserId }) => {
   }
 
   return (
-    <div className="flex flex-col h-full w-full">
+    <div className="flex flex-col h-full w-full bg-slate-100">
       <div className="flex-none">
         <ChatHeader userName={user.name} />
       </div>
-
       <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-hide">
         {realTimeMessages.map((msg) => {
           const isMine = msg.senderId === currentUserId;
