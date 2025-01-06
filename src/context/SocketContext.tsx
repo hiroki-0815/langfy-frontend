@@ -1,4 +1,3 @@
-// src/context/SocketContext.tsx
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { User } from "@/model/types";
@@ -24,14 +23,12 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
 
   useEffect(() => {
     if (currentUser?._id) {
-      // Connect to your server
       const newSocket = io(import.meta.env.VITE_API_BASE_URL, {
-        transports: ["websocket"], // optional
+        transports: ["websocket"],
       });
 
       newSocket.on("connect", () => {
         console.log("Socket connected:", newSocket.id);
-        // Let the server know which user is connected
         newSocket.emit("setup", currentUser._id);
       });
 
