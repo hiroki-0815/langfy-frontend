@@ -6,6 +6,7 @@ import ProtectedRoute from "./auth/ProtectedRoute";
 import Layout from "./layouts/layout";
 import SearchLanguagePartners from "./pages/SearchLanguagePartnersPage";
 import ChatPage from "./pages/ChatPage";
+import VideoCallPage from "./pages/VideoCallPage";
 
 const AppRoutes = () => {
   return (
@@ -45,6 +46,16 @@ const AppRoutes = () => {
           element={
             <Layout>
               <ChatPage />
+            </Layout>
+          }
+        />
+      </Route>
+      <Route element={<ProtectedRoute />}>
+        <Route
+          path="/video-call"
+          element={
+            <Layout>
+              <VideoCallPage />
             </Layout>
           }
         />

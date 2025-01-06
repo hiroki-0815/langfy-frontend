@@ -15,10 +15,10 @@ type SocketProviderProps = {
   currentUser: User | null;
 };
 
-export const SocketProvider: React.FC<SocketProviderProps> = ({
+export const SocketProvider = ({
   children,
   currentUser,
-}) => {
+}: SocketProviderProps) => {
   const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
