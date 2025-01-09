@@ -1,5 +1,3 @@
-// src/pages/UserProfilePage.tsx
-
 import { useGetMyUser, useUpdateUser } from "@/api/MyUserApi";
 import UserProfileForm from "@/forms/user-profile-form/UserProfileForm";
 import UserProfileSkeleton from "@/skeletons/UserProfileSkeleton";

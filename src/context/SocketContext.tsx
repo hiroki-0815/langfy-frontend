@@ -6,19 +6,27 @@ type SocketContextType = {
   socket: Socket | null;
 };
 
-const SocketContext = createContext<SocketContextType>({ socket: null });
+const SocketContext = createContext<SocketContextType>({
+  socket: null,
+});
 
-export const useSocket = () => useContext(SocketContext);
+export const useSocket = () => {
+  const context = useContext(SocketContext);
+  if (!context) {
+    throw new Error("useSocket must be used within a SocketProvider");
+  }
+  return context;
+};
 
 type SocketProviderProps = {
   children: React.ReactNode;
   currentUser: User | null;
 };
 
-export const SocketProvider: React.FC<SocketProviderProps> = ({
+export const SocketProvider = ({
   children,
   currentUser,
-}) => {
+}: SocketProviderProps) => {
   const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
@@ -34,6 +42,10 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({
 
       newSocket.on("disconnect", (reason) => {
         console.log("Socket disconnected:", reason);
+      });
+
+      newSocket.on("connect_error", (error) => {
+        console.error("Socket connection error:", error);
       });
 
       setSocket(newSocket);
