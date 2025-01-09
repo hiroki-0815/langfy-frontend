@@ -11,22 +11,16 @@ type Props = {
 const ProtectedRoute = ({ needCurrentUser = false }: Props) => {
   const { isAuthenticated, isLoading: isAuthLoading } = useAuth0();
 
-  // Fetch currentUser only when needed
-  const { currentUser, isLoading: isCurrentUserLoading } = needCurrentUser
-    ? useGetMyUser()
-    : { currentUser: null, isLoading: false };
+  const { currentUser, isLoading: isCurrentUserLoading } = useGetMyUser();
 
-  // Show a loading indicator while authentication is loading
   if (isAuthLoading || (needCurrentUser && isCurrentUserLoading)) {
     return <Loading />;
   }
 
-  // Redirect to the homepage if the user is not authenticated or if currentUser is required but missing
   if (!isAuthenticated || (needCurrentUser && !currentUser)) {
     return <Navigate to="/" replace />;
   }
 
-  // Conditionally wrap the outlet with a SocketProvider if needed
   return needCurrentUser ? (
     <SocketProvider currentUser={currentUser || null}>
       <Outlet />
