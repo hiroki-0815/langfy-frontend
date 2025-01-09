@@ -7,6 +7,7 @@ import Layout from "./layouts/layout";
 import SearchLanguagePartners from "./pages/SearchLanguagePartnersPage";
 import ChatPage from "./pages/ChatPage";
 import VideoCallPage from "./pages/VideoCallPage";
+import RoomId from "./pages/RoomId";
 
 const AppRoutes = () => {
   return (
@@ -20,6 +21,7 @@ const AppRoutes = () => {
         }
       />
       <Route path="/auth-callback" element={<AuthCallbackPage />} />
+
       <Route element={<ProtectedRoute />}>
         <Route
           path="/user-profile"
@@ -29,8 +31,6 @@ const AppRoutes = () => {
             </Layout>
           }
         />
-      </Route>
-      <Route element={<ProtectedRoute />}>
         <Route
           path="/search-language-partners"
           element={
@@ -39,18 +39,6 @@ const AppRoutes = () => {
             </Layout>
           }
         />
-      </Route>
-      <Route element={<ProtectedRoute />}>
-        <Route
-          path="/chat/:userId?"
-          element={
-            <Layout>
-              <ChatPage />
-            </Layout>
-          }
-        />
-      </Route>
-      <Route element={<ProtectedRoute />}>
         <Route
           path="/video-call"
           element={
@@ -60,6 +48,26 @@ const AppRoutes = () => {
           }
         />
       </Route>
+
+      <Route element={<ProtectedRoute needCurrentUser />}>
+        <Route
+          path="/chat/:userId?"
+          element={
+            <Layout>
+              <ChatPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/video-call/:roomId"
+          element={
+            <Layout>
+              <RoomId />
+            </Layout>
+          }
+        />
+      </Route>
+
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
