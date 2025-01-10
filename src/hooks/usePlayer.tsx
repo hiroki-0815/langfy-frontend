@@ -8,9 +8,17 @@ type Player = {
 
 type Players = Record<string, Player>;
 
-const usePlayer = () => {
+const usePlayer = (myId: string) => {
   const [players, setPlayers] = useState<Players>({});
-  return { players, setPlayers };
+
+  const playersCopy = { ...players };
+  const playerHighlighted = playersCopy[myId];
+
+  delete playersCopy[myId];
+
+  const nonHighlightedPlayers = playersCopy;
+
+  return { players, setPlayers, playerHighlighted, nonHighlightedPlayers };
 };
 
 export default usePlayer;
