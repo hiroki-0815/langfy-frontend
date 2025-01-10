@@ -37,12 +37,12 @@ const Player = ({ url, muted = false, playing = false }: Props) => {
   }, [url, playing]);
 
   return (
-    <div>
+    <div className="w-full aspect-[9/16] md:aspect-video">
       <video
         ref={videoRef}
         muted={muted}
         controls
-        style={{ width: "700px", height: "auto" }}
+        className="w-full h-full object-cover rounded-lg"
       />
     </div>
   );
