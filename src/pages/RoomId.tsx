@@ -1,17 +1,27 @@
+// RoomId.tsx
 import { useSocket } from "@/context/SocketContext";
 import usePeer from "@/hooks/usePeer";
 import useMediaStream from "@/hooks/useMediaStream";
 import Player from "@/components/Player";
 import { useEffect, useState } from "react";
+
+import { useParams } from "react-router-dom";
+import VideoCallBottom from "@/components/VideoCallBottom";
 import usePlayer from "@/hooks/usePlayer";
 
 const RoomId = () => {
+  const { roomId } = useParams<{ roomId: string }>();
   const { socket } = useSocket();
   const { myId, peer } = usePeer();
   const { stream } = useMediaStream();
   const [currentStream, setCurrentStream] = useState<MediaStream | null>(null);
-  const { setPlayers, playerHighlighted, nonHighlightedPlayers } =
-    usePlayer(myId);
+  const {
+    setPlayers,
+    playerHighlighted,
+    nonHighlightedPlayers,
+    toggleAudio,
+    toggleVideo,
+  } = usePlayer(myId, roomId, stream);
 
   useEffect(() => {
     if (stream && !currentStream) {
@@ -49,7 +59,6 @@ const RoomId = () => {
         }));
       });
     };
-
     socket.on("user-connected", handleUserConnected);
 
     return () => {
@@ -101,59 +110,61 @@ const RoomId = () => {
 
   const getGridClass = (playerCount: number) => {
     if (playerCount === 1) return "grid-cols-1";
-    if (playerCount >= 2) return "grid-cols-2";
+    if (playerCount === 2) return "grid-cols-2";
+    if (playerCount >= 3) return "grid-cols-3";
     return "";
   };
 
   const gridClass = `grid ${getGridClass(
     Object.keys(nonHighlightedPlayers).length
-  )} items-center justify-center`;
+  )}  w-full max-w-4xl px-4`;
 
   return (
-    <div className="h-[800px] md:h-screen bg-gray-900 relative flex items-center justify-center">
-      <div
-        className={`${
-          Object.keys(nonHighlightedPlayers).length === 1
-            ? "w-full h-full"
-            : gridClass
-        }`}
-      >
-        {Object.keys(nonHighlightedPlayers).length > 0 ? (
-          Object.keys(nonHighlightedPlayers).map((playerId) => {
-            const { url, muted, playing } = nonHighlightedPlayers[playerId];
-            return (
-              <div
-                className={`${
-                  Object.keys(nonHighlightedPlayers).length === 1
-                    ? "w-full h-full"
-                    : "max-w-[600px]"
-                }`}
-              >
-                <Player
-                  key={playerId}
-                  url={url}
-                  muted={muted}
-                  playing={playing}
-                />
-              </div>
-            );
-          })
-        ) : (
-          <div className="flex items-center justify-center h-full">
-            <p className="text-white">No other players connected.</p>
+    <>
+      <div className="h-[800px] md:h-screen bg-gray-900 relative flex items-center justify-center">
+        <div className={gridClass}>
+          {Object.keys(nonHighlightedPlayers).length > 0 ? (
+            Object.keys(nonHighlightedPlayers).map((playerId) => {
+              const { url, muted, playing } = nonHighlightedPlayers[playerId];
+              return (
+                <div
+                  className={`${
+                    Object.keys(nonHighlightedPlayers).length === 1
+                      ? "w-full h-full"
+                      : "max-w-[600px]"
+                  }`}
+                >
+                  <Player url={url} muted={muted} playing={playing} />
+                </div>
+              );
+            })
+          ) : (
+            <div className="flex items-center justify-center h-full">
+              <p className="text-white">No other players connected.</p>
+            </div>
+          )}
+        </div>
+        {playerHighlighted && (
+          <div className="absolute bottom-[5%] right-[5%] z-50 w-20 md:w-[250px]">
+            <Player
+              url={playerHighlighted.url}
+              muted={playerHighlighted.muted}
+              playing={playerHighlighted.playing}
+            />
+          </div>
+        )}
+        {playerHighlighted && (
+          <div className="absolute bottom-[5%] left-[5%]">
+            <VideoCallBottom
+              muted={playerHighlighted.muted}
+              playing={playerHighlighted.playing}
+              toggleAudio={toggleAudio}
+              toggleVideo={toggleVideo}
+            />
           </div>
         )}
       </div>
-      {playerHighlighted && (
-        <div className="absolute bottom-[5%] right-[5%] z-50 w-20 md:w-[250px]">
-          <Player
-            url={playerHighlighted.url}
-            muted={playerHighlighted.muted}
-            playing={playerHighlighted.playing}
-          />
-        </div>
-      )}
-    </div>
+    </>
   );
 };
 
