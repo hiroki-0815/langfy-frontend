@@ -61,7 +61,7 @@ const AppRoutes = () => {
         <Route
           path="/video-call/:roomId"
           element={
-            <Layout>
+            <Layout showFooter={false}>
               <RoomId />
             </Layout>
           }
