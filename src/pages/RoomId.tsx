@@ -10,7 +10,8 @@ const RoomId = () => {
   const { myId, peer } = usePeer();
   const { stream } = useMediaStream();
   const [currentStream, setCurrentStream] = useState<MediaStream | null>(null);
-  const { players, setPlayers } = usePlayer();
+  const { setPlayers, playerHighlighted, nonHighlightedPlayers } =
+    usePlayer(myId);
 
   useEffect(() => {
     if (stream && !currentStream) {
@@ -36,7 +37,7 @@ const RoomId = () => {
 
       call.on("stream", (incomingStream) => {
         const callerId = call.peer;
-        console.log(`incoming stream from ${callerId}`);
+        console.log(`Incoming stream from ${callerId}`);
         setCurrentStream(incomingStream);
         setPlayers((prev) => ({
           ...prev,
@@ -59,12 +60,13 @@ const RoomId = () => {
 
   useEffect(() => {
     if (!peer || !stream) return;
-    peer.on("call", (call) => {
+
+    const handleCall = (call: any) => {
       const { peer: callerId } = call;
       call.answer(stream);
 
-      call.on("stream", (incomingStream) => {
-        console.log(`incoming stream from ${callerId}`);
+      call.on("stream", (incomingStream: MediaStream) => {
+        console.log(`Incoming stream from ${callerId}`);
         setCurrentStream(incomingStream);
         setPlayers((prev) => ({
           ...prev,
@@ -75,12 +77,18 @@ const RoomId = () => {
           },
         }));
       });
-    });
+    };
+
+    peer.on("call", handleCall);
+
+    return () => {
+      peer.off("call", handleCall);
+    };
   }, [peer, stream, setPlayers]);
 
   useEffect(() => {
     if (!stream || !myId) return;
-    console.log(`setting my stream ${myId}`);
+    console.log(`Setting my stream with ID: ${myId}`);
     setPlayers((prev) => ({
       ...prev,
       [myId]: {
@@ -91,14 +99,60 @@ const RoomId = () => {
     }));
   }, [stream, myId, setPlayers]);
 
+  const getGridClass = (playerCount: number) => {
+    if (playerCount === 1) return "grid-cols-1";
+    if (playerCount >= 2) return "grid-cols-2";
+    return "";
+  };
+
+  const gridClass = `grid ${getGridClass(
+    Object.keys(nonHighlightedPlayers).length
+  )} items-center justify-center`;
+
   return (
-    <div>
-      {Object.keys(players).map((playerId) => {
-        const { url, muted, playing } = players[playerId];
-        return (
-          <Player key={playerId} url={url} muted={muted} playing={playing} />
-        );
-      })}
+    <div className="h-[800px] md:h-screen bg-gray-900 relative flex items-center justify-center">
+      <div
+        className={`${
+          Object.keys(nonHighlightedPlayers).length === 1
+            ? "w-full h-full"
+            : gridClass
+        }`}
+      >
+        {Object.keys(nonHighlightedPlayers).length > 0 ? (
+          Object.keys(nonHighlightedPlayers).map((playerId) => {
+            const { url, muted, playing } = nonHighlightedPlayers[playerId];
+            return (
+              <div
+                className={`${
+                  Object.keys(nonHighlightedPlayers).length === 1
+                    ? "w-full h-full"
+                    : "max-w-[600px]"
+                }`}
+              >
+                <Player
+                  key={playerId}
+                  url={url}
+                  muted={muted}
+                  playing={playing}
+                />
+              </div>
+            );
+          })
+        ) : (
+          <div className="flex items-center justify-center h-full">
+            <p className="text-white">No other players connected.</p>
+          </div>
+        )}
+      </div>
+      {playerHighlighted && (
+        <div className="absolute bottom-[5%] right-[5%] z-50 w-20 md:w-[250px]">
+          <Player
+            url={playerHighlighted.url}
+            muted={playerHighlighted.muted}
+            playing={playerHighlighted.playing}
+          />
+        </div>
+      )}
     </div>
   );
 };
