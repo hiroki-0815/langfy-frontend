@@ -41,7 +41,6 @@ const Player = ({ url, muted = false, playing = false }: Props) => {
       <video
         ref={videoRef}
         muted={muted}
-        controls
         className="w-full h-full object-cover rounded-lg"
       />
     </div>
