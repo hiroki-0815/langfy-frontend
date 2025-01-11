@@ -1,5 +1,4 @@
 import { MicIcon, MicOff, PhoneOff, Video, VideoOff } from "lucide-react";
-import { Button } from "./ui/button";
 
 type Props = {
   muted: boolean;
@@ -15,30 +14,30 @@ const VideoCallBottom = ({
   toggleVideo,
 }: Props) => {
   return (
-    <div className="flex flex-row justify-between w-[220px] text-white">
+    <div className="flex flex-row gap-3 w-[220px] text-white">
       {muted ? (
-        <Button onClick={toggleAudio} className="bg-slate-700 rounded-full p-2">
-          <MicOff size={40} />
-        </Button>
+        <button onClick={toggleAudio} className="bg-slate-700 rounded-full p-2">
+          <MicOff size={30} />
+        </button>
       ) : (
-        <Button onClick={toggleAudio} className="bg-slate-700 rounded-full p-2">
-          <MicIcon size={40} />
-        </Button>
+        <button onClick={toggleAudio} className="bg-slate-700 rounded-full p-2">
+          <MicIcon size={30} />
+        </button>
       )}
       {playing ? (
-        <Button onClick={toggleVideo} className="bg-slate-700 rounded-full p-2">
-          <Video size={40} />
-        </Button>
+        <button onClick={toggleVideo} className="bg-slate-700 rounded-full p-2">
+          <Video size={30} />
+        </button>
       ) : (
-        <Button onClick={toggleVideo} className="bg-slate-700 rounded-full p-2">
-          <VideoOff size={40} />
-        </Button>
+        <button onClick={toggleVideo} className="bg-slate-700 rounded-full p-2">
+          <VideoOff size={30} />
+        </button>
       )}
       <button
         className="text-red-500 bg-slate-700 rounded-full p-2"
         aria-label="Leave Call"
       >
-        <PhoneOff size={40} />
+        <PhoneOff size={30} />
       </button>
     </div>
   );
