@@ -16,7 +16,6 @@ const useMediaStream = () => {
           audio: true,
           video: true,
         });
-        console.log("Setting your stream");
         localStream = st;
         setStream(st);
       } catch (error) {

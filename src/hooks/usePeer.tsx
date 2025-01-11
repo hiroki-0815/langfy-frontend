@@ -26,7 +26,7 @@ const usePeer = () => {
     })();
   }, [roomId, socket]);
 
-  return { peer, myId };
+  return { peer, myId, roomId };
 };
 
 export default usePeer;
