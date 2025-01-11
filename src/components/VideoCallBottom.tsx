@@ -27,11 +27,11 @@ const VideoCallBottom = ({
       )}
       {playing ? (
         <Button onClick={toggleVideo} className="bg-slate-700 rounded-full p-2">
-          <VideoOff size={40} />
+          <Video size={40} />
         </Button>
       ) : (
         <Button onClick={toggleVideo} className="bg-slate-700 rounded-full p-2">
-          <Video size={40} />
+          <VideoOff size={40} />
         </Button>
       )}
       <button
