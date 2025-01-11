@@ -1,4 +1,3 @@
-// RoomId.tsx
 import { useSocket } from "@/context/SocketContext";
 import usePeer from "@/hooks/usePeer";
 import useMediaStream from "@/hooks/useMediaStream";
@@ -15,6 +14,7 @@ const RoomId = () => {
   const { myId, peer } = usePeer();
   const { stream } = useMediaStream();
   const [currentStream, setCurrentStream] = useState<MediaStream | null>(null);
+
   const {
     setPlayers,
     playerHighlighted,
@@ -26,8 +26,10 @@ const RoomId = () => {
   useEffect(() => {
     if (stream && !currentStream) {
       stream.getTracks().forEach((track) => {
-        console.log(`Track ${track.kind} state: ${track.readyState}`);
-        track.onended = () => console.log(`Track ${track.kind} ended`);
+        console.log(
+          `Local track [${track.kind}] readyState: ${track.readyState}`
+        );
+        track.onended = () => console.log(`Local track [${track.kind}] ended`);
       });
       setCurrentStream(stream);
     }
@@ -42,13 +44,13 @@ const RoomId = () => {
     console.log("RoomId Component - Adding user-connected listener");
 
     const handleUserConnected = (newUser: string) => {
-      console.log(`RoomId Component - User connected with ID: ${newUser}`);
+      console.log(`User connected with ID: ${newUser}`);
       const call = peer.call(newUser, stream);
 
-      call.on("stream", (incomingStream) => {
+      call.on("stream", (incomingStream: MediaStream) => {
         const callerId = call.peer;
-        console.log(`Incoming stream from ${callerId}`);
-        setCurrentStream(incomingStream);
+        console.log(`Incoming stream from user ${callerId}`);
+
         setPlayers((prev) => ({
           ...prev,
           [newUser]: {
@@ -58,7 +60,12 @@ const RoomId = () => {
           },
         }));
       });
+
+      call.on("error", (error: any) => {
+        console.error(`Peer call error with user ${newUser}:`, error);
+      });
     };
+
     socket.on("user-connected", handleUserConnected);
 
     return () => {
@@ -76,7 +83,6 @@ const RoomId = () => {
 
       call.on("stream", (incomingStream: MediaStream) => {
         console.log(`Incoming stream from ${callerId}`);
-        setCurrentStream(incomingStream);
         setPlayers((prev) => ({
           ...prev,
           [callerId]: {
@@ -85,6 +91,10 @@ const RoomId = () => {
             playing: true,
           },
         }));
+      });
+
+      call.on("error", (error: any) => {
+        console.error(`Error in incoming call from ${callerId}:`, error);
       });
     };
 
@@ -97,7 +107,7 @@ const RoomId = () => {
 
   useEffect(() => {
     if (!stream || !myId) return;
-    console.log(`Setting my stream with ID: ${myId}`);
+    console.log(`Setting local user stream with ID: ${myId}`);
     setPlayers((prev) => ({
       ...prev,
       [myId]: {
@@ -112,12 +122,12 @@ const RoomId = () => {
     if (playerCount === 1) return "grid-cols-1";
     if (playerCount === 2) return "grid-cols-2";
     if (playerCount >= 3) return "grid-cols-3";
-    return "";
+    return "grid-cols-1";
   };
 
   const gridClass = `grid ${getGridClass(
     Object.keys(nonHighlightedPlayers).length
-  )}  w-full max-w-4xl px-4`;
+  )} gap-4 w-full max-w-4xl px-4`;
 
   return (
     <>
@@ -128,11 +138,12 @@ const RoomId = () => {
               const { url, muted, playing } = nonHighlightedPlayers[playerId];
               return (
                 <div
-                  className={`${
+                  key={playerId}
+                  className={
                     Object.keys(nonHighlightedPlayers).length === 1
                       ? "w-full h-full"
                       : "max-w-[600px]"
-                  }`}
+                  }
                 >
                   <Player url={url} muted={muted} playing={playing} />
                 </div>
@@ -153,6 +164,7 @@ const RoomId = () => {
             />
           </div>
         )}
+
         {playerHighlighted && (
           <div className="absolute bottom-[5%] left-[5%]">
             <VideoCallBottom
