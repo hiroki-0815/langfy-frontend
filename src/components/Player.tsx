@@ -2,11 +2,11 @@ import { useEffect, useRef } from "react";
 
 type Props = {
   url: string | MediaStream;
-  muted?: boolean;
-  playing?: boolean;
+  muted: boolean;
+  playing: boolean;
 };
 
-const Player = ({ url, muted = false, playing = false }: Props) => {
+const Player = ({ url, muted, playing = false }: Props) => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
