@@ -1,4 +1,3 @@
-// usePlayer.ts
 import { useSocket } from "@/context/SocketContext";
 import { useState, useCallback } from "react";
 
@@ -19,49 +18,58 @@ const usePlayer = (
   const [players, setPlayers] = useState<Players>({});
 
   const playerHighlighted = players[myId];
+
   const nonHighlightedPlayers = Object.fromEntries(
     Object.entries(players).filter(([id]) => id !== myId)
   );
 
   const toggleAudio = useCallback(() => {
-    if (!stream) return;
+    if (!stream || !myId) return;
 
-    // Toggle each audio track's enabled state
-    stream.getAudioTracks().forEach((track) => {
-      track.enabled = !track.enabled;
+    setPlayers((prev) => {
+      const currentLocal = prev[myId];
+      if (!currentLocal) return prev;
+
+      const newMuted = !currentLocal.muted;
+
+      stream.getAudioTracks().forEach((track) => {
+        track.enabled = !newMuted;
+      });
+
+      return {
+        ...prev,
+        [myId]: {
+          ...currentLocal,
+          muted: newMuted,
+        },
+      };
     });
 
-    // Update the local state
-    setPlayers((prev) => ({
-      ...prev,
-      [myId]: {
-        ...prev[myId],
-        muted: !prev[myId]?.muted,
-      },
-    }));
-
-    // Emit the toggle event to the server
     socket?.emit("user-toggle-audio", { userId: myId, roomId });
   }, [stream, myId, socket, roomId]);
 
   const toggleVideo = useCallback(() => {
-    if (!stream) return;
+    if (!stream || !myId) return;
 
-    // Toggle each video track's enabled state
-    stream.getVideoTracks().forEach((track) => {
-      track.enabled = !track.enabled;
+    setPlayers((prev) => {
+      const currentLocal = prev[myId];
+      if (!currentLocal) return prev;
+
+      const newPlaying = !currentLocal.playing;
+
+      stream.getVideoTracks().forEach((track) => {
+        track.enabled = newPlaying;
+      });
+
+      return {
+        ...prev,
+        [myId]: {
+          ...currentLocal,
+          playing: newPlaying,
+        },
+      };
     });
 
-    // Update the local state
-    setPlayers((prev) => ({
-      ...prev,
-      [myId]: {
-        ...prev[myId],
-        playing: !prev[myId]?.playing,
-      },
-    }));
-
-    // Emit the toggle event to the server
     socket?.emit("user-toggle-video", { userId: myId, roomId });
   }, [stream, myId, socket, roomId]);
 
