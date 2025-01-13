@@ -6,8 +6,8 @@ import ProtectedRoute from "./auth/ProtectedRoute";
 import Layout from "./layouts/layout";
 import SearchLanguagePartners from "./pages/SearchLanguagePartnersPage";
 import ChatPage from "./pages/ChatPage";
-import VideoCallPage from "./pages/VideoCallPage";
-import RoomId from "./pages/RoomId";
+import VideoCallPage from "./pages/VideoCallPage(delete)";
+import RoomId from "./pages/RoomId(delete)";
 
 const AppRoutes = () => {
   return (

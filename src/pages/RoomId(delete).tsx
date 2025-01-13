@@ -1,12 +1,12 @@
 import { useSocket } from "@/context/SocketContext";
-import usePeer from "@/hooks/usePeer";
-import useMediaStream from "@/hooks/useMediaStream";
-import Player from "@/components/Player";
+import usePeer from "@/hooks/usePeer(delete)";
+import useMediaStream from "@/hooks/useMediaStream(delete)";
+import Player from "@/components/Player(delete)";
 import { useEffect, useState } from "react";
 
 import { useParams } from "react-router-dom";
-import VideoCallBottom from "@/components/VideoCallBottom";
-import usePlayer from "@/hooks/usePlayer";
+import VideoCallBottom from "@/components/VideoCallBottom(delete)";
+import usePlayer from "@/hooks/usePlayer(delete)";
 
 const RoomId = () => {
   const { roomId } = useParams<{ roomId: string }>();
