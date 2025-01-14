@@ -5,9 +5,12 @@ import UserProfilePage from "./pages/UserProfilePage";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import Layout from "./layouts/layout";
 import SearchLanguagePartners from "./pages/SearchLanguagePartnersPage";
-import ChatPage from "./pages/ChatPage";
+// import ChatPage from "./pages/ChatPage";
 import VideoCallPage from "./pages/VideoCallPage(delete)";
-import RoomId from "./pages/RoomId(delete)";
+import JoinRoomPage from "./pages/JoinRoomPage";
+import RoomPage from "./pages/RoomPage";
+import IntroductionPage from "./pages/introductionPage";
+// import RoomId from "./pages/RoomId(delete)";
 
 const AppRoutes = () => {
   return (
@@ -47,9 +50,33 @@ const AppRoutes = () => {
             </Layout>
           }
         />
+        <Route
+          path="/join-room"
+          element={
+            <Layout>
+              <JoinRoomPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/room"
+          element={
+            <Layout>
+              <RoomPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/videocall-introduction"
+          element={
+            <Layout>
+              <IntroductionPage />
+            </Layout>
+          }
+        />
       </Route>
 
-      <Route element={<ProtectedRoute needCurrentUser />}>
+      {/* <Route element={<ProtectedRoute needCurrentUser />}>
         <Route
           path="/chat/:userId?"
           element={
@@ -66,7 +93,7 @@ const AppRoutes = () => {
             </Layout>
           }
         />
-      </Route>
+      </Route> */}
 
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
