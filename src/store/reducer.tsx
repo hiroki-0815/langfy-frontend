@@ -24,7 +24,6 @@ const reducer = (state = initState, action: AppAction) => {
         isRoomHost: action.payload,
       };
 
-      // Add specific logic for this action
       if (action.payload) {
         console.log("User is now the room host");
       } else {
@@ -40,7 +39,6 @@ const reducer = (state = initState, action: AppAction) => {
         connectOnlyWithAudio: action.payload,
       };
 
-      // Add specific logic for this action
       if (action.payload) {
         console.log("Connection set to audio-only");
       } else {
