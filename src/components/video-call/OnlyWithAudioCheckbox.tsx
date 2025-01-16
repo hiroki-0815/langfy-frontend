@@ -1,14 +1,26 @@
-import { Checkbox } from "../ui/checkbox";
+type Props = {
+  setConnectOnlyWithAudio: (onlyWithAudio: boolean) => void;
+  connectOnlyWithAudio: boolean;
+};
 
-// type Props = {};
-
-const OnlyWithAudioCheckbox = () => {
-  const handleConnectionTypeChange = () => {};
+const OnlyWithAudioCheckbox = ({
+  setConnectOnlyWithAudio,
+  connectOnlyWithAudio,
+}: Props) => {
+  const handleConnectionTypeChange = () => {
+    setConnectOnlyWithAudio(!connectOnlyWithAudio);
+  };
   return (
-    <div className="flex items-center gap-3">
-      <Checkbox checked onClick={handleConnectionTypeChange} />
-      <p>Only audio</p>
-    </div>
+    <label>
+      <div className="flex flex-row gap-1">
+        <input
+          type="checkbox"
+          checked={connectOnlyWithAudio}
+          onChange={handleConnectionTypeChange}
+        />
+        <span>Audio Only</span>
+      </div>
+    </label>
   );
 };
 
