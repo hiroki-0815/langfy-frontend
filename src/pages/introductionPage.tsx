@@ -27,7 +27,7 @@ const introductionPage = ({ setIsRoomHostAction }: Props) => {
 const mapStoreStateToProps = (dispatch: Dispatch) => {
   return {
     setIsRoomHostAction: (isRoomHost: boolean) =>
-      dispatch(setIsRoomHost({ isRoomHost })),
+      dispatch(setIsRoomHost(isRoomHost)),
   };
 };
 
