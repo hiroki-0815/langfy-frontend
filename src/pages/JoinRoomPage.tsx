@@ -22,9 +22,11 @@ const JoinRoomPage = ({ setIsRoomHostAction, isRoomHost }: Props) => {
     }
   }, []);
   return (
-    <div>
-      <div className="">
-        <JoinRoomTitle isRoomHost={isRoomHost} />
+    <div className="h-screen flex flex-col justify-start items-center bg-gray-50">
+      <div className="w-full max-w-md bg-white p-6 rounded-lg mt-4">
+        <div className="mb-2 font-bold">
+          <JoinRoomTitle isRoomHost={isRoomHost} />
+        </div>
         <JoinRoomContent />
       </div>
     </div>
@@ -40,7 +42,7 @@ const mapStoreStateToProps = (state: RootState) => {
 const mapActionsToProps = (dispatch: Dispatch) => {
   return {
     setIsRoomHostAction: (isRoomHost: boolean) =>
-      dispatch(setIsRoomHost({ isRoomHost })),
+      dispatch(setIsRoomHost(isRoomHost)),
   };
 };
 
