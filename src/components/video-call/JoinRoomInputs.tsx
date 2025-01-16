@@ -26,7 +26,7 @@ const JoinRoomInputs = ({
     setNameValue(event.target.value);
   };
   return (
-    <div className="">
+    <div className="flex flex-col gap-2">
       {!isRoomHost && (
         <Input
           value={roomIdValue}
