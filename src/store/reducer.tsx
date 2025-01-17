@@ -14,6 +14,7 @@ const initState = {
   identity: "",
   isRoomHost: false,
   connectOnlyWithAudio: false,
+  roomId: null,
 };
 
 const reducer = (state = initState, action: AppAction) => {
@@ -47,6 +48,16 @@ const reducer = (state = initState, action: AppAction) => {
 
       return updatedState;
     }
+    case Actions.SET_ROOM_ID:
+      return {
+        ...state,
+        roomId: action.payload,
+      };
+    case Actions.SET_IDENTITY:
+      return {
+        ...state,
+        identity: action.payload,
+      };
 
     default:
       return state;
