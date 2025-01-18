@@ -1,46 +1,41 @@
-type SetIsRoomHostPayload = { isRoomHost: boolean };
-type SetConnectOnlyWithAudioPayload = { onlyWithAudio: boolean };
-
-type Actions =
-  | { type: typeof Actions.SET_IS_ROOM_HOST; payload: SetIsRoomHostPayload }
-  | {
-      type: typeof Actions.SET_CONNECT_ONLY_WITH_AUDIO;
-      payload: SetConnectOnlyWithAudioPayload;
-    };
-
-const Actions = {
-  SET_IS_ROOM_HOST: "SET_IS_ROOM_HOST",
-  SET_CONNECT_ONLY_WITH_AUDIO: "SET_CONNECT_ONLY_WITH_AUDIO",
-  SET_ROOM_ID: "SET_ROOM_ID",
-  SET_IDENTITY: "SET_IDENTITY",
-};
+import {
+  SET_IS_ROOM_HOST,
+  SET_CONNECT_ONLY_WITH_AUDIO,
+  SET_ROOM_ID,
+  SET_IDENTITY,
+} from "./actionTypes";
 
 export const setIsRoomHost = (isRoomHost: boolean) => {
   return {
-    type: Actions.SET_IS_ROOM_HOST,
+    type: SET_IS_ROOM_HOST,
     payload: isRoomHost,
   };
 };
 
-export const setConnectOnlyWithAudio = (onlyWithAudio: boolean) => {
+export const setConnectOnlyWithAudio = (connectOnlyWithAudio: boolean) => {
   return {
-    type: Actions.SET_CONNECT_ONLY_WITH_AUDIO,
-    payload: onlyWithAudio,
+    type: SET_CONNECT_ONLY_WITH_AUDIO,
+    payload: connectOnlyWithAudio,
   };
 };
 
 export const setRoomId = (roomId: string) => {
   return {
-    type: Actions.SET_ROOM_ID,
+    type: SET_ROOM_ID,
     payload: roomId,
   };
 };
 
 export const setIdentity = (identity: string) => {
   return {
-    type: Actions.SET_IDENTITY,
+    type: SET_IDENTITY,
     payload: identity,
   };
 };
 
-export default Actions;
+export const setShowOverlay = (showOverlay: boolean) => {
+  return {
+    type: SET_IDENTITY,
+    payload: showOverlay,
+  };
+};

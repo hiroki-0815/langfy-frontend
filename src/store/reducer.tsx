@@ -1,67 +1,75 @@
-import { createAction } from "@reduxjs/toolkit";
-import Actions from "./actions";
+import {
+  SET_IS_ROOM_HOST,
+  SET_CONNECT_ONLY_WITH_AUDIO,
+  SET_ROOM_ID,
+  SET_IDENTITY,
+  SET_SHOW_OVERLAY,
+} from "./actionTypes";
 
-export const setIsRoomHost = createAction<boolean>(Actions.SET_IS_ROOM_HOST);
-export const connectOnlyWithAudio = createAction<boolean>(
-  Actions.SET_CONNECT_ONLY_WITH_AUDIO
-);
+interface RoomState {
+  identity: string;
+  isRoomHost: boolean;
+  connectOnlyWithAudio: boolean;
+  roomId: string;
+  showOverlay: boolean;
+}
 
-type AppAction =
-  | ReturnType<typeof setIsRoomHost>
-  | ReturnType<typeof connectOnlyWithAudio>;
-
-const initState = {
+const initialState: RoomState = {
   identity: "",
   isRoomHost: false,
   connectOnlyWithAudio: false,
-  roomId: null,
+  roomId: "",
+  showOverlay: true,
 };
 
-const reducer = (state = initState, action: AppAction) => {
+interface RoomAction<T, P> {
+  type: T;
+  payload: P;
+}
+
+type RoomActions =
+  | RoomAction<typeof SET_IS_ROOM_HOST, boolean>
+  | RoomAction<typeof SET_CONNECT_ONLY_WITH_AUDIO, boolean>
+  | RoomAction<typeof SET_ROOM_ID, string>
+  | RoomAction<typeof SET_IDENTITY, string>
+  | RoomAction<typeof SET_SHOW_OVERLAY, boolean>;
+
+export default function roomReducer(
+  state = initialState,
+  action: RoomActions
+): RoomState {
   switch (action.type) {
-    case Actions.SET_IS_ROOM_HOST: {
-      const updatedState = {
+    case SET_IS_ROOM_HOST:
+      return {
         ...state,
         isRoomHost: action.payload,
       };
 
-      if (action.payload) {
-        console.log("User is now the room host");
-      } else {
-        console.log("User is no longer the room host");
-      }
-
-      return updatedState;
-    }
-
-    case Actions.SET_CONNECT_ONLY_WITH_AUDIO: {
-      const updatedState = {
+    case SET_CONNECT_ONLY_WITH_AUDIO:
+      return {
         ...state,
         connectOnlyWithAudio: action.payload,
       };
 
-      if (action.payload) {
-        console.log("Connection set to audio-only");
-      } else {
-        console.log("Audio-only mode disabled");
-      }
-
-      return updatedState;
-    }
-    case Actions.SET_ROOM_ID:
+    case SET_ROOM_ID:
       return {
         ...state,
         roomId: action.payload,
       };
-    case Actions.SET_IDENTITY:
+
+    case SET_IDENTITY:
       return {
         ...state,
         identity: action.payload,
       };
 
+    case SET_SHOW_OVERLAY:
+      return {
+        ...state,
+        showOverlay: action.payload,
+      };
+
     default:
       return state;
   }
-};
-
-export default reducer;
+}
