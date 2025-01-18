@@ -3,7 +3,10 @@ import {
   SET_CONNECT_ONLY_WITH_AUDIO,
   SET_ROOM_ID,
   SET_IDENTITY,
+  SET_PARTICIPANTS,
+  SET_SHOW_OVERLAY,
 } from "./actionTypes";
+import { Participant } from "./types";
 
 export const setIsRoomHost = (isRoomHost: boolean) => {
   return {
@@ -35,7 +38,14 @@ export const setIdentity = (identity: string) => {
 
 export const setShowOverlay = (showOverlay: boolean) => {
   return {
-    type: SET_IDENTITY,
+    type: SET_SHOW_OVERLAY,
     payload: showOverlay,
+  };
+};
+
+export const setParticipants = (participants: Participant[]) => {
+  return {
+    type: SET_PARTICIPANTS,
+    payload: participants,
   };
 };
