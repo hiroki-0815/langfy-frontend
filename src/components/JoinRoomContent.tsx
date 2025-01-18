@@ -1,38 +1,45 @@
 import { useState } from "react";
-import JoinRoomInputs from "./video-call/JoinRoomInputs";
-import { RootState } from "@/store/store";
 import { connect } from "react-redux";
-import OnlyWithAudioCheckbox from "./video-call/OnlyWithAudioCheckbox";
 import { Dispatch } from "@reduxjs/toolkit";
+import { useNavigate } from "react-router-dom";
+
+import JoinRoomInputs from "@/components/video-call/JoinRoomInputs";
+import OnlyWithAudioCheckbox from "@/components/video-call/OnlyWithAudioCheckbox";
+import ErrorMessage from "@/components/video-call/ErrorMessage";
+import JoinRoomButtons from "@/components/video-call/JoinRoomButtons";
+
+import { useRoom } from "@/api/video-call/RoomApi";
+import { RootState } from "@/store/store";
 import {
   setConnectOnlyWithAudio,
   setIdentity,
-  setIsRoomHost,
   setRoomId,
 } from "@/store/actions";
-import JoinRoomButtons from "./video-call/JoinRoomButtons";
-import ErrorMessage from "./video-call/ErrorMessage";
-import { useRoom } from "@/api/video-call/RoomApi";
-import { useNavigate } from "react-router-dom";
 
-type Props = {
+type StateProps = {
   isRoomHost: boolean;
-  setConnectOnlyWithAudio: (onlyWithAudio: boolean) => void;
   connectOnlyWithAudio: boolean;
+};
+
+type DispatchProps = {
+  setConnectOnlyWithAudio: (onlyWithAudio: boolean) => void;
   setIdentityAction: (identity: string) => void;
   setRoomIdAction: (roomId: string) => void;
 };
 
-const JoinRoomContent = ({
+type JoinRoomContentProps = StateProps & DispatchProps;
+
+function JoinRoomContent({
   isRoomHost,
-  setConnectOnlyWithAudio,
   connectOnlyWithAudio,
+  setConnectOnlyWithAudio,
   setIdentityAction,
   setRoomIdAction,
-}: Props) => {
+}: JoinRoomContentProps) {
   const [roomIdValue, setRoomIdValue] = useState("");
   const [nameValue, setNameValue] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   const { fetchRoom, isLoading } = useRoom();
   const navigate = useNavigate();
 
@@ -57,7 +64,7 @@ const JoinRoomContent = ({
           navigate("/room");
         }
       } else {
-        setErrorMessage("Meeting not found. Check your meeting id");
+        setErrorMessage("Meeting not found. Check your meeting ID");
       }
     } catch (error) {
       setErrorMessage("Error connecting to the meeting");
@@ -69,7 +76,7 @@ const JoinRoomContent = ({
   };
 
   if (isLoading) {
-    <div>...Loading</div>;
+    return <div>Loading ...</div>;
   }
 
   return (
@@ -98,17 +105,16 @@ const JoinRoomContent = ({
       </div>
     </div>
   );
-};
-
-const mapStoreStateToProps = (state: RootState) => {
+}
+const mapStoreStateToProps = (state: RootState): StateProps => {
   return {
-    ...state,
+    isRoomHost: state.room.isRoomHost,
+    connectOnlyWithAudio: state.room.connectOnlyWithAudio,
   };
 };
 
-const mapActionsToProps = (dispatch: Dispatch) => {
+const mapActionsToProps = (dispatch: Dispatch): DispatchProps => {
   return {
-    setIsRoomHost: (isRoomHost: boolean) => dispatch(setIsRoomHost(isRoomHost)),
     setConnectOnlyWithAudio: (onlyWithAudio: boolean) =>
       dispatch(setConnectOnlyWithAudio(onlyWithAudio)),
     setIdentityAction: (identity: string) => dispatch(setIdentity(identity)),
