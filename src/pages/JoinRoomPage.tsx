@@ -1,26 +1,37 @@
-import JoinRoomContent from "@/components/JoinRoomContent";
-import JoinRoomTitle from "@/components/video-call/JoinRoomTitle";
-import { setIsRoomHost } from "@/store/actions";
-import { RootState } from "@/store/store";
-import { Dispatch } from "@reduxjs/toolkit";
 import { useEffect } from "react";
 import { connect } from "react-redux";
 import { useLocation } from "react-router-dom";
+import { Dispatch } from "@reduxjs/toolkit";
 
-type Props = {
-  setIsRoomHostAction: (isRoomHost: boolean) => void;
+import JoinRoomTitle from "@/components/video-call/JoinRoomTitle";
+import JoinRoomContent from "@/components/JoinRoomContent";
+
+import { RootState } from "@/store/store";
+import { setIsRoomHost } from "@/store/actions";
+
+type StateProps = {
   isRoomHost: boolean;
+  connectOnlyWithAudio: boolean;
 };
 
-const JoinRoomPage = ({ setIsRoomHostAction, isRoomHost }: Props) => {
-  const search = useLocation().search;
+type DispatchProps = {
+  setIsRoomHostAction: (isRoomHost: boolean) => void;
+};
+
+type JoinRoomPageProps = StateProps & DispatchProps;
+
+function JoinRoomPage({ setIsRoomHostAction, isRoomHost }: JoinRoomPageProps) {
+  const { search } = useLocation();
 
   useEffect(() => {
-    const isRoomHost = new URLSearchParams(search).get("host");
-    if (isRoomHost) {
+    const isRoomHostParam = new URLSearchParams(search).get("host");
+    if (isRoomHostParam === "true") {
       setIsRoomHostAction(true);
+    } else {
+      setIsRoomHostAction(false);
     }
-  }, []);
+  }, [search, setIsRoomHostAction]);
+
   return (
     <div className="h-screen flex flex-col justify-start items-center bg-gray-50">
       <div className="w-full max-w-md bg-white p-6 rounded-lg mt-4">
@@ -31,15 +42,16 @@ const JoinRoomPage = ({ setIsRoomHostAction, isRoomHost }: Props) => {
       </div>
     </div>
   );
-};
+}
 
-const mapStoreStateToProps = (state: RootState) => {
+const mapStoreStateToProps = (state: RootState): StateProps => {
   return {
-    ...state,
+    isRoomHost: !!state.room.isRoomHost,
+    connectOnlyWithAudio: !!state.room.connectOnlyWithAudio,
   };
 };
 
-const mapActionsToProps = (dispatch: Dispatch) => {
+const mapActionsToProps = (dispatch: Dispatch): DispatchProps => {
   return {
     setIsRoomHostAction: (isRoomHost: boolean) =>
       dispatch(setIsRoomHost(isRoomHost)),
