@@ -5,11 +5,11 @@ import UserProfilePage from "./pages/UserProfilePage";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import Layout from "./layouts/layout";
 import SearchLanguagePartners from "./pages/SearchLanguagePartnersPage";
-// import ChatPage from "./pages/ChatPage";
 import VideoCallPage from "./pages/VideoCallPage(delete)";
 import JoinRoomPage from "./pages/JoinRoomPage";
 import RoomPage from "./pages/RoomPage";
 import IntroductionPage from "./pages/introductionPage";
+import ChatPage from "./pages/ChatPage";
 // import RoomId from "./pages/RoomId(delete)";
 
 const AppRoutes = () => {
@@ -50,11 +50,14 @@ const AppRoutes = () => {
             </Layout>
           }
         />
+      </Route>
+
+      <Route element={<ProtectedRoute needCurrentUser />}>
         <Route
-          path="/join-room"
+          path="/videocall-introduction"
           element={
             <Layout>
-              <JoinRoomPage />
+              <IntroductionPage />
             </Layout>
           }
         />
@@ -67,16 +70,13 @@ const AppRoutes = () => {
           }
         />
         <Route
-          path="/videocall-introduction"
+          path="/join-room"
           element={
             <Layout>
-              <IntroductionPage />
+              <JoinRoomPage />
             </Layout>
           }
         />
-      </Route>
-
-      {/* <Route element={<ProtectedRoute needCurrentUser />}>
         <Route
           path="/chat/:userId?"
           element={
@@ -85,15 +85,15 @@ const AppRoutes = () => {
             </Layout>
           }
         />
-        <Route
+        {/* <Route
           path="/video-call/:roomId"
           element={
             <Layout showFooter={false}>
               <RoomId />
             </Layout>
           }
-        />
-      </Route> */}
+        /> */}
+      </Route>
 
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
