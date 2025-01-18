@@ -4,14 +4,17 @@ import {
   SET_ROOM_ID,
   SET_IDENTITY,
   SET_SHOW_OVERLAY,
+  SET_PARTICIPANTS,
 } from "./actionTypes";
+import { Participant } from "./types";
 
-interface RoomState {
+export interface RoomState {
   identity: string;
   isRoomHost: boolean;
   connectOnlyWithAudio: boolean;
   roomId: string;
   showOverlay: boolean;
+  participants: Participant[];
 }
 
 const initialState: RoomState = {
@@ -20,6 +23,7 @@ const initialState: RoomState = {
   connectOnlyWithAudio: false,
   roomId: "",
   showOverlay: true,
+  participants: [],
 };
 
 interface RoomAction<T, P> {
@@ -32,7 +36,8 @@ type RoomActions =
   | RoomAction<typeof SET_CONNECT_ONLY_WITH_AUDIO, boolean>
   | RoomAction<typeof SET_ROOM_ID, string>
   | RoomAction<typeof SET_IDENTITY, string>
-  | RoomAction<typeof SET_SHOW_OVERLAY, boolean>;
+  | RoomAction<typeof SET_SHOW_OVERLAY, boolean>
+  | RoomAction<typeof SET_PARTICIPANTS, Participant[]>;
 
 export default function roomReducer(
   state = initialState,
@@ -67,6 +72,12 @@ export default function roomReducer(
       return {
         ...state,
         showOverlay: action.payload,
+      };
+
+    case SET_PARTICIPANTS:
+      return {
+        ...state,
+        participants: action.payload,
       };
 
     default:
