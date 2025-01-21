@@ -13,7 +13,7 @@ const introductionPage = ({ setIsRoomHostAction }: Props) => {
     setIsRoomHostAction(false);
   });
   return (
-    <div className="shadow-sm flex flex-col items-center h-screen bg-slate-50">
+    <div className="shadow-sm flex flex-col items-center justify-center h-screen bg-slate-50">
       <div className="rounded-md bg-white shadow py-20 px-40 mt-10">
         <div>
           <h1 className="text-blue-400 mb-5">Langfy</h1>
