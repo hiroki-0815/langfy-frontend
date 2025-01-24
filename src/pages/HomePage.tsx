@@ -1,4 +1,3 @@
-// src/pages/HomePage.tsx
 import ellipseBullet from "../assets/bulletpoint/Ellipse.png";
 import person1 from "../assets/users/person-1.jpeg";
 import person2 from "../assets/users/person-2.jpeg";
