@@ -7,7 +7,12 @@ import Layout from "./layouts/layout";
 import SearchLanguagePartners from "./pages/SearchLanguagePartnersPage";
 import ChatPage from "./pages/ChatPage";
 import VideoCallPage from "./pages/VideoCallPage";
-import RoomId from "./pages/RoomId";
+import MainVideoPage from "./pages/MainVideoPage";
+// import RoomId from "./pages/RoomId";
+
+const Home = () => {
+  return <h1>Home Page</h1>;
+};
 
 const AppRoutes = () => {
   return (
@@ -58,11 +63,27 @@ const AppRoutes = () => {
             </Layout>
           }
         />
-        <Route
+        {/* <Route
           path="/video-call/:roomId"
           element={
             <Layout showFooter={false}>
               <RoomId />
+            </Layout>
+          }
+        /> */}
+        <Route
+          path="/main-video"
+          element={
+            <Layout>
+              <Home />
+            </Layout>
+          }
+        />
+        <Route
+          path="/join-video"
+          element={
+            <Layout>
+              <MainVideoPage />
             </Layout>
           }
         />
