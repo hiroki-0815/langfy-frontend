@@ -7,7 +7,7 @@ import Layout from "./layouts/layout";
 import SearchLanguagePartners from "./pages/SearchLanguagePartnersPage";
 import ChatPage from "./pages/ChatPage";
 import VideoCallPage from "./pages/VideoCallPage";
-import RoomId from "./pages/RoomId";
+// import RoomId from "./pages/RoomId";
 
 const AppRoutes = () => {
   return (
@@ -58,14 +58,14 @@ const AppRoutes = () => {
             </Layout>
           }
         />
-        <Route
+        {/* <Route
           path="/video-call/:roomId"
           element={
             <Layout showFooter={false}>
               <RoomId />
             </Layout>
           }
-        />
+        /> */}
       </Route>
 
       <Route path="*" element={<Navigate to="/" />} />
