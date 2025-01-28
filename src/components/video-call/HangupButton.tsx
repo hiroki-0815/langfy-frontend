@@ -1,4 +1,4 @@
-import { PhoneOff } from "lucide-react"; // Import the Lucide icon
+import { PhoneIcon } from "lucide-react"; // Import the Lucide icon
 import updateCallStatus from "@/redux-elements/actions/updateCallStatus";
 import { useAppDispatch, useAppSelector } from "@/redux-elements/hooks";
 
@@ -20,7 +20,7 @@ const HangupButton = () => {
       className="flex items-center justify-center p-3 rounded-full bg-red-600 hover:bg-red-700 text-white shadow-lg transition-all duration-300"
       aria-label="Hang up"
     >
-      <PhoneOff className="w-6 h-6" /> {/* Lucide-React PhoneOff Icon */}
+      <PhoneIcon className="w-6 h-6" /> {/* Lucide-React PhoneOff Icon */}
     </button>
   );
 };
