@@ -21,23 +21,28 @@ export const useSocket = () => {
 type SocketProviderProps = {
   children: React.ReactNode;
   currentUser: User | null;
+  feature?: "chat" | "video" | null;
 };
 
 export const SocketProvider = ({
   children,
   currentUser,
+  feature = null,
 }: SocketProviderProps) => {
   const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
-    if (currentUser?._id) {
+    if (currentUser?._id && feature) {
       const newSocket = io(import.meta.env.VITE_API_BASE_URL, {
         transports: ["websocket"],
       });
 
       newSocket.on("connect", () => {
         console.log("Socket connected:", newSocket.id);
-        newSocket.emit("setup", currentUser._id);
+        newSocket.emit("setup", {
+          userId: currentUser._id,
+          appType: feature,
+        });
       });
 
       newSocket.on("disconnect", (reason) => {
@@ -55,7 +60,7 @@ export const SocketProvider = ({
         setSocket(null);
       };
     }
-  }, [currentUser?._id]);
+  }, [currentUser?._id, , feature]);
 
   return (
     <SocketContext.Provider value={{ socket }}>
