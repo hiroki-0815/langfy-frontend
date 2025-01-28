@@ -4,7 +4,7 @@ import { useSocket } from "@/context/SocketContext";
 import { Message, User } from "@/model/types";
 import ChatHeader from "./ChatHeader";
 import MessageInput from "./MessageInput";
-import { formatTime } from "@/lib/utils";
+import { formatTime } from "@/utilities/timeFmt";
 
 type Props = {
   user: User;
