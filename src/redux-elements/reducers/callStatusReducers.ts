@@ -2,8 +2,6 @@ import {
   CallStatusState,
   CallStatusAction,
   UPDATE_CALL_STATUS,
-  LOGOUT_ACTION,
-  NEW_VERSION,
 } from "../type";
 
 const initialState: CallStatusState = {
@@ -26,10 +24,9 @@ export default function callStatusReducer(
       return {
         ...state,
         [action.payload.prop]: action.payload.value,
-      };
-    case LOGOUT_ACTION:
-    case NEW_VERSION:
-      return initialState;
+        
+      }
+      
     default:
       return state;
   }

@@ -1,9 +1,10 @@
 import { combineReducers } from "redux";
 import callStatusReducer from "./callStatusReducers";
+import streamsReducer from "./streamReducer";
 
 const rootReducer = combineReducers({
   callStatus: callStatusReducer,
-  // Add other reducers here
+  stream: streamsReducer, 
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
