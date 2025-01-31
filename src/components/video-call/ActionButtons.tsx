@@ -9,8 +9,6 @@ type ActionButtonsProps = {
 };
 
 const ActionButtons = ({ smallFeedEl }: ActionButtonsProps) => {
-  console.log("Small feed reference:", smallFeedEl);
-
   const menuButtons = useRef<HTMLDivElement | null>(null);
   let timer: ReturnType<typeof setTimeout>;
 
