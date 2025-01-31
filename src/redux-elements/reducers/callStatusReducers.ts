@@ -2,6 +2,8 @@ import {
   CallStatusState,
   CallStatusAction,
   UPDATE_CALL_STATUS,
+  SET_OFFER,
+
 } from "../type";
 
 const initialState: CallStatusState = {
@@ -13,6 +15,8 @@ const initialState: CallStatusState = {
   shareScreen: false,
   haveMedia: false,
   haveCreatedOffer: false,
+  haveCreatedAnswer:false,
+  offer: null, 
 };
 
 export default function callStatusReducer(
@@ -26,8 +30,14 @@ export default function callStatusReducer(
         [action.payload.prop]: action.payload.value,
         
       }
-      
+
+      case SET_OFFER:
+        return {
+          ...state,
+          offer: action.payload,
+        };
     default:
       return state;
   }
+  
 }
