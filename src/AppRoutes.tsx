@@ -8,6 +8,7 @@ import SearchLanguagePartners from "./pages/SearchLanguagePartnersPage";
 import ChatPage from "./pages/ChatPage";
 import VideoCallPage from "./pages/VideoCallPage";
 import MainVideoPage from "./pages/MainVideoPage";
+import ProMainVideoPage from "./pages/ProMainVideoPage";
 
 const Home = () => {
   return <h1>Home Page</h1>;
@@ -16,7 +17,6 @@ const Home = () => {
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* Public Routes */}
       <Route
         path="/"
         element={
@@ -27,7 +27,6 @@ const AppRoutes = () => {
       />
       <Route path="/auth-callback" element={<AuthCallbackPage />} />
 
-      {/* Protected Routes */}
       <Route element={<ProtectedRoute />}>
         <Route
           path="/user-profile"
@@ -55,7 +54,6 @@ const AppRoutes = () => {
         />
       </Route>
 
-      {/* Chat and Other Features Requiring Current User */}
       <Route element={<ProtectedRoute needCurrentUser />}>
         <Route
           path="/chat/:userId?"
@@ -74,16 +72,23 @@ const AppRoutes = () => {
           }
         />
         <Route
-          path="/join-video"
+          path="/join-video/:roomId?"
           element={
             <Layout>
               <MainVideoPage />
             </Layout>
           }
         />
+        <Route
+          path="/join-video-pro/:roomId?"
+          element={
+            <Layout>
+              <ProMainVideoPage />
+            </Layout>
+          }
+        />
       </Route>
 
-      {/* Fallback for Undefined Routes */}
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
