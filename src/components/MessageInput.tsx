@@ -1,27 +1,22 @@
 // src/components/MessageInput.tsx
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useSendMessages } from "@/api/UseChatApi";
 import { toast } from "sonner";
 import { X, Image, ArrowUp, Video } from "lucide-react";
 import { Input } from "./ui/input";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
-import { useSocket } from "@/context/SocketContext";
-import { setOffer } from "@/redux-elements/actions/updateCallStatus";
-import { useAppDispatch } from "@/redux-elements/hooks";
 
 type MessageInputProps = {
   receiverId: string;
 };
 
 const MessageInput: React.FC<MessageInputProps> = ({ receiverId }) => {
-  const dispatch = useAppDispatch();
   const [text, setText] = useState("");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const { sendMessage } = useSendMessages();
   const navigate = useNavigate();
-  const { socket } = useSocket();
   const roomId = uuidv4();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,22 +61,6 @@ const MessageInput: React.FC<MessageInputProps> = ({ receiverId }) => {
   const handleVideoButtonClick = async () => {
     navigate(`/join-video/${roomId}?receiverId=${receiverId}`);
   };
-
-  useEffect(() => {
-    if (!socket) return;
-
-    socket.on("newOfferAwaiting", (offerData) => {
-      console.log("📩 Received newOfferAwaiting:", offerData);
-
-      if (offerData?.offer) {
-        console.log("🟢 Storing offer in Redux (callee):", offerData.offer);
-        dispatch(setOffer(offerData.offer));
-      } else {
-        console.warn("⚠️ Received an invalid offer:", offerData);
-      }
-      // dispatch(updateCallStatus("myRole", "answerer"));
-    });
-  }, [socket]);
 
   return (
     <div className="p-4 w-full">

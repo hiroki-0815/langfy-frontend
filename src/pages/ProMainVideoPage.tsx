@@ -3,7 +3,9 @@ import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../redux-elements/hooks";
 import addStream from "@/redux-elements/actions/addStream";
 import createPeerConnection from "@/WebRTCUutilities/createPeerConnection";
-import updateCallStatus from "@/redux-elements/actions/updateCallStatus";
+import updateCallStatus, {
+  setCallDescription,
+} from "@/redux-elements/actions/updateCallStatus";
 import { RootState } from "@/redux-elements/reducers/rootReducers";
 import { useSearchParams, useLocation } from "react-router-dom";
 import { Clipboard, ClipboardCheck } from "lucide-react"; // Lucide icons for copy
@@ -77,11 +79,15 @@ const ProMainVideoPage = () => {
           if (peerConnection) {
             try {
               const answer = await peerConnection.createAnswer({});
+              console.log(answer);
+
               await peerConnection.setLocalDescription(answer);
               console.log(
                 "Answer created and set. New signaling state:",
                 peerConnection.signalingState
               );
+              dispatch(updateCallStatus("haveCreatedAnswer", true));
+              dispatch(setCallDescription(answer));
             } catch (error) {
               console.error("Error creating or setting answer:", error);
             }

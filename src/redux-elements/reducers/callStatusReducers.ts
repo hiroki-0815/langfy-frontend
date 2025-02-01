@@ -2,7 +2,7 @@ import {
   CallStatusState,
   CallStatusAction,
   UPDATE_CALL_STATUS,
-  SET_OFFER,
+  SET_CALL_DESCRIPTION,
 
 } from "../type";
 
@@ -17,6 +17,7 @@ const initialState: CallStatusState = {
   haveCreatedOffer: false,
   haveCreatedAnswer:false,
   offer: null, 
+  answer: null
 };
 
 export default function callStatusReducer(
@@ -31,13 +32,14 @@ export default function callStatusReducer(
         
       }
 
-      case SET_OFFER:
+      case SET_CALL_DESCRIPTION:
         return {
           ...state,
-          offer: action.payload,
+          offer: action.payload.type === "offer" ? action.payload : state.offer,
+          answer: action.payload.type === "answer" ? action.payload : state.answer,
         };
-    default:
-      return state;
-  }
   
+      default:
+        return state;
+  }
 }

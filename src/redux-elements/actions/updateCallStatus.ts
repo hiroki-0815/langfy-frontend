@@ -1,7 +1,7 @@
 import {
   CallStatusAction,
   CallStatusState,
-  SET_OFFER,
+  SET_CALL_DESCRIPTION,
   UPDATE_CALL_STATUS,
 } from "../type";
 
@@ -15,7 +15,7 @@ export default function updateCallStatus(
   };
 }
 
-export const setOffer = (offer: RTCSessionDescriptionInit) => ({
-  type: SET_OFFER,
-  payload: offer,
+export const setCallDescription = (description: RTCSessionDescriptionInit) => ({
+  type: SET_CALL_DESCRIPTION,
+  payload: description,
 });

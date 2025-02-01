@@ -4,9 +4,9 @@ import { Separator } from "./ui/separator";
 import { useEffect, useState } from "react";
 import { useSocket } from "@/context/SocketContext";
 import { useAppDispatch } from "@/redux-elements/hooks";
-import { setOffer } from "@/redux-elements/actions/updateCallStatus";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
+import { setCallDescription } from "@/redux-elements/actions/updateCallStatus";
 
 type Props = {
   users?: User[];
@@ -30,7 +30,8 @@ const Sidebar = ({ users, onUserSelect, selectedUserId }: Props) => {
 
       if (offerData?.offer) {
         console.log("🟢 Storing offer in Redux (callee):", offerData.offer);
-        dispatch(setOffer(offerData.offer));
+        dispatch(setCallDescription(offerData.offer));
+        // dispatch(updateCallStatus("myRole", "answerer"));
         setIsOfferSet(true);
       } else {
         console.warn("⚠️ Received an invalid offer:", offerData);

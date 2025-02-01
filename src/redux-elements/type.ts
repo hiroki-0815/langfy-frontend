@@ -1,11 +1,6 @@
 export const UPDATE_CALL_STATUS = "UPDATE_CALL_STATUS" as const;
 export const ADD_STREAM = "ADD_STREAM" as const;
-export const SET_OFFER = "SET_OFFER" as const;
-
-export type OfferType = {
-  sdp: string;
-  type: "offer" | "answer";
-};
+export const SET_CALL_DESCRIPTION = "SET_CALL_DESCRIPTION" as const;
 
 export type CallStatusState = {
   current: string; 
@@ -18,6 +13,7 @@ export type CallStatusState = {
   haveCreatedOffer: boolean;
   haveCreatedAnswer:boolean,
   offer: RTCSessionDescriptionInit | null; 
+  answer: RTCSessionDescriptionInit | null;
 };
 
 export type StreamState = {
@@ -54,9 +50,9 @@ export interface StreamsType {
   [key: string]: StreamEntry;
 }
 
-export interface SetOfferAction {
-  type: typeof SET_OFFER;
+export interface SetCallDescriptionAction {
+  type: typeof SET_CALL_DESCRIPTION;
   payload: RTCSessionDescriptionInit;
 }
 
-export type CallStatusAction = UpdateCallStatusAction | AddStreamAction | SetOfferAction;;
+export type CallStatusAction = UpdateCallStatusAction | AddStreamAction | SetCallDescriptionAction;
