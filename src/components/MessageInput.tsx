@@ -23,7 +23,6 @@ const MessageInput: React.FC<MessageInputProps> = ({ receiverId }) => {
   const navigate = useNavigate();
   const { socket } = useSocket();
   const roomId = uuidv4();
-  // const [videoCallUrl, setVideoCallUrl] = useState<string | null>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -73,10 +72,6 @@ const MessageInput: React.FC<MessageInputProps> = ({ receiverId }) => {
 
     socket.on("newOfferAwaiting", (offerData) => {
       console.log("📩 Received newOfferAwaiting:", offerData);
-      // if (offerData?.videoCallUrl) {
-      //   setVideoCallUrl(offerData.videoCallUrl);
-      // }
-      // console.log(offerData.videoCallUrl);
 
       if (offerData?.offer) {
         console.log("🟢 Storing offer in Redux (callee):", offerData.offer);
@@ -87,11 +82,6 @@ const MessageInput: React.FC<MessageInputProps> = ({ receiverId }) => {
       // dispatch(updateCallStatus("myRole", "answerer"));
     });
   }, [socket]);
-
-  const joinCall = () => {
-    console.log("join button");
-    navigate(`/join-video-pro/${roomId}?receiverId=${receiverId}`);
-  };
 
   return (
     <div className="p-4 w-full">
@@ -113,24 +103,7 @@ const MessageInput: React.FC<MessageInputProps> = ({ receiverId }) => {
           </div>
         </div>
       )}
-      <div className="mb-2 flex justify-end">
-        {/* {videoCallUrl && (
-          <a
-            href={videoCallUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-3 rounded-lg transition"
-          >
-            Join Call
-          </a>
-        )} */}
-        <button
-          onClick={joinCall}
-          className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-3 rounded-lg transition"
-        >
-          Join Call
-        </button>
-      </div>
+      <div className="mb-2 flex justify-end"></div>
       <form onSubmit={handleSendMessage} className="flex items-center gap-2">
         <div className="flex-1 flex gap-2 items-center">
           <Input
