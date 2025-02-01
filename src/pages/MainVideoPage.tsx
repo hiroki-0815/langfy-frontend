@@ -23,11 +23,8 @@ const MainVideoPage = () => {
   const callStatus = useSelector((state: RootState) => state.callStatus);
 
   const { currentUser } = useGetMyUser();
-  const isCaller = currentUser?._id !== receiverId;
 
   const [copied, setCopied] = useState(false);
-  const [callerIsReady, setCallerIsReady] = useState(false);
-  const [calleeIsReady, setCalleeIsReady] = useState(false);
   const location = useLocation();
   const videoCallUrl = `${window.location.origin}${location.pathname}${location.search}`;
 
@@ -51,6 +48,7 @@ const MainVideoPage = () => {
   useEffect(() => {
     const createOffer = async () => {
       const offerId = uuidv4();
+      const callerId = currentUser?._id;
       for (const key in streams) {
         if (key !== "localStream") {
           try {
@@ -58,7 +56,7 @@ const MainVideoPage = () => {
             const offer = await peerConnection?.createOffer();
             peerConnection?.setLocalDescription(offer);
             console.log(peerConnection?.signalingState);
-            const OfferInfo = { offerId, receiverId, videoCallUrl };
+            const OfferInfo = { offerId, receiverId, videoCallUrl, callerId };
             socket?.emit("newOffer", offer, OfferInfo);
           } catch (error) {
             console.log(`Error creating offer for peerConnection ${error}:`);
@@ -86,29 +84,6 @@ const MainVideoPage = () => {
     <div className="flex flex-col items-start justify-center p-4">
       {/* Video Call Controls */}
       <div className="flex items-center bg-gray-100 p-3 rounded-lg shadow-md mb-4">
-        {/* Ready? Button */}
-        {isCaller && (
-          <button
-            onClick={() => setCallerIsReady(true)}
-            className={`px-4 py-2 rounded-md text-white font-semibold ${
-              callerIsReady ? "bg-green-500" : "bg-blue-500"
-            } hover:opacity-80 transition`}
-          >
-            {callerIsReady ? "Ready! ✅" : "Ready?"}
-          </button>
-        )}
-
-        {!isCaller && (
-          <button
-            onClick={() => setCalleeIsReady(true)}
-            className={`px-4 py-2 rounded-md text-white font-semibold ${
-              calleeIsReady ? "bg-green-500" : "bg-purple-500"
-            } hover:opacity-80 transition`}
-          >
-            {calleeIsReady ? "Ready! ✅" : "Ready?"}
-          </button>
-        )}
-
         {/* Video Call URL */}
         <span className="mx-3 text-sm font-medium truncate max-w-[200px] md:max-w-full">
           {videoCallUrl}
