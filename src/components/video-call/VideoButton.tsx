@@ -30,11 +30,14 @@ const VideoButton = ({ smallFeedEl }: VideoButtonProps) => {
         video: { deviceId: { exact: deviceId } },
       });
 
+      const [newVideoTrack] = newVideoStream.getVideoTracks();
+
       const existingAudioTracks =
         streams.localStream?.stream?.getAudioTracks() || [];
+
       const combinedStream = new MediaStream([
         ...existingAudioTracks,
-        ...newVideoStream.getVideoTracks(),
+        newVideoTrack,
       ]);
 
       dispatch(updateCallStatus("videoDevice", deviceId));
@@ -47,6 +50,21 @@ const VideoButton = ({ smallFeedEl }: VideoButtonProps) => {
 
       dispatch(addStream("localStream", combinedStream));
 
+      for (const key in streams) {
+        if (key !== "localStream") {
+          const peerConnection = streams[key].peerConnection;
+
+          const senders = peerConnection?.getSenders();
+
+          const videoSender = senders?.find((sender) => {
+            return sender.track && sender.track.kind === newVideoTrack.kind;
+          });
+
+          if (videoSender) {
+            videoSender.replaceTrack(newVideoTrack);
+          }
+        }
+      }
       startLocalVideoStream(
         {
           ...streams,
