@@ -6,9 +6,10 @@ import AudioButton from "./AudioButton";
 
 type ActionButtonsProps = {
   smallFeedEl: MutableRefObject<HTMLVideoElement | null>;
+  largeFeedEl: MutableRefObject<HTMLVideoElement | null>;
 };
 
-const ActionButtons = ({ smallFeedEl }: ActionButtonsProps) => {
+const ActionButtons = ({ smallFeedEl, largeFeedEl }: ActionButtonsProps) => {
   const menuButtons = useRef<HTMLDivElement | null>(null);
   let timer: ReturnType<typeof setTimeout>;
 
@@ -63,7 +64,7 @@ const ActionButtons = ({ smallFeedEl }: ActionButtonsProps) => {
 
       {/* Right Section */}
       <div className="text-end">
-        <HangupButton />
+        <HangupButton smallFeedEl={smallFeedEl} largeFeedEl={largeFeedEl} />
       </div>
     </div>
   );
