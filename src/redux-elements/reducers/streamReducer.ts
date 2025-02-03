@@ -7,7 +7,6 @@ const initialState: StreamsType = {
     stream: new MediaStream(),
     peerConnection: undefined,
   },
-  // Possibly more streams or empty object after localStream
 };
 
 export default function streamsReducer(
