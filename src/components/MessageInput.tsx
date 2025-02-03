@@ -1,4 +1,3 @@
-// src/components/MessageInput.tsx
 import React, { useRef, useState } from "react";
 import { useSendMessages } from "@/api/UseChatApi";
 import { toast } from "sonner";
