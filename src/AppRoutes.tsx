@@ -7,6 +7,7 @@ import Layout from "./layouts/layout";
 import SearchLanguagePartners from "./pages/SearchLanguagePartnersPage";
 import ChatPage from "./pages/ChatPage";
 import VideoCallPage from "./pages/VideoCallPage";
+import ProMainVideoPage from "./pages/ProMainVideoPage";
 
 const AppRoutes = () => {
   return (
@@ -63,7 +64,8 @@ const AppRoutes = () => {
               <ProMainVideoPage />
             </Layout>
           }
-        /> */}
+        />{" "}
+        */
       </Route>
 
       <Route path="*" element={<Navigate to="/" />} />
