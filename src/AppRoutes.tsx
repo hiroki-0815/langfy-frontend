@@ -8,6 +8,7 @@ import SearchLanguagePartners from "./pages/SearchLanguagePartnersPage";
 import ChatPage from "./pages/ChatPage";
 import VideoCallPage from "./pages/VideoCallPage";
 import ProMainVideoPage from "./pages/ProMainVideoPage";
+import MainVideoPage from "./pages/MainVideoPage";
 
 const AppRoutes = () => {
   return (
@@ -57,6 +58,14 @@ const AppRoutes = () => {
             </Layout>
           }
         />
+        <Route
+          path="/join-video/:roomId?"
+          element={
+            <Layout>
+              <MainVideoPage />
+            </Layout>
+          }
+        />{" "}
         <Route
           path="/join-video-pro/:roomId?"
           element={
