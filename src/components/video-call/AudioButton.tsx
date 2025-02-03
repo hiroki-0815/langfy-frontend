@@ -44,6 +44,8 @@ const AudioButton = ({ smallFeedEl }: AudioButtonProps) => {
           audio: { deviceId: { exact: deviceId } },
         });
 
+        const [newAudioTrack] = newAudioStream.getAudioTracks();
+
         const existingVideoTracks =
           streams.localStream?.stream?.getVideoTracks() || [];
         const combinedStream = new MediaStream([
@@ -55,6 +57,19 @@ const AudioButton = ({ smallFeedEl }: AudioButtonProps) => {
         dispatch(updateCallStatus("audio", "enabled"));
         dispatch(addStream("localStream", combinedStream));
 
+        for (const key in streams) {
+          if (key !== "localStream") {
+            const peerConnection = streams[key].peerConnection;
+            const senders = peerConnection?.getSenders();
+            const audioSender = senders?.find(
+              (sender) =>
+                sender.track && sender.track.kind === newAudioTrack.kind
+            );
+            if (audioSender) {
+              audioSender.replaceTrack(newAudioTrack);
+            }
+          }
+        }
         startAudioStream({
           ...streams,
           localStream: {
