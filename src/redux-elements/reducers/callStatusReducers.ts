@@ -17,7 +17,9 @@ const initialState: CallStatusState = {
   haveCreatedOffer: false,
   haveCreatedAnswer:false,
   offer: null, 
-  answer: null
+  answer: null,
+  callerId: null,
+  offerId: null
 };
 
 export default function callStatusReducer(
