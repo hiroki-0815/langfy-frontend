@@ -15,7 +15,7 @@ const AuthCallbackPage = () => {
       createUser({ auth0Id: user.sub, email: user.email });
       hasCreatedUser.current = true;
     }
-    navigate("/");
+    navigate("/search-language-partners");
   }, [createUser, navigate, user]);
 
   return <>Loading...</>;

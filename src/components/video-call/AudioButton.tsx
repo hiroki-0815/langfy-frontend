@@ -31,8 +31,9 @@ const AudioButton = ({ smallFeedEl }: AudioButtonProps) => {
   }
 
   const changeAudioDevice = async (e: any) => {
-    const deviceId = e.target.value.slice(5);
-    const audioType = e.target.value.slice(0, 5);
+    const rawValue = e.target.value;
+    const deviceId = rawValue.slice(5);
+    const audioType = rawValue.slice(0, 5);
 
     if (audioType === "ouput") {
       if (smallFeedEl.current?.setSinkId) {
@@ -40,8 +41,12 @@ const AudioButton = ({ smallFeedEl }: AudioButtonProps) => {
       }
     } else if (audioType === "input") {
       try {
+        // If deviceId is "default", just request audio without an exact constraint.
+        const audioConstraints =
+          deviceId === "default" ? true : { deviceId: { exact: deviceId } };
+
         const newAudioStream = await navigator.mediaDevices.getUserMedia({
-          audio: { deviceId: { exact: deviceId } },
+          audio: audioConstraints,
         });
 
         const [newAudioTrack] = newAudioStream.getAudioTracks();
@@ -57,6 +62,7 @@ const AudioButton = ({ smallFeedEl }: AudioButtonProps) => {
         dispatch(updateCallStatus("audio", "enabled"));
         dispatch(addStream("localStream", combinedStream));
 
+        // Update remote peers with the new audio track
         for (const key in streams) {
           if (key !== "localStream") {
             const peerConnection = streams[key].peerConnection;
