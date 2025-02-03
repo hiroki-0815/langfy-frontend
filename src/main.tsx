@@ -1,4 +1,3 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./global.css";
 import { BrowserRouter as Router } from "react-router-dom";
@@ -6,6 +5,8 @@ import AppRoutes from "./AppRoutes";
 import Auth0ProviderWithnavigate from "./auth/Auth0ProviderWithnavigate";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Toaster } from "sonner";
+import { Provider } from "react-redux";
+import store from "./redux-elements/store";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -16,7 +17,7 @@ const queryClient = new QueryClient({
 });
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
+  <Provider store={store}>
     <Router>
       <QueryClientProvider client={queryClient}>
         <Auth0ProviderWithnavigate>
@@ -25,5 +26,5 @@ createRoot(document.getElementById("root")!).render(
         </Auth0ProviderWithnavigate>
       </QueryClientProvider>
     </Router>
-  </StrictMode>
+  </Provider>
 );

@@ -4,7 +4,7 @@ import { useSocket } from "@/context/SocketContext";
 import { Message, User } from "@/model/types";
 import ChatHeader from "./ChatHeader";
 import MessageInput from "./MessageInput";
-import { formatTime } from "@/lib/utils";
+import { formatTime } from "@/utilities/timeFmt";
 
 type Props = {
   user: User;
@@ -54,7 +54,7 @@ const ChatContainer = ({ user, currentUserId }: Props) => {
   }
 
   return (
-    <div className="flex flex-col h-full w-full bg-slate-100">
+    <div className="flex flex-col h-full w-full bg-white">
       <div className="flex-none">
         <ChatHeader userName={user.name} />
       </div>
@@ -95,7 +95,7 @@ const ChatContainer = ({ user, currentUserId }: Props) => {
         <div ref={messagesEndRef}></div>
       </div>
 
-      <div className="flex-none bg-white p-4">
+      <div className="flex-none bg-slate-50 shadow-md p-4">
         <MessageInput receiverId={user._id} />
       </div>
     </div>

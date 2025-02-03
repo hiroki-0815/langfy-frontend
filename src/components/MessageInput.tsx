@@ -1,9 +1,10 @@
-// src/components/MessageInput.tsx
 import React, { useRef, useState } from "react";
 import { useSendMessages } from "@/api/UseChatApi";
 import { toast } from "sonner";
-import { X, Image, ArrowUp } from "lucide-react";
-import { Input } from "./ui/input"; // or your custom Input component
+import { X, Image, ArrowUp, Video } from "lucide-react";
+import { Input } from "./ui/input";
+import { v4 as uuidv4 } from "uuid";
+import { useNavigate } from "react-router-dom";
 
 type MessageInputProps = {
   receiverId: string;
@@ -14,6 +15,8 @@ const MessageInput: React.FC<MessageInputProps> = ({ receiverId }) => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const { sendMessage } = useSendMessages();
+  const navigate = useNavigate();
+  const roomId = uuidv4();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -54,6 +57,10 @@ const MessageInput: React.FC<MessageInputProps> = ({ receiverId }) => {
     }
   };
 
+  const handleVideoButtonClick = async () => {
+    navigate(`/join-video/${roomId}?receiverId=${receiverId}`);
+  };
+
   return (
     <div className="p-4 w-full">
       {imagePreview && (
@@ -74,6 +81,7 @@ const MessageInput: React.FC<MessageInputProps> = ({ receiverId }) => {
           </div>
         </div>
       )}
+      <div className="mb-2 flex justify-end"></div>
       <form onSubmit={handleSendMessage} className="flex items-center gap-2">
         <div className="flex-1 flex gap-2 items-center">
           <Input
@@ -96,6 +104,13 @@ const MessageInput: React.FC<MessageInputProps> = ({ receiverId }) => {
             onClick={() => fileInputRef.current?.click()}
           >
             <Image size={20} />
+          </button>
+          <button
+            type="button"
+            className="hidden sm:flex btn btn-circle text-zinc-600 hover:text-blue-400"
+            onClick={handleVideoButtonClick}
+          >
+            <Video size={20} />
           </button>
         </div>
         <button

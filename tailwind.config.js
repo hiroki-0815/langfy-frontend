@@ -18,7 +18,7 @@ export default {
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+          foreground: "hsl(var(--popover-foreground))", 
         },
         primary: {
           DEFAULT: "hsl(var(--primary))",
@@ -50,6 +50,19 @@ export default {
           "4": "hsl(var(--chart-4))",
           "5": "hsl(var(--chart-5))",
         },
+      },
+
+      // 🚀 ADD THE RINGING ANIMATION HERE
+      keyframes: {
+        ring: {
+          "0%, 100%": { transform: "translateX(0)" },
+          "25%": { transform: "translateX(-2px)" },
+          "50%": { transform: "translateX(2px)" },
+          "75%": { transform: "translateX(-2px)" },
+        },
+      },
+      animation: {
+        ringing: "ring 0.5s infinite",
       },
     },
   },
