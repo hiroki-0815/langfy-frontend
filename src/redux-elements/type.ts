@@ -14,6 +14,8 @@ export type CallStatusState = {
   haveCreatedAnswer:boolean,
   offer: RTCSessionDescriptionInit | null; 
   answer: RTCSessionDescriptionInit | null;
+  callerId: string | null;
+  offerId: string | null;
 };
 
 export type StreamState = {
@@ -26,7 +28,7 @@ export interface UpdateCallStatusAction {
   type: typeof UPDATE_CALL_STATUS;
   payload: {
     prop: keyof CallStatusState;
-    value: string | boolean 
+    value: string | boolean | null
   };
 }
 
@@ -42,7 +44,7 @@ export interface AddStreamAction {
 export interface StreamEntry {
   who: string;
   stream: MediaStream;
-  peerConnection?: RTCPeerConnection; 
+  peerConnection?: RTCPeerConnection | null; 
 }
 
 export interface StreamsType {
