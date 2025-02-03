@@ -7,12 +7,6 @@ import Layout from "./layouts/layout";
 import SearchLanguagePartners from "./pages/SearchLanguagePartnersPage";
 import ChatPage from "./pages/ChatPage";
 import VideoCallPage from "./pages/VideoCallPage";
-import MainVideoPage from "./pages/MainVideoPage";
-import ProMainVideoPage from "./pages/ProMainVideoPage";
-
-const Home = () => {
-  return <h1>Home Page</h1>;
-};
 
 const AppRoutes = () => {
   return (
@@ -53,7 +47,6 @@ const AppRoutes = () => {
           }
         />
       </Route>
-
       <Route element={<ProtectedRoute needCurrentUser />}>
         <Route
           path="/chat/:userId?"
@@ -64,29 +57,13 @@ const AppRoutes = () => {
           }
         />
         <Route
-          path="/main-video"
-          element={
-            <Layout>
-              <Home />
-            </Layout>
-          }
-        />
-        <Route
-          path="/join-video/:roomId?"
-          element={
-            <Layout>
-              <MainVideoPage />
-            </Layout>
-          }
-        />
-        <Route
           path="/join-video-pro/:roomId?"
           element={
             <Layout>
               <ProMainVideoPage />
             </Layout>
           }
-        />
+        /> */}
       </Route>
 
       <Route path="*" element={<Navigate to="/" />} />
