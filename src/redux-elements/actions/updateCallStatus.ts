@@ -7,7 +7,7 @@ import {
 
 export default function updateCallStatus(
   prop: keyof CallStatusState,
-  value: string | boolean 
+  value: string | boolean | null
 ): CallStatusAction {
   return {
     type: UPDATE_CALL_STATUS,
