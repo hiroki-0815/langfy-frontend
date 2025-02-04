@@ -158,7 +158,6 @@ const MainVideoPage = () => {
 
   useEffect(() => {
     const cleanupMedia = () => {
-      // Stop tracks from the original media stream stored in the ref.
       if (localStreamRef.current) {
         localStreamRef.current.getTracks().forEach((track) => {
           console.log("Stopping track from localStreamRef:", track.kind);
@@ -166,7 +165,6 @@ const MainVideoPage = () => {
         });
         localStreamRef.current = null;
       }
-      // Also, stop tracks from the Redux local stream (if updated).
       if (currentStreamsRef.current.localStream?.stream) {
         currentStreamsRef.current.localStream.stream
           .getTracks()
@@ -175,7 +173,6 @@ const MainVideoPage = () => {
             track.stop();
           });
       }
-      // Close all peer connections.
       Object.values(currentStreamsRef.current).forEach((streamData) => {
         if (streamData.peerConnection) {
           streamData.peerConnection.close();
@@ -183,20 +180,16 @@ const MainVideoPage = () => {
       });
     };
 
-    // Add unload listener.
     window.addEventListener("beforeunload", cleanupMedia);
 
     return () => {
       cleanupMedia();
       window.removeEventListener("beforeunload", cleanupMedia);
     };
-  }, []); // No dependency here, so it won't re-run on every stream update.
+  }, []);
 
-  // Also cleanup on route change.
   useEffect(() => {
     return () => {
-      // Run the cleanup function when the location changes.
-      // Use the same cleanup code as above.
       if (localStreamRef.current) {
         localStreamRef.current.getTracks().forEach((track) => {
           console.log(
@@ -241,15 +234,12 @@ const MainVideoPage = () => {
 
   return (
     <div className="relative">
-      {/* Large video feed */}
       <video
         ref={largeFeedEl}
         className="h-[100vh] w-full object-cover scale-x-[-1] bg-black"
         autoPlay
         playsInline
       ></video>
-
-      {/* Small video feed */}
       <video
         ref={smallFeedEl}
         className="
