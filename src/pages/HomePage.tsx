@@ -4,7 +4,7 @@ import person2 from "../assets/users/person-2.jpeg";
 
 const HomePage = () => {
   return (
-    <main className="flex justify-center flex-col min-h-full px-3 py-3 pt-10 pb-20 md:pt-20 md:px-20">
+    <main className="flex justify-center flex-col min-h-full px-2 py-3 pt-10 pb-20 md:pt-20 md:px-20">
       <div>
         <h1 className="mb-15 text-2xl text-left py-10 font-extrabold md:text-4xl lg:text-5xl">
           Looking for a<span className="text-sky-400"> language partner</span>
@@ -15,12 +15,12 @@ const HomePage = () => {
 
         <div>
           <ul className="mb-5">
-            <li className="flex flex-row items-center">
+            <li className="flex flex-row items-center mb-2">
               <div className="mr-1">
                 <img
                   src={ellipseBullet}
-                  width={7}
-                  height={7}
+                  width={5}
+                  height={5}
                   alt="blue bullet point"
                 />
               </div>
@@ -28,29 +28,28 @@ const HomePage = () => {
                 You can easily find your language partner
               </span>
             </li>
-            <li className="flex flex-row items-center">
+            <li className="flex flex-row items-center mb-2">
               <div className="mr-1">
                 <img
                   src={ellipseBullet}
-                  width={7}
-                  height={7}
+                  width={5}
+                  height={5}
                   alt="blue bullet point"
                 />
               </div>
               <span>Have a chat with them</span>
             </li>
-            <li className="flex flex-row items-center">
-              <div className="mr-1">
+            <li className="flex flex-row items-center mb-2">
+              <div className="mr-1 w-[4px] h-[4px] md:w-[5px] md:h-[5px]">
                 <img
                   src={ellipseBullet}
-                  width={7}
-                  height={7}
+                  className="w-full h-full"
                   alt="blue bullet point"
                 />
               </div>
               <span className="text-base">
-                You can have casual conversation with them because they are not
-                tutors
+                You can have casual conversation with them <br />
+                because they are not tutors
               </span>
             </li>
           </ul>
