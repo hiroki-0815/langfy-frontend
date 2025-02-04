@@ -1,5 +1,5 @@
 import ActionButtons from "@/components/video-call/ActionButtons";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../redux-elements/hooks";
 import addStream from "@/redux-elements/actions/addStream";
 import updateCallStatus, {
@@ -9,7 +9,6 @@ import { RootState } from "@/redux-elements/reducers/rootReducers";
 import { useSocket } from "@/context/SocketContext";
 import { v4 as uuidv4 } from "uuid";
 import { useSearchParams, useLocation } from "react-router-dom";
-import { Clipboard, ClipboardCheck } from "lucide-react";
 import { useGetMyUser } from "@/api/MyUserApi";
 import { useSelector } from "react-redux";
 import { createPeerConnection } from "@/WebRTCUutilities/createPeerConnection";
@@ -25,10 +24,7 @@ const MainVideoPage = () => {
   const [searchParams] = useSearchParams();
   const receiverId = searchParams.get("receiverId");
   const callStatus = useSelector((state: RootState) => state.callStatus);
-
   const { currentUser } = useGetMyUser();
-
-  const [copied, setCopied] = useState(false);
   const location = useLocation();
   const videoCallUrl = `${window.location.origin}${location.pathname}${location.search}`;
   const offerIdRef = useRef<string | null>(null);
@@ -165,49 +161,24 @@ const MainVideoPage = () => {
     });
   };
 
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(videoCallUrl);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
   return (
-    <div className="flex flex-col items-start justify-center p-4">
-      <div className="flex items-center bg-gray-100 p-3 rounded-lg shadow-md mb-4">
-        <span className="mx-3 text-sm font-medium truncate max-w-[200px] md:max-w-full">
-          {videoCallUrl}
-        </span>
+    <div className="relative">
+      <video
+        ref={largeFeedEl}
+        className="h-[100vh] w-full object-cover scale-x-[-1] bg-black"
+        autoPlay
+        playsInline
+      ></video>
 
-        <button
-          onClick={handleCopyLink}
-          className="ml-2 p-2 rounded-md hover:bg-gray-200"
-        >
-          {copied ? (
-            <ClipboardCheck size={20} className="text-green-500" />
-          ) : (
-            <Clipboard size={20} />
-          )}
-        </button>
-      </div>
+      <video
+        ref={smallFeedEl}
+        className="absolute border border-blue-400 right-[50px] top-[100px] rounded-[10px] w-[320px] scale-x-[-1]"
+        autoPlay
+        controls
+        playsInline
+      ></video>
 
-      <div className="relative">
-        <video
-          ref={largeFeedEl}
-          className="bg-black h-[100vh] w-full scale-x-[-1]"
-          autoPlay
-          controls
-          playsInline
-        ></video>
-        <video
-          ref={smallFeedEl}
-          className="absolute border border-blue-400 right-[50px] top-[100px] rounded-[10px] w-[320px] scale-x-[-1]"
-          autoPlay
-          controls
-          playsInline
-        ></video>
-
-        <ActionButtons smallFeedEl={smallFeedEl} largeFeedEl={largeFeedEl} />
-      </div>
+      <ActionButtons smallFeedEl={smallFeedEl} largeFeedEl={largeFeedEl} />
     </div>
   );
 };
