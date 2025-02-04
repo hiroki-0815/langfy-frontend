@@ -175,20 +175,27 @@ const ProMainVideoPage = () => {
 
   return (
     <div className="relative">
+      {/* Large video feed */}
       <video
         ref={largeFeedEl}
         className="h-[100vh] w-full object-cover scale-x-[-1] bg-black"
         autoPlay
-        controls
         playsInline
       ></video>
+
+      {/* Small video feed */}
       <video
         ref={smallFeedEl}
-        className="absolute border border-blue-400 right-[50px] top-[100px] rounded-[10px] w-[320px] scale-x-[-1]"
+        className="
+          absolute border border-blue-400 
+          right-4 top-4 w-[160px] rounded-md scale-x-[-1]
+          md:right-[50px] md:top-[100px] md:w-[320px]
+        "
         autoPlay
         controls
         playsInline
       ></video>
+
       <ActionButtons smallFeedEl={smallFeedEl} largeFeedEl={largeFeedEl} />
     </div>
   );

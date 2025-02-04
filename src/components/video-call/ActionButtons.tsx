@@ -15,28 +15,38 @@ const ActionButtons = ({ smallFeedEl, largeFeedEl }: ActionButtonsProps) => {
   return (
     <div
       ref={menuButtons}
-      className="flex flex-row items-center justify-between bg-gray-800 shadow-md transition-all duration-300 px-10"
+      className="
+        fixed bottom-0 left-0 right-0 
+        flex flex-col md:flex-row 
+        items-center justify-between 
+        bg-gray-800 shadow-md 
+        transition-all duration-300 
+        px-4 md:px-10 py-2 md:py-4
+      "
     >
-      <div className="flex space-x-1">
+      {/* Audio & Video Controls */}
+      <div className="flex space-x-2 md:space-x-4">
         <AudioButton smallFeedEl={smallFeedEl} />
         <VideoButton smallFeedEl={smallFeedEl} />
       </div>
 
-      <div className="flex items-center space-x-6 ">
-        <button className="flex flex-col items-center text-white hover:text-blue-400">
-          <Users className="w-6 h-6" /> {/* Participants Icon */}
-          <span className="text-sm">Participants</span>
+      {/* Participants, Chat, and Screen Share */}
+      <div className="flex items-center space-x-3 md:space-x-6 my-2 md:my-0">
+        <button className="flex flex-col items-center text-white hover:text-blue-400 text-xs md:text-sm">
+          <Users className="w-5 h-5 md:w-6 md:h-6" />
+          <span>Participants</span>
         </button>
-        <button className="flex flex-col items-center text-white hover:text-blue-400">
-          <MessageSquare className="w-6 h-6" /> {/* Chat Icon */}
-          <span className="text-sm">Chat</span>
+        <button className="flex flex-col items-center text-white hover:text-blue-400 text-xs md:text-sm">
+          <MessageSquare className="w-5 h-5 md:w-6 md:h-6" />
+          <span>Chat</span>
         </button>
-        <button className="flex flex-col items-center text-white hover:text-blue-400">
-          <Monitor className="w-6 h-6" /> {/* Share Screen Icon */}
-          <span className="text-sm">Share Screen</span>
+        <button className="flex flex-col items-center text-white hover:text-blue-400 text-xs md:text-sm">
+          <Monitor className="w-5 h-5 md:w-6 md:h-6" />
+          <span>Share Screen</span>
         </button>
       </div>
 
+      {/* Hangup Button */}
       <div className="text-end">
         <HangupButton smallFeedEl={smallFeedEl} largeFeedEl={largeFeedEl} />
       </div>
