@@ -62,7 +62,7 @@ const MessageInput: React.FC<MessageInputProps> = ({ receiverId }) => {
   };
 
   return (
-    <div className="p-4 w-full">
+    <div className="">
       {imagePreview && (
         <div className="mb-3 flex items-center gap-2">
           <div className="relative">
@@ -100,14 +100,14 @@ const MessageInput: React.FC<MessageInputProps> = ({ receiverId }) => {
           />
           <button
             type="button"
-            className="hidden sm:flex btn btn-circle text-zinc-600 hover:text-blue-400"
+            className=" sm:flex btn btn-circle text-zinc-600 hover:text-blue-400"
             onClick={() => fileInputRef.current?.click()}
           >
             <Image size={20} />
           </button>
           <button
             type="button"
-            className="hidden sm:flex btn btn-circle text-zinc-600 hover:text-blue-400"
+            className=" sm:flex btn btn-circle text-zinc-600 hover:text-blue-400"
             onClick={handleVideoButtonClick}
           >
             <Video size={20} />
