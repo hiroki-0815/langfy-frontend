@@ -3,11 +3,11 @@ import HomePage from "./pages/HomePage";
 import AuthCallbackPage from "./auth/AuthCallbackPage";
 import UserProfilePage from "./pages/UserProfilePage";
 import ProtectedRoute from "./auth/ProtectedRoute";
-import Layout from "./layouts/layout";
 import SearchLanguagePartners from "./pages/SearchLanguagePartnersPage";
 import ChatPage from "./pages/ChatPage";
 import ProMainVideoPage from "./pages/ProMainVideoPage";
 import MainVideoPage from "./pages/MainVideoPage";
+import Layout from "./layouts/layout";
 
 const AppRoutes = () => {
   return (
@@ -26,7 +26,7 @@ const AppRoutes = () => {
         <Route
           path="/user-profile"
           element={
-            <Layout>
+            <Layout showNavigation>
               <UserProfilePage />
             </Layout>
           }
@@ -34,17 +34,18 @@ const AppRoutes = () => {
         <Route
           path="/search-language-partners"
           element={
-            <Layout>
+            <Layout showNavigation>
               <SearchLanguagePartners />
             </Layout>
           }
         />
       </Route>
+
       <Route element={<ProtectedRoute needCurrentUser />}>
         <Route
           path="/chat/:userId?"
           element={
-            <Layout>
+            <Layout showNavigation>
               <ChatPage />
             </Layout>
           }
@@ -66,6 +67,7 @@ const AppRoutes = () => {
           }
         />
       </Route>
+
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
