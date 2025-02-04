@@ -9,14 +9,14 @@ const MobileNavLinks = () => {
       <Link to="/user-profile" className="font-bold hover:text-blue-500">
         User Profile
       </Link>
-      <Link to="/video-call" className="font-bold hover:text-blue-500">
-        User Profile
-      </Link>{" "}
       <Link
         to="/search-language-partners"
         className="font-bold hover:text-blue-500"
       >
-        User Profile
+        Search Langaage Partner
+      </Link>
+      <Link to="/chat" className="font-bold hover:text-blue-500">
+        Chat People
       </Link>
       <Button
         onClick={() => logout()}
