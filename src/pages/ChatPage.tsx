@@ -6,6 +6,7 @@ import ChatContainer from "@/components/ChatContainer";
 import NoChatSelected from "@/components/NoChatSelected";
 import { User } from "@/model/types";
 import { useParams } from "react-router-dom";
+import Loading from "@/Loading/Loading";
 
 const ChatPage = () => {
   const { userId } = useParams<{ userId: string }>();
@@ -26,7 +27,7 @@ const ChatPage = () => {
   };
 
   if (isCurrentUserLoading || isChatUserLoading) {
-    return <div>Loading chat...</div>;
+    return <Loading />;
   }
 
   return (
