@@ -6,9 +6,6 @@ import updateCallStatus, {
   setCallDescription,
 } from "@/redux-elements/actions/updateCallStatus";
 import { RootState } from "@/redux-elements/reducers/rootReducers";
-import { useSearchParams, useLocation } from "react-router-dom";
-import { Clipboard, ClipboardCheck } from "lucide-react"; // Lucide icons for copy
-import { useGetMyUser } from "@/api/MyUserApi";
 import { useSelector } from "react-redux";
 import { useSocket } from "@/context/SocketContext";
 import { createPeerConnection } from "@/WebRTCUutilities/createPeerConnection";
@@ -20,22 +17,9 @@ const ProMainVideoPage = () => {
   const streams = useAppSelector((state: RootState) => state.stream);
   const smallFeedEl = useRef(null);
   const largeFeedEl = useRef<HTMLVideoElement | null>(null);
-  const [searchParams] = useSearchParams();
-  const receiverId = searchParams.get("receiverId");
   const callStatus = useSelector((state: RootState) => state.callStatus);
   const { socket } = useSocket();
-
-  const { currentUser } = useGetMyUser();
-  const isCaller = currentUser?._id !== receiverId;
-
-  const [copied, setCopied] = useState<boolean>(false);
-  const [callerIsReady, setCallerIsReady] = useState<boolean>(false);
-  const [calleeIsReady, setCalleeIsReady] = useState<boolean>(false);
-  const location = useLocation();
-  const videoCallUrl = `${window.location.origin}${location.pathname}${location.search}`;
-
   const offerIdRef = useRef<string | null>(null);
-
   const [haveGottenIce, setHaveGottenIce] = useState<boolean>(false);
   const streamsRef = useRef<StreamsType | null>(null);
 
@@ -180,12 +164,6 @@ const ProMainVideoPage = () => {
     calleeSocketListeners(socket, addIceCandidateToPeerConnection);
   }, []);
 
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(videoCallUrl);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
   const addIce = (iceC: RTCIceCandidate) => {
     const offerId = offerIdRef.current;
     if (!offerId) {
@@ -196,69 +174,22 @@ const ProMainVideoPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-start justify-center p-4">
-      {/* Video Call Controls */}
-      <div className="flex items-center bg-gray-100 p-3 rounded-lg shadow-md mb-4">
-        {/* Ready? Button */}
-        {isCaller && (
-          <button
-            onClick={() => setCallerIsReady(true)}
-            className={`px-4 py-2 rounded-md text-white font-semibold ${
-              callerIsReady ? "bg-green-500" : "bg-blue-500"
-            } hover:opacity-80 transition`}
-          >
-            {callerIsReady ? "Ready! ✅" : "Ready?"}
-          </button>
-        )}
-
-        {!isCaller && (
-          <button
-            onClick={() => setCalleeIsReady(true)}
-            className={`px-4 py-2 rounded-md text-white font-semibold ${
-              calleeIsReady ? "bg-green-500" : "bg-purple-500"
-            } hover:opacity-80 transition`}
-          >
-            {calleeIsReady ? "Ready! ✅" : "Ready?"}
-          </button>
-        )}
-
-        {/* Video Call URL */}
-        <span className="mx-3 text-sm font-medium truncate max-w-[200px] md:max-w-full">
-          {videoCallUrl}
-        </span>
-
-        {/* Copy Button */}
-        <button
-          onClick={handleCopyLink}
-          className="ml-2 p-2 rounded-md hover:bg-gray-200"
-        >
-          {copied ? (
-            <ClipboardCheck size={20} className="text-green-500" />
-          ) : (
-            <Clipboard size={20} />
-          )}
-        </button>
-      </div>
-
-      {/* Video Feeds */}
-      <div className="relative">
-        <video
-          ref={largeFeedEl}
-          className="bg-black h-[100vh] w-full scale-x-[-1]"
-          autoPlay
-          controls
-          playsInline
-        ></video>
-        <video
-          ref={smallFeedEl}
-          className="absolute border border-blue-400 right-[50px] top-[100px] rounded-[10px] w-[320px] scale-x-[-1]"
-          autoPlay
-          controls
-          playsInline
-        ></video>
-
-        <ActionButtons smallFeedEl={smallFeedEl} largeFeedEl={largeFeedEl} />
-      </div>
+    <div className="relative">
+      <video
+        ref={largeFeedEl}
+        className="h-[100vh] w-full object-cover scale-x-[-1] bg-black"
+        autoPlay
+        controls
+        playsInline
+      ></video>
+      <video
+        ref={smallFeedEl}
+        className="absolute border border-blue-400 right-[50px] top-[100px] rounded-[10px] w-[320px] scale-x-[-1]"
+        autoPlay
+        controls
+        playsInline
+      ></video>
+      <ActionButtons smallFeedEl={smallFeedEl} largeFeedEl={largeFeedEl} />
     </div>
   );
 };
