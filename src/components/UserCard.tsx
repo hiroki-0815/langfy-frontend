@@ -49,14 +49,13 @@ const UserCard = ({
 
   const handleChatButtonClick = () => {
     if (userId) {
-      console.log("Navigating to chat with userId:", userId); // Debug log
-      navigate(`/chat/${userId}`); // Navigate to the correct user's chat page
+      console.log("Navigating to chat with userId:", userId);
+      navigate(`/chat/${userId}`);
     } else {
       console.error("UserId is undefined");
     }
   };
 
-  // Debug or perform actions when chatUser updates
   useEffect(() => {
     if (!isLoading && chatUser) {
       console.log("Fetched chat users including clicked user:", chatUser);
