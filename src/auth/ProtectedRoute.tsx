@@ -2,7 +2,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Navigate, Outlet } from "react-router-dom";
 import { SocketProvider } from "@/context/SocketContext";
 import { useGetMyUser } from "@/api/MyUserApi";
-import Loading from "@/skeletons/Loading";
+import Loading from "@/Loading/Loading";
 
 type Props = {
   needCurrentUser?: boolean;
