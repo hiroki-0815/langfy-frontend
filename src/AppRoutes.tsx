@@ -53,7 +53,7 @@ const AppRoutes = () => {
         <Route
           path="/join-video/:roomId?"
           element={
-            <Layout>
+            <Layout showFooter={false}>
               <MainVideoPage />
             </Layout>
           }
@@ -61,7 +61,7 @@ const AppRoutes = () => {
         <Route
           path="/join-video-pro/:roomId?"
           element={
-            <Layout>
+            <Layout showFooter={false}>
               <ProMainVideoPage />
             </Layout>
           }
