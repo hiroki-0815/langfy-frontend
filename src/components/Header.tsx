@@ -7,7 +7,7 @@ const Header = () => {
     <div className="border-b-2 shadow-sm py-6 px-2">
       <div className="container mx-auto flex justify-between items-center">
         <Link
-          to="/"
+          to="/search-language-partners"
           className="text-3xl font-bold tracking-tight text-blue-400"
         >
           Langfy.com
