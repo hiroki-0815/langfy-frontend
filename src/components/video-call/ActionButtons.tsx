@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect, useRef } from "react";
+import { MutableRefObject, useRef } from "react";
 import { Users, MessageSquare, Monitor } from "lucide-react";
 import HangupButton from "./HangupButton";
 import VideoButton from "./VideoButton";
@@ -11,30 +11,6 @@ type ActionButtonsProps = {
 
 const ActionButtons = ({ smallFeedEl, largeFeedEl }: ActionButtonsProps) => {
   const menuButtons = useRef<HTMLDivElement | null>(null);
-  let timer: ReturnType<typeof setTimeout>;
-
-  useEffect(() => {
-    const setTimer = () => {
-      timer = setTimeout(() => {
-        menuButtons.current?.classList.add("hidden");
-      }, 4000);
-    };
-
-    window.addEventListener("mousemove", () => {
-      if (menuButtons.current?.classList.contains("hidden")) {
-        menuButtons.current.classList.remove("hidden");
-        setTimer();
-      } else {
-        clearTimeout(timer);
-        setTimer();
-      }
-    });
-
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener("mousemove", () => {});
-    };
-  }, []);
 
   return (
     <div
@@ -46,7 +22,6 @@ const ActionButtons = ({ smallFeedEl, largeFeedEl }: ActionButtonsProps) => {
         <VideoButton smallFeedEl={smallFeedEl} />
       </div>
 
-      {/* Center Section */}
       <div className="flex items-center space-x-6 ">
         <button className="flex flex-col items-center text-white hover:text-blue-400">
           <Users className="w-6 h-6" /> {/* Participants Icon */}
@@ -62,7 +37,6 @@ const ActionButtons = ({ smallFeedEl, largeFeedEl }: ActionButtonsProps) => {
         </button>
       </div>
 
-      {/* Right Section */}
       <div className="text-end">
         <HangupButton smallFeedEl={smallFeedEl} largeFeedEl={largeFeedEl} />
       </div>
