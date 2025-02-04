@@ -22,6 +22,12 @@ const ProMainVideoPage = () => {
   const offerIdRef = useRef<string | null>(null);
   const [haveGottenIce, setHaveGottenIce] = useState<boolean>(false);
   const streamsRef = useRef<StreamsType | null>(null);
+  const localStreamRef = useRef<MediaStream | null>(null);
+
+  const currentStreamsRef = useRef(streams);
+  useEffect(() => {
+    currentStreamsRef.current = streams;
+  }, [streams]);
 
   useEffect(() => {
     const fetchMedia = async () => {
@@ -30,6 +36,8 @@ const ProMainVideoPage = () => {
         const stream = await navigator.mediaDevices.getUserMedia(constraints);
         dispatch(updateCallStatus("haveMedia", true));
         dispatch(addStream("localStream", stream));
+        localStreamRef.current = stream;
+
         const { peerConnection, remoteStream } = await createPeerConnection(
           addIce
         );
@@ -172,6 +180,76 @@ const ProMainVideoPage = () => {
     }
     socket?.emit("iceServer", { iceC, offerId, who: "callee" });
   };
+
+  useEffect(() => {
+    const cleanupMedia = () => {
+      // Stop tracks from the original media stream stored in the ref.
+      if (localStreamRef.current) {
+        localStreamRef.current.getTracks().forEach((track) => {
+          console.log("Stopping track from localStreamRef:", track.kind);
+          track.stop();
+        });
+        localStreamRef.current = null;
+      }
+      // Also, stop tracks from the Redux local stream (if updated).
+      if (currentStreamsRef.current.localStream?.stream) {
+        currentStreamsRef.current.localStream.stream
+          .getTracks()
+          .forEach((track) => {
+            console.log("Stopping track from Redux localStream:", track.kind);
+            track.stop();
+          });
+      }
+      // Close all peer connections.
+      Object.values(currentStreamsRef.current).forEach((streamData) => {
+        if (streamData.peerConnection) {
+          streamData.peerConnection.close();
+        }
+      });
+    };
+
+    // Add unload listener.
+    window.addEventListener("beforeunload", cleanupMedia);
+
+    return () => {
+      cleanupMedia();
+      window.removeEventListener("beforeunload", cleanupMedia);
+    };
+  }, []); // No dependency here, so it won't re-run on every stream update.
+
+  // Also cleanup on route change.
+  useEffect(() => {
+    return () => {
+      // Run the cleanup function when the location changes.
+      // Use the same cleanup code as above.
+      if (localStreamRef.current) {
+        localStreamRef.current.getTracks().forEach((track) => {
+          console.log(
+            "Route change: Stopping track from localStreamRef:",
+            track.kind
+          );
+          track.stop();
+        });
+        localStreamRef.current = null;
+      }
+      if (currentStreamsRef.current.localStream?.stream) {
+        currentStreamsRef.current.localStream.stream
+          .getTracks()
+          .forEach((track) => {
+            console.log(
+              "Route change: Stopping track from Redux localStream:",
+              track.kind
+            );
+            track.stop();
+          });
+      }
+      Object.values(currentStreamsRef.current).forEach((streamData) => {
+        if (streamData.peerConnection) {
+          streamData.peerConnection.close();
+        }
+      });
+    };
+  }, [location.pathname]);
 
   return (
     <div className="relative">

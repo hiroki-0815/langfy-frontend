@@ -28,6 +28,12 @@ const HangupButton = ({ smallFeedEl, largeFeedEl }: HangButtonsProps) => {
       }
     }
 
+    if (streams.localStream?.stream) {
+      streams.localStream.stream.getTracks().forEach((track) => {
+        track.stop();
+      });
+    }
+
     if (smallFeedEl.current) {
       smallFeedEl.current.srcObject = null;
     }
