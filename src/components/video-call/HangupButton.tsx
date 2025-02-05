@@ -51,7 +51,7 @@ const HangupButton = ({ smallFeedEl, largeFeedEl }: HangButtonsProps) => {
   return (
     <button
       onClick={handleHangup}
-      className="flex items-center justify-center p-3 rounded-full bg-red-600 hover:bg-red-700 text-white shadow-lg transition-all duration-300"
+      className="p-3 rounded-full bg-red-600 hover:bg-red-700 text-white shadow-lg transition-all duration-300"
       aria-label="Hang up"
     >
       <PhoneIcon className="w-6 h-6" />
