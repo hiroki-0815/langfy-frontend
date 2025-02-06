@@ -1,10 +1,13 @@
+import { useSocket } from "@/context/SocketContext";
+import { RootState } from "@/redux-elements/reducers/rootReducers";
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 
 export default function TimerApp() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [firstLanguage, setFirstLanguage] = useState("Japanese");
   const [secondLanguage, setSecondLanguage] = useState("Spanish");
-  const durations = [1, 15, 20, 30];
+  const durations = [10, 15, 20, 30];
   const setsOptions = [1, 2, 3];
   const [selectedDuration, setSelectedDuration] = useState(10);
   const [selectedSets, setSelectedSets] = useState(1);
@@ -13,14 +16,71 @@ export default function TimerApp() {
   const [timeLeft, setTimeLeft] = useState(selectedDuration * 60);
   const [isRunning, setIsRunning] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [caller, setCaller] = useState<string | null>(null);
+  const [receiver, setReceiver] = useState<string | null>(null);
+  const { socket } = useSocket();
+
+  const callerId = useSelector((state: RootState) => state.callStatus.callerId);
+  const receiverId = useSelector(
+    (state: RootState) => state.callStatus.receiverId
+  );
 
   useEffect(() => {
-    if (isRunning && !isPaused) {
-      setTimeLeft(selectedDuration * 60);
-    } else if (!isRunning) {
-      setTimeLeft(selectedDuration * 60);
-    }
-  }, [selectedDuration]);
+    if (callerId) setCaller(callerId);
+    if (receiverId) setReceiver(receiverId);
+    console.log(caller, receiver);
+  }, [callerId, receiverId]);
+
+  // Listen for incoming language update events
+  useEffect(() => {
+    const languageUpdateHandler = ({
+      language: newLang,
+      languageType,
+    }: {
+      language: string;
+      languageType: "first" | "second";
+    }) => {
+      if (languageType === "first") {
+        setFirstLanguage(newLang);
+      } else if (languageType === "second") {
+        setSecondLanguage(newLang);
+      }
+    };
+
+    socket?.on("languageUpdate", languageUpdateHandler);
+
+    // Cleanup the event listener on component unmount.
+    return () => {
+      socket?.off("languageUpdate", languageUpdateHandler);
+    };
+  }, [socket]);
+
+  useEffect(() => {
+    const durationUpdateHandler = (data: { selectedDuration: number }) => {
+      setSelectedDuration(data.selectedDuration);
+      // If the timer is not running, update the timeLeft immediately:
+      setTimeLeft(data.selectedDuration * 60);
+    };
+
+    socket?.on("durationUpdate", durationUpdateHandler);
+
+    return () => {
+      socket?.off("durationUpdate", durationUpdateHandler);
+    };
+  }, [socket, isRunning]);
+
+  // --- Listen for Sets Update ---
+  useEffect(() => {
+    const setsUpdateHandler = (data: { selectedSets: number }) => {
+      setSelectedSets(data.selectedSets);
+    };
+
+    socket?.on("setsUpdate", setsUpdateHandler);
+
+    return () => {
+      socket?.off("setsUpdate", setsUpdateHandler);
+    };
+  }, [socket]);
 
   useEffect(() => {
     let timerId: number | null = null;
@@ -63,16 +123,94 @@ export default function TimerApp() {
     isFirstLanguageActive,
   ]);
 
+  useEffect(() => {
+    const timerControlUpdateHandler = (data: {
+      isRunning: boolean;
+      isPaused: boolean;
+      timeLeft: number;
+    }) => {
+      setIsRunning(data.isRunning);
+      setIsPaused(data.isPaused);
+      setTimeLeft(data.timeLeft);
+      console.log("Received timer control update:", data);
+    };
+
+    socket?.on("timerControlUpdate", timerControlUpdateHandler);
+
+    return () => {
+      socket?.off("timerControlUpdate", timerControlUpdateHandler);
+    };
+  }, [socket]);
+
   const handleStartPause = () => {
+    let newIsRunning: boolean;
+    let newIsPaused: boolean;
+
     if (!isRunning) {
+      // Starting the timer:
+      newIsRunning = true;
+      newIsPaused = false;
       setIsRunning(true);
       setIsPaused(false);
       setIsFirstLanguageActive(true);
       setTimeLeft(selectedDuration * 60);
       setCurrentSet(1);
     } else {
-      setIsPaused((prev) => !prev);
+      // Toggling pause/resume:
+      newIsRunning = isRunning;
+      newIsPaused = !isPaused;
+      setIsPaused(!isPaused);
     }
+
+    // Emit the new timer control state to the other peer
+    socket?.emit("timerControlUpdate", {
+      isRunning: newIsRunning,
+      isPaused: newIsPaused,
+      timeLeft: newIsRunning ? timeLeft : 0, // you might want to send the current timeLeft
+      callerId,
+      receiverId,
+    });
+  };
+
+  const handleLanguageChange = (
+    newLang: string,
+    languageType: "first" | "second"
+  ) => {
+    if (languageType === "first") {
+      setFirstLanguage(newLang);
+    } else if (languageType === "second") {
+      setSecondLanguage(newLang);
+    }
+
+    // Emit the change along with the type so the other peer knows which one to update.
+    socket?.emit("languageUpdate", {
+      language: newLang,
+      languageType,
+      callerId,
+      receiverId,
+    });
+  };
+
+  const handleDurationChange = (newDuration: number) => {
+    setSelectedDuration(newDuration);
+
+    setTimeLeft(newDuration * 60);
+
+    socket?.emit("durationUpdate", {
+      selectedDuration: newDuration,
+      callerId,
+      receiverId,
+    });
+  };
+
+  // --- Sets Change ---
+  const handleSetsChange = (newSets: number) => {
+    setSelectedSets(newSets);
+    socket?.emit("setsUpdate", {
+      selectedSets: newSets,
+      callerId,
+      receiverId,
+    });
   };
 
   const formatTime = (totalSeconds: number) => {
@@ -85,7 +223,7 @@ export default function TimerApp() {
   };
 
   return (
-    <div className="p-4 font-sans max-w-sm mx-auto bg-white">
+    <div className="p-4 font-sans max-w-sm mx-auto bg-white rounded">
       <div className="mb-4 flex flex-col items-center">
         <div className="flex items-center">
           <span className="mr-2">Time to speak:</span>
@@ -129,7 +267,7 @@ export default function TimerApp() {
             <input
               type="text"
               value={firstLanguage}
-              onChange={(e) => setFirstLanguage(e.target.value)}
+              onChange={(e) => handleLanguageChange(e.target.value, "first")}
               className="w-full border border-gray-300 rounded px-2 py-1"
             />
           </div>
@@ -141,7 +279,7 @@ export default function TimerApp() {
             <input
               type="text"
               value={secondLanguage}
-              onChange={(e) => setSecondLanguage(e.target.value)}
+              onChange={(e) => handleLanguageChange(e.target.value, "second")}
               className="w-full border border-gray-300 rounded px-2 py-1"
             />
           </div>
@@ -152,7 +290,7 @@ export default function TimerApp() {
             </label>
             <select
               value={selectedDuration}
-              onChange={(e) => setSelectedDuration(Number(e.target.value))}
+              onChange={(e) => handleDurationChange(Number(e.target.value))}
               className="w-full border border-gray-300 rounded px-2 py-1"
             >
               {durations.map((d) => (
@@ -167,7 +305,7 @@ export default function TimerApp() {
             <label className="block text-sm font-medium mb-1">Sets:</label>
             <select
               value={selectedSets}
-              onChange={(e) => setSelectedSets(Number(e.target.value))}
+              onChange={(e) => handleSetsChange(Number(e.target.value))}
               className="w-full border border-gray-300 rounded px-2 py-1"
             >
               {setsOptions.map((s) => (
