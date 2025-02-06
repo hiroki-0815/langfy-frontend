@@ -34,6 +34,11 @@ const Sidebar = ({ users, onUserSelect, selectedUserId }: Props) => {
         console.log("🟢 Storing offer in Redux (callee):", offerData.offer);
         dispatch(setCallDescription(offerData.offer));
         setIsOfferSet(true);
+        dispatch(updateCallStatus("callerId", offerData.callerId));
+        dispatch(updateCallStatus("receiverId", offerData.receiverId));
+
+        console.log("🟢 Updated Redux - Caller ID:", offerData.callerId);
+        console.log("🟢 Updated Redux - Receiver ID:", offerData.receiverId);
       } else {
         console.warn("⚠️ Received an invalid offer:", offerData);
       }
@@ -41,7 +46,6 @@ const Sidebar = ({ users, onUserSelect, selectedUserId }: Props) => {
         setCallerId(offerData?.callerId);
         dispatch(updateCallStatus("callerId", offerData.callerId));
         dispatch(updateCallStatus("offerId", offerData.offerId));
-
         console.log("📞 Incoming call from:", offerData.callerId);
       } else {
         console.warn("⚠️ Received an invalid offer:", offerData);
