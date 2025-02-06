@@ -31,7 +31,6 @@ export default function TimerApp() {
     console.log(caller, receiver);
   }, [callerId, receiverId]);
 
-  // Listen for incoming language update events
   useEffect(() => {
     const languageUpdateHandler = ({
       language: newLang,
@@ -49,7 +48,6 @@ export default function TimerApp() {
 
     socket?.on("languageUpdate", languageUpdateHandler);
 
-    // Cleanup the event listener on component unmount.
     return () => {
       socket?.off("languageUpdate", languageUpdateHandler);
     };
@@ -58,7 +56,6 @@ export default function TimerApp() {
   useEffect(() => {
     const durationUpdateHandler = (data: { selectedDuration: number }) => {
       setSelectedDuration(data.selectedDuration);
-      // If the timer is not running, update the timeLeft immediately:
       setTimeLeft(data.selectedDuration * 60);
     };
 
@@ -69,7 +66,6 @@ export default function TimerApp() {
     };
   }, [socket, isRunning]);
 
-  // --- Listen for Sets Update ---
   useEffect(() => {
     const setsUpdateHandler = (data: { selectedSets: number }) => {
       setSelectedSets(data.selectedSets);
@@ -93,17 +89,15 @@ export default function TimerApp() {
 
     if (timeLeft === 0 && isRunning) {
       if (isFirstLanguageActive) {
-        // Switch to second language
         setIsFirstLanguageActive(false);
         setTimeLeft(selectedDuration * 60);
       } else {
-        // One full set completed, check if more sets remain
         if (currentSet < selectedSets) {
           setIsFirstLanguageActive(true);
           setTimeLeft(selectedDuration * 60);
           setCurrentSet((prev) => prev + 1);
         } else {
-          setIsRunning(false); // Stop when all sets are complete
+          setIsRunning(false);
         }
       }
     }
@@ -147,7 +141,6 @@ export default function TimerApp() {
     let newIsPaused: boolean;
 
     if (!isRunning) {
-      // Starting the timer:
       newIsRunning = true;
       newIsPaused = false;
       setIsRunning(true);
@@ -156,17 +149,15 @@ export default function TimerApp() {
       setTimeLeft(selectedDuration * 60);
       setCurrentSet(1);
     } else {
-      // Toggling pause/resume:
       newIsRunning = isRunning;
       newIsPaused = !isPaused;
       setIsPaused(!isPaused);
     }
 
-    // Emit the new timer control state to the other peer
     socket?.emit("timerControlUpdate", {
       isRunning: newIsRunning,
       isPaused: newIsPaused,
-      timeLeft: newIsRunning ? timeLeft : 0, // you might want to send the current timeLeft
+      timeLeft: newIsRunning ? timeLeft : 0,
       callerId,
       receiverId,
     });
@@ -182,7 +173,6 @@ export default function TimerApp() {
       setSecondLanguage(newLang);
     }
 
-    // Emit the change along with the type so the other peer knows which one to update.
     socket?.emit("languageUpdate", {
       language: newLang,
       languageType,
@@ -203,7 +193,6 @@ export default function TimerApp() {
     });
   };
 
-  // --- Sets Change ---
   const handleSetsChange = (newSets: number) => {
     setSelectedSets(newSets);
     socket?.emit("setsUpdate", {
