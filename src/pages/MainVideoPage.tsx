@@ -14,7 +14,7 @@ import { useSelector } from "react-redux";
 import { createPeerConnection } from "@/WebRTCUutilities/createPeerConnection";
 import callerSocketListeners from "@/WebRTCUutilities/CallerSocketListeners";
 import { StreamsType } from "@/redux-elements/type";
-// import TimerApp from "@/components/LanguageTimer";
+import TimerApp from "@/components/LanguageTimer";
 
 const MainVideoPage = () => {
   const dispatch = useAppDispatch();
@@ -95,6 +95,7 @@ const MainVideoPage = () => {
                 socket?.on("answerToClient", ({ answer, offerId }) => {
                   console.log("Received answer:", answer, "Offer ID:", offerId);
                   dispatch(setCallDescription(answer));
+                  dispatch(updateCallStatus("offerId", offerId));
                 });
 
                 console.log(offerId);
@@ -253,9 +254,9 @@ const MainVideoPage = () => {
         playsInline
       ></video>
       <ActionButtons smallFeedEl={smallFeedEl} largeFeedEl={largeFeedEl} />
-      {/* <div className="absolute left-4 top-4 ">
+      <div className="absolute left-4 top-4 ">
         <TimerApp />
-      </div> */}
+      </div>
     </div>
   );
 };
