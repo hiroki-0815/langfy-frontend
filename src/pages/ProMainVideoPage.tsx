@@ -11,6 +11,7 @@ import { useSocket } from "@/context/SocketContext";
 import { createPeerConnection } from "@/WebRTCUutilities/createPeerConnection";
 import calleeSocketListeners from "@/WebRTCUutilities/CalleeSocketListeners";
 import { StreamsType } from "@/redux-elements/type";
+import TimerApp from "@/components/LanguageTimer";
 
 const ProMainVideoPage = () => {
   const dispatch = useAppDispatch();
@@ -266,6 +267,10 @@ const ProMainVideoPage = () => {
       ></video>
 
       <ActionButtons smallFeedEl={smallFeedEl} largeFeedEl={largeFeedEl} />
+
+      <div className="absolute left-4 top-4 ">
+        <TimerApp />
+      </div>
     </div>
   );
 };
