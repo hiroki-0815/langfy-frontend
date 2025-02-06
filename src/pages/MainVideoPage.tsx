@@ -1,5 +1,5 @@
 import ActionButtons from "@/components/video-call/ActionButtons";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../redux-elements/hooks";
 import addStream from "@/redux-elements/actions/addStream";
 import updateCallStatus, {
@@ -31,6 +31,8 @@ const MainVideoPage = () => {
   const offerIdRef = useRef<string | null>(null);
   const streamsRef = useRef<StreamsType | null>(null);
   const localStreamRef = useRef<MediaStream | null>(null);
+
+  const [isTimerVisible, setIsTimerVisible] = useState(false);
 
   const currentStreamsRef = useRef(streams);
   useEffect(() => {
@@ -221,6 +223,17 @@ const MainVideoPage = () => {
     };
   }, [location.pathname]);
 
+  useEffect(() => {
+    const handleToggleTimerVisibility = (data: { isTimerVisible: boolean }) => {
+      setIsTimerVisible(data.isTimerVisible);
+      console.log("Received toggleTimerVisibility event:", data);
+    };
+    socket?.on("toggleTimerVisibility", handleToggleTimerVisibility);
+    return () => {
+      socket?.off("toggleTimerVisibility", handleToggleTimerVisibility);
+    };
+  }, [socket]);
+
   const addIce = (iceC: RTCIceCandidate) => {
     const offerId = offerIdRef.current;
     if (!offerId) {
@@ -253,8 +266,17 @@ const MainVideoPage = () => {
         controls
         playsInline
       ></video>
-      <ActionButtons smallFeedEl={smallFeedEl} largeFeedEl={largeFeedEl} />
-      <div className="absolute left-4 top-4 ">
+      <ActionButtons
+        smallFeedEl={smallFeedEl}
+        largeFeedEl={largeFeedEl}
+        isTimerVisible={isTimerVisible}
+        setIsTimerVisible={setIsTimerVisible}
+      />
+      <div
+        className={`absolute left-4 top-4 ${
+          isTimerVisible ? "block" : "hidden"
+        }`}
+      >
         <TimerApp />
       </div>
     </div>

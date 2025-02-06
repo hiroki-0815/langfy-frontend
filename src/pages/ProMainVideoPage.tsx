@@ -25,6 +25,8 @@ const ProMainVideoPage = () => {
   const streamsRef = useRef<StreamsType | null>(null);
   const localStreamRef = useRef<MediaStream | null>(null);
 
+  const [isTimerVisible, setIsTimerVisible] = useState(false);
+
   const currentStreamsRef = useRef(streams);
   useEffect(() => {
     currentStreamsRef.current = streams;
@@ -245,6 +247,17 @@ const ProMainVideoPage = () => {
     };
   }, [location.pathname]);
 
+  useEffect(() => {
+    const handleToggleTimerVisibility = (data: { isTimerVisible: boolean }) => {
+      setIsTimerVisible(data.isTimerVisible);
+      console.log("Received toggleTimerVisibility event:", data);
+    };
+    socket?.on("toggleTimerVisibility", handleToggleTimerVisibility);
+    return () => {
+      socket?.off("toggleTimerVisibility", handleToggleTimerVisibility);
+    };
+  }, [socket]);
+
   return (
     <div className="relative">
       <video
@@ -266,9 +279,17 @@ const ProMainVideoPage = () => {
         playsInline
       ></video>
 
-      <ActionButtons smallFeedEl={smallFeedEl} largeFeedEl={largeFeedEl} />
-
-      <div className="absolute left-4 top-4 ">
+      <ActionButtons
+        smallFeedEl={smallFeedEl}
+        largeFeedEl={largeFeedEl}
+        isTimerVisible={isTimerVisible}
+        setIsTimerVisible={setIsTimerVisible}
+      />
+      <div
+        className={`absolute left-4 top-4 ${
+          isTimerVisible ? "block" : "hidden"
+        }`}
+      >
         <TimerApp />
       </div>
     </div>

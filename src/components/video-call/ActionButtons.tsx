@@ -1,19 +1,24 @@
-import { MutableRefObject, useRef } from "react";
+import { MutableRefObject } from "react";
 import HangupButton from "./HangupButton";
 import VideoButton from "./VideoButton";
 import AudioButton from "./AudioButton";
+import TimerToggleButton from "./TimerToggleButton";
 
 type ActionButtonsProps = {
   smallFeedEl: MutableRefObject<HTMLVideoElement | null>;
   largeFeedEl: MutableRefObject<HTMLVideoElement | null>;
+  isTimerVisible: boolean;
+  setIsTimerVisible: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const ActionButtons = ({ smallFeedEl, largeFeedEl }: ActionButtonsProps) => {
-  const menuButtons = useRef<HTMLDivElement | null>(null);
-
+const ActionButtons = ({
+  smallFeedEl,
+  largeFeedEl,
+  isTimerVisible,
+  setIsTimerVisible,
+}: ActionButtonsProps) => {
   return (
     <div
-      ref={menuButtons}
       className="
         fixed bottom-0 left-0 right-0 
         flex flex-col md:flex-row 
@@ -28,6 +33,10 @@ const ActionButtons = ({ smallFeedEl, largeFeedEl }: ActionButtonsProps) => {
         <AudioButton smallFeedEl={smallFeedEl} />
         <VideoButton smallFeedEl={smallFeedEl} />
         <HangupButton smallFeedEl={smallFeedEl} largeFeedEl={largeFeedEl} />
+        <TimerToggleButton
+          onToggle={(newVisibility) => setIsTimerVisible(newVisibility)}
+          currentVisibility={isTimerVisible}
+        />
       </div>
     </div>
   );
