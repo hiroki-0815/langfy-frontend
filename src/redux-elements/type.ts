@@ -15,6 +15,7 @@ export type CallStatusState = {
   offer: RTCSessionDescriptionInit | null; 
   answer: RTCSessionDescriptionInit | null;
   callerId: string | null;
+  receiverId: string | null;
   offerId: string | null;
 };
 

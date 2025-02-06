@@ -19,6 +19,7 @@ const initialState: CallStatusState = {
   offer: null, 
   answer: null,
   callerId: null,
+  receiverId: null,
   offerId: null
 };
 
