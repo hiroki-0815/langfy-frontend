@@ -266,7 +266,6 @@ const ProMainVideoPage = () => {
         autoPlay
         playsInline
       ></video>
-
       <video
         ref={smallFeedEl}
         className="
@@ -278,7 +277,6 @@ const ProMainVideoPage = () => {
         controls
         playsInline
       ></video>
-
       <ActionButtons
         smallFeedEl={smallFeedEl}
         largeFeedEl={largeFeedEl}

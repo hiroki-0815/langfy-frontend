@@ -99,8 +99,6 @@ const MainVideoPage = () => {
                   dispatch(setCallDescription(answer));
                   dispatch(updateCallStatus("offerId", offerId));
                 });
-
-                console.log(offerId);
               } catch (error) {
                 console.error(
                   `Error creating offer for peerConnection: ${error}`
@@ -260,7 +258,7 @@ const MainVideoPage = () => {
         className="
           absolute border border-blue-400 
           right-4 top-4 w-[160px] rounded-md scale-x-[-1]
-          md:right-[50px] md:top-[100px] md:w-[320px]
+          md:right-[50px] md:top-[80px] md:w-[320px]
         "
         autoPlay
         controls
@@ -273,9 +271,8 @@ const MainVideoPage = () => {
         setIsTimerVisible={setIsTimerVisible}
       />
       <div
-        className={`absolute left-4 top-4 ${
-          isTimerVisible ? "block" : "hidden"
-        }`}
+        className={`absolute left-4 top-4 w-[160px] md:w-[320px] rounded-md 
+        md:left-[50px] md:top-[80px] ${isTimerVisible ? "block" : "hidden"}`}
       >
         <TimerApp />
       </div>
