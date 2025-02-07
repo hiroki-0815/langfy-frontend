@@ -1,8 +1,11 @@
 import { MessageSquare } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const NoChatSelected = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
+
   const handleNavigation = () => {
     navigate("/search-language-partners");
   };
@@ -21,15 +24,12 @@ const NoChatSelected = () => {
         <h2
           onClick={handleNavigation}
           className="text-2xl font-bold text-white bg-blue-500 px-6 py-3 rounded-lg shadow-md cursor-pointer 
-             hover:bg-blue-600 hover:scale-105 transition-all duration-300 ease-in-out 
-             "
+             hover:bg-blue-600 hover:scale-105 transition-all duration-300 ease-in-out"
         >
-          Find a Language Partner
+          {t("findLanguagePartner")}
         </h2>
 
-        <p className="text-base-content/60">
-          Select a conversation from the sidebar to start chatting
-        </p>
+        <p className="text-base-content/60">{t("selectConversation")}</p>
       </div>
     </div>
   );
