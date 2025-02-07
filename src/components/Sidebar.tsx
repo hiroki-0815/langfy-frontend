@@ -36,9 +36,6 @@ const Sidebar = ({ users, onUserSelect, selectedUserId }: Props) => {
         setIsOfferSet(true);
         dispatch(updateCallStatus("callerId", offerData.callerId));
         dispatch(updateCallStatus("receiverId", offerData.receiverId));
-
-        console.log("🟢 Updated Redux - Caller ID:", offerData.callerId);
-        console.log("🟢 Updated Redux - Receiver ID:", offerData.receiverId);
       } else {
         console.warn("⚠️ Received an invalid offer:", offerData);
       }
@@ -58,8 +55,7 @@ const Sidebar = ({ users, onUserSelect, selectedUserId }: Props) => {
   }, [socket, dispatch]);
 
   const joinCall = () => {
-    console.log("Joining call in room:", roomId);
-    navigate(`/join-video-pro/${roomId}`);
+    navigate(`/join-video-pro/${roomId}?callerId=${callerId}`);
   };
 
   return (

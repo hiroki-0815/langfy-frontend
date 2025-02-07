@@ -34,6 +34,8 @@ import {
   ORIGIN_COUNTRIES,
 } from "@/model/constants";
 
+import { useTranslation } from "react-i18next";
+
 export const formSchema = z
   .object({
     name: z.string().min(1, { message: "Please enter your name." }),
@@ -99,6 +101,8 @@ const UserProfileForm: React.FC<Props> = ({
   isLoading,
   currentUser,
 }) => {
+  const { t } = useTranslation();
+
   const form = useForm<UserFormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -163,7 +167,7 @@ const UserProfileForm: React.FC<Props> = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Name <span className="text-red-500">*</span>
+                    {t("nameLabel")} <span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
                     <Input {...field} className="bg-white" />
@@ -172,12 +176,12 @@ const UserProfileForm: React.FC<Props> = ({
                 </FormItem>
               )}
             />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="gender"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Gender</FormLabel>
+                  <FormLabel>{t("genderLabel")}</FormLabel>
                   <Select
                     onValueChange={(value) => field.onChange(value)}
                     defaultValue={field.value || undefined}
@@ -196,13 +200,38 @@ const UserProfileForm: React.FC<Props> = ({
                   <FormMessage />
                 </FormItem>
               )}
+            /> */}
+            <FormField
+              control={form.control}
+              name="gender"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("genderLabel")}</FormLabel>
+                  <Select
+                    onValueChange={(value) => field.onChange(value)}
+                    defaultValue={field.value || undefined}
+                  >
+                    <SelectTrigger className="bg-white">
+                      <SelectValue placeholder={t("genderPlaceholder")} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {GENDERS.map((gender) => (
+                        <SelectItem key={gender} value={gender}>
+                          {t(`genders.${gender}`)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
             <FormField
               control={form.control}
               name="age"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Age</FormLabel>
+                  <FormLabel>{t("ageLabel")}</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -222,7 +251,7 @@ const UserProfileForm: React.FC<Props> = ({
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>{t("emailLabel")}</FormLabel>
                 <FormControl>
                   <Input {...field} disabled className="bg-gray-100" />
                 </FormControl>
@@ -236,7 +265,7 @@ const UserProfileForm: React.FC<Props> = ({
               name="city"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>City</FormLabel>
+                  <FormLabel>{t("cityLabel")}</FormLabel>
                   <FormControl>
                     <Input {...field} className="bg-white" />
                   </FormControl>
@@ -249,7 +278,7 @@ const UserProfileForm: React.FC<Props> = ({
               name="country"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Country</FormLabel>
+                  <FormLabel>{t("countryLabel")}</FormLabel>
                   <FormControl>
                     <Input {...field} className="bg-white" />
                   </FormControl>
@@ -262,18 +291,20 @@ const UserProfileForm: React.FC<Props> = ({
               name="originCountry"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Origin Country</FormLabel>
+                  <FormLabel>{t("originCountryLabel")}</FormLabel>
                   <Select
                     onValueChange={(value) => field.onChange(value)}
-                    defaultValue={field.value}
+                    defaultValue={field.value || undefined}
                   >
                     <SelectTrigger className="bg-white">
-                      <SelectValue placeholder="Select your origin country" />
+                      <SelectValue
+                        placeholder={t("originCountryPlaceholder")}
+                      />
                     </SelectTrigger>
                     <SelectContent>
-                      {ORIGIN_COUNTRIES.map((originCountry) => (
-                        <SelectItem key={originCountry} value={originCountry}>
-                          {originCountry}
+                      {ORIGIN_COUNTRIES.map((country) => (
+                        <SelectItem key={country} value={country}>
+                          {t(`originCountries.${country}`)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -290,19 +321,22 @@ const UserProfileForm: React.FC<Props> = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Native Language <span className="text-red-500">*</span>
+                    {t("nativeLanguageLabel")}{" "}
+                    <span className="text-red-500">*</span>
                   </FormLabel>
                   <Select
                     onValueChange={(value) => field.onChange(value)}
                     defaultValue={field.value}
                   >
                     <SelectTrigger className="bg-white">
-                      <SelectValue placeholder="Select your native language" />
+                      <SelectValue
+                        placeholder={t("nativeLanguagePlaceholder")}
+                      />
                     </SelectTrigger>
                     <SelectContent>
                       {LANGUAGES.map((language) => (
                         <SelectItem key={language} value={language}>
-                          {language}
+                          {t(`languages.${language}`)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -311,25 +345,26 @@ const UserProfileForm: React.FC<Props> = ({
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="learningLanguage"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
-                    Learning Language <span className="text-red-500">*</span>
-                  </FormLabel>
+                  <FormLabel>{t("learningLanguageLabel")}</FormLabel>
                   <Select
                     onValueChange={(value) => field.onChange(value)}
-                    defaultValue={field.value}
+                    defaultValue={field.value || undefined}
                   >
                     <SelectTrigger className="bg-white">
-                      <SelectValue placeholder="Select your learning language" />
+                      <SelectValue
+                        placeholder={t("learningLanguagePlaceholder")}
+                      />
                     </SelectTrigger>
                     <SelectContent>
                       {LANGUAGES.map((language) => (
                         <SelectItem key={language} value={language}>
-                          {language}
+                          {t(`languages.${language}`)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -343,18 +378,18 @@ const UserProfileForm: React.FC<Props> = ({
               name="fluencyLevel"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Fluency</FormLabel>
+                  <FormLabel>{t("fluencyLabel")}</FormLabel>
                   <Select
                     onValueChange={(value) => field.onChange(value)}
-                    defaultValue={field.value}
+                    defaultValue={field.value || undefined}
                   >
                     <SelectTrigger className="bg-white">
-                      <SelectValue placeholder="Select your fluency level" />
+                      <SelectValue placeholder={t("fluencyPlaceholder")} />
                     </SelectTrigger>
                     <SelectContent>
                       {FLUENCY_LEVELS.map((level) => (
                         <SelectItem key={level} value={level}>
-                          {level}
+                          {t(`fluencyLevels.${level}`)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -368,20 +403,18 @@ const UserProfileForm: React.FC<Props> = ({
               name="motivation"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
-                    Motivation <span className="text-red-500">*</span>
-                  </FormLabel>
+                  <FormLabel>{t("motivationLabel")}</FormLabel>
                   <Select
                     onValueChange={(value) => field.onChange(value)}
-                    defaultValue={field.value}
+                    defaultValue={field.value || undefined}
                   >
                     <SelectTrigger className="bg-white">
-                      <SelectValue placeholder="Select your motivation" />
+                      <SelectValue placeholder={t("motivationPlaceholder")} />
                     </SelectTrigger>
                     <SelectContent>
                       {MOTIVATIONS.map((motivation) => (
                         <SelectItem key={motivation} value={motivation}>
-                          {motivation}
+                          {t(`motivations.${motivation}`)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -396,7 +429,7 @@ const UserProfileForm: React.FC<Props> = ({
             name="selfIntroduction"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Self Introduction</FormLabel>
+                <FormLabel>{t("selfIntroductionLabel")}</FormLabel>
                 <FormControl>
                   <textarea
                     {...field}
@@ -414,7 +447,7 @@ const UserProfileForm: React.FC<Props> = ({
             <LoadingButton />
           ) : (
             <Button type="submit" className="bg-blue-400">
-              Submit
+              {t("submitButton")}
             </Button>
           )}
         </form>

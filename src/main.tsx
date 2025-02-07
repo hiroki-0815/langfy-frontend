@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { Toaster } from "sonner";
 import { Provider } from "react-redux";
 import store from "./redux-elements/store";
+import "./translation/i18n";
 
 const queryClient = new QueryClient({
   defaultOptions: {
