@@ -3,6 +3,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   ageMin: number | undefined;
@@ -14,16 +15,18 @@ type Props = {
 };
 
 const AgeFilter = ({ ageMin, ageMax, onChange }: Props) => {
+  const { t } = useTranslation();
+
   return (
     <div>
       <DropdownMenu>
-        <DropdownMenuTrigger className=" w-full text-left rounded-full bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200">
-          Age
+        <DropdownMenuTrigger className="w-full text-left rounded-full bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-200">
+          {t("ageLabel")}
         </DropdownMenuTrigger>
         <DropdownMenuContent className="bg-white border border-gray-200 rounded-lg shadow-lg">
           <div className="px-4 py-2">
             <label className="block text-sm font-medium text-gray-700">
-              Minimum Age
+              {t("ageMinLabel")}
             </label>
             <input
               type="number"
@@ -35,12 +38,12 @@ const AgeFilter = ({ ageMin, ageMax, onChange }: Props) => {
                 )
               }
               className="block w-full mt-1 p-2 border rounded"
-              placeholder="Min Age"
+              placeholder={t("ageMinPlaceholder")}
             />
           </div>
           <div className="px-4 py-2">
             <label className="block text-sm font-medium text-gray-700">
-              Maximum Age
+              {t("ageMaxLabel")}
             </label>
             <input
               type="number"
@@ -52,7 +55,7 @@ const AgeFilter = ({ ageMin, ageMax, onChange }: Props) => {
                 )
               }
               className="block w-full mt-1 p-2 border rounded"
-              placeholder="Max Age"
+              placeholder={t("ageMaxPlaceholder")}
             />
           </div>
         </DropdownMenuContent>
