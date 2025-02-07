@@ -16,20 +16,12 @@ export default function TimerApp() {
   const [timeLeft, setTimeLeft] = useState(selectedDuration * 60);
   const [isRunning, setIsRunning] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
-  const [caller, setCaller] = useState<string | null>(null);
-  const [receiver, setReceiver] = useState<string | null>(null);
   const { socket } = useSocket();
 
   const callerId = useSelector((state: RootState) => state.callStatus.callerId);
   const receiverId = useSelector(
     (state: RootState) => state.callStatus.receiverId
   );
-
-  useEffect(() => {
-    if (callerId) setCaller(callerId);
-    if (receiverId) setReceiver(receiverId);
-    console.log(caller, receiver);
-  }, [callerId, receiverId]);
 
   useEffect(() => {
     const languageUpdateHandler = ({
@@ -213,40 +205,40 @@ export default function TimerApp() {
 
   return (
     <div className="p-4 font-sans max-w-sm mx-auto bg-white rounded">
-      <div className="mb-4 flex flex-col items-center">
-        <div className="flex items-center">
+      <div className="mb-4 flex flex-col items-center ">
+        <div className="flex items-center mb-4">
           <span className="mr-2">Time to speak:</span>
-          <strong className="mr-2">
+          <strong className="mr-2 text-lg">
             {isFirstLanguageActive ? firstLanguage : secondLanguage}
           </strong>
           <button
             onClick={() => setDialogOpen(true)}
-            className="bg-blue-500 text-white px-3 py-1 rounded"
+            className="bg-sky-500 text-white px-3 py-1 rounded"
           >
             set
           </button>
         </div>
 
-        <div className="mt-2 text-sm text-gray-700">
+        <div className="text-4xl font-bold ">{formatTime(timeLeft)}</div>
+
+        <div className="mt-2 text-sm text-gray-700 mb-4">
           Set {currentSet} of {selectedSets}
         </div>
+
+        <button
+          onClick={handleStartPause}
+          className={`px-4 py-2 rounded w-full ${
+            isRunning
+              ? "bg-red-500 hover:bg-red-600"
+              : "bg-sky-500 hover:bg-sky-600"
+          } text-white`}
+        >
+          {isRunning ? (isPaused ? "Resume" : "Pause") : "Start"}
+        </button>
       </div>
 
-      <div className="text-3xl font-bold mb-4">{formatTime(timeLeft)}</div>
-
-      <button
-        onClick={handleStartPause}
-        className={`px-4 py-2 rounded ${
-          isRunning
-            ? "bg-red-500 hover:bg-red-600"
-            : "bg-blue-500 hover:bg-blue-600"
-        } text-white`}
-      >
-        {isRunning ? (isPaused ? "Resume" : "Pause") : "Start"}
-      </button>
-
       {dialogOpen && (
-        <div className="absolute top-20 left-1/2 -translate-x-1/2 p-4 border border-gray-300 bg-white rounded shadow-md w-64">
+        <div className=" text-center absolute top-20 left-1/2 -translate-x-1/2 p-4 border border-gray-300 bg-white rounded shadow-md w-64">
           <h4 className="text-lg font-semibold mb-2">Pick Languages & Time</h4>
 
           <div className="mb-2">
