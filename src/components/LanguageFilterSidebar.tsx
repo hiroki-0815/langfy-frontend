@@ -1,6 +1,7 @@
 import { Language, LANGUAGES } from "@/model/constants";
 import { Label } from "./ui/label";
 import { Check } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   selectedLanguage: Language | "";
@@ -11,9 +12,10 @@ const LanguageFilterSidebar = ({
   selectedLanguage,
   onLanguageChange,
 }: Props) => {
+  const { t } = useTranslation();
   return (
     <div>
-      <h2 className="text-lg font-bold mb-4">Filter By Your Target Lanuage!</h2>
+      <h2 className="text-lg font-bold mb-4">{t("filterByLanguage")}</h2>
       {LANGUAGES.map((lang) => {
         const isChecked = selectedLanguage === lang;
         return (
@@ -36,7 +38,7 @@ const LanguageFilterSidebar = ({
               }`}
             >
               {isChecked && <Check size={20} strokeWidth={3} />}
-              {lang}
+              {t(`languages.${lang}`)}
             </Label>
           </div>
         );
