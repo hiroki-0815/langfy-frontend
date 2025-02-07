@@ -1,7 +1,6 @@
 import { useSocket } from "@/context/SocketContext";
-import { RootState } from "@/redux-elements/reducers/rootReducers";
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
 
 export default function TimerApp() {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -18,11 +17,20 @@ export default function TimerApp() {
   const [isPaused, setIsPaused] = useState(false);
   const { socket } = useSocket();
 
-  const callerId = useSelector((state: RootState) => state.callStatus.callerId);
-  const receiverId = useSelector(
-    (state: RootState) => state.callStatus.receiverId
-  );
+  const [searchParams] = useSearchParams();
 
+  // Determine which query parameter is present:
+  const callerIdFromUrl = searchParams.get("callerId");
+  const receiverIdFromUrl = searchParams.get("receiverId");
+
+  // If on the caller side, the URL carries receiverId.
+  // If on the callee side, the URL carries callerId.
+  const role = receiverIdFromUrl ? "caller" : "callee";
+  const targetId = receiverIdFromUrl ? receiverIdFromUrl : callerIdFromUrl;
+
+  console.log("TimerApp role:", role, "targetId:", targetId);
+
+  // --- Listening for incoming events remains unchanged ---
   useEffect(() => {
     const languageUpdateHandler = ({
       language: newLang,
@@ -33,13 +41,12 @@ export default function TimerApp() {
     }) => {
       if (languageType === "first") {
         setFirstLanguage(newLang);
-      } else if (languageType === "second") {
+      } else {
         setSecondLanguage(newLang);
       }
     };
 
     socket?.on("languageUpdate", languageUpdateHandler);
-
     return () => {
       socket?.off("languageUpdate", languageUpdateHandler);
     };
@@ -52,7 +59,6 @@ export default function TimerApp() {
     };
 
     socket?.on("durationUpdate", durationUpdateHandler);
-
     return () => {
       socket?.off("durationUpdate", durationUpdateHandler);
     };
@@ -64,7 +70,6 @@ export default function TimerApp() {
     };
 
     socket?.on("setsUpdate", setsUpdateHandler);
-
     return () => {
       socket?.off("setsUpdate", setsUpdateHandler);
     };
@@ -95,9 +100,7 @@ export default function TimerApp() {
     }
 
     return () => {
-      if (timerId) {
-        window.clearInterval(timerId);
-      }
+      if (timerId) window.clearInterval(timerId);
     };
   }, [
     isRunning,
@@ -122,12 +125,12 @@ export default function TimerApp() {
     };
 
     socket?.on("timerControlUpdate", timerControlUpdateHandler);
-
     return () => {
       socket?.off("timerControlUpdate", timerControlUpdateHandler);
     };
   }, [socket]);
 
+  // --- Emit events using only the targetId (the remote party) ---
   const handleStartPause = () => {
     let newIsRunning: boolean;
     let newIsPaused: boolean;
@@ -150,8 +153,8 @@ export default function TimerApp() {
       isRunning: newIsRunning,
       isPaused: newIsPaused,
       timeLeft: newIsRunning ? timeLeft : 0,
-      callerId,
-      receiverId,
+      targetId,
+      role,
     });
   };
 
@@ -161,37 +164,30 @@ export default function TimerApp() {
   ) => {
     if (languageType === "first") {
       setFirstLanguage(newLang);
-    } else if (languageType === "second") {
+    } else {
       setSecondLanguage(newLang);
     }
-
     socket?.emit("languageUpdate", {
       language: newLang,
       languageType,
-      callerId,
-      receiverId,
+      targetId,
+      role,
     });
   };
 
   const handleDurationChange = (newDuration: number) => {
     setSelectedDuration(newDuration);
-
     setTimeLeft(newDuration * 60);
-
     socket?.emit("durationUpdate", {
       selectedDuration: newDuration,
-      callerId,
-      receiverId,
+      targetId,
+      role,
     });
   };
 
   const handleSetsChange = (newSets: number) => {
     setSelectedSets(newSets);
-    socket?.emit("setsUpdate", {
-      selectedSets: newSets,
-      callerId,
-      receiverId,
-    });
+    socket?.emit("setsUpdate", { selectedSets: newSets, targetId, role });
   };
 
   const formatTime = (totalSeconds: number) => {
@@ -238,7 +234,7 @@ export default function TimerApp() {
       </div>
 
       {dialogOpen && (
-        <div className=" text-center absolute top-20 left-1/2 -translate-x-1/2 p-4 border border-gray-300 bg-white rounded shadow-md w-64">
+        <div className="absolute top-20 left-1/2 -translate-x-1/2 p-4 border border-gray-300 bg-white rounded shadow-md w-64 text-center">
           <h4 className="text-lg font-semibold mb-2">Pick Languages & Time</h4>
 
           <div className="mb-2">
