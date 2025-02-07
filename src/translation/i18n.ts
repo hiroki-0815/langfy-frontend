@@ -75,6 +75,7 @@ const resources = {
         Australia: "Australia",
         China: "China",
         Brazil: "Brazil",
+        Spain:"Spain"
       },
       languages: {
         English: "English",
@@ -98,7 +99,17 @@ const resources = {
       ageMinLabel: "Minimum Age",
       ageMaxLabel: "Maximum Age",
       ageMinPlaceholder: "Min Age",
-      ageMaxPlaceholder: "Max Age"
+      ageMaxPlaceholder: "Max Age",
+
+      chat: "Chat",
+      speaks: "Speaks",
+      learning: "Learning",
+      motivation: "Motivation",
+      from: "From",
+      lives: "Lives",
+      showMore: "Show More",
+      showLess: "Show Less",
+      noSelfIntroduction: "No self-introduction provided."
     },
   },
   ja: {
@@ -175,6 +186,7 @@ const resources = {
         Australia: "オーストラリア",
         China: "中国",
         Brazil: "ブラジル",
+        Spain:"スペイン"
       },
       languages: {
         English: "英語",
@@ -198,8 +210,18 @@ const resources = {
       ageMinLabel: "最小年齢",
       ageMaxLabel: "最大年齢",
       ageMinPlaceholder: "最小年齢を入力",
-      ageMaxPlaceholder: "最大年齢を入力"
-    
+      ageMaxPlaceholder: "最大年齢を入力",
+
+      // search page
+      chat: "チャット",
+      speaks: "話せる言語",
+      learning: "学習言語",
+      motivation: "学習目的",
+      from: "出身",
+      lives: "居住地",
+      showMore: "もっと見る",
+      showLess: "閉じる",
+      noSelfIntroduction: "自己紹介がありません。"    
     },
     
   },

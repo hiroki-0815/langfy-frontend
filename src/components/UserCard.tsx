@@ -2,6 +2,7 @@ import { ChevronUp, ChevronDown } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGetChatUser } from "@/api/UseChatApi";
+import { useTranslation } from "react-i18next"; // ✅ Import i18n
 
 type UserCardProps = {
   name: string;
@@ -30,6 +31,7 @@ const UserCard = ({
   learningLanguage,
   userId,
 }: UserCardProps) => {
+  const { t } = useTranslation(); // ✅ Use i18n
   const [showFullIntroduction, setShowFullIntroduction] = useState(false);
   const navigate = useNavigate();
 
@@ -41,7 +43,7 @@ const UserCard = ({
   const shortenedIntroduction =
     selfIntroduction && selfIntroduction.length > 100
       ? `${selfIntroduction.slice(0, 100)}...`
-      : selfIntroduction || "No self-introduction provided.";
+      : selfIntroduction || t("noSelfIntroduction");
 
   const toggleIntroduction = () => {
     setShowFullIntroduction(!showFullIntroduction);
@@ -86,27 +88,37 @@ const UserCard = ({
           onClick={handleChatButtonClick}
           className="px-2 py-1 font-bold outline outline-2 outline-blue-400 bg-white rounded-full text-blue-400 hover:text-white hover:bg-blue-400 duration-300 ease-in-out text-[12px]"
         >
-          Chat
+          {t("chat")}
         </button>
       </div>
       <div className="flex flex-wrap mt-2 text-sm text-gray-600">
         <div className="grid grid-rows-1 grid-cols-3 gap-4 text-center">
           <div className="flex flex-col gap-2">
             <span className="text-[10px] bg-blue-100 text-blue-600 py-[2px] px-[4px] rounded-xl">
-              Speaks: {nativeLanguage}
+              {t("speaks")}:{" "}
+              {t(`languages.${nativeLanguage}`, {
+                defaultValue: nativeLanguage,
+              })}
             </span>
             <span className="text-[10px] bg-emerald-100 text-emerald-600 py-[2px] px-[4px] rounded-xl">
-              Motivation: {motivation}
+              {t("motivation")}:{" "}
+              {t(`motivations.${motivation}`, { defaultValue: motivation })}
             </span>
           </div>
           <div className="flex flex-col gap-2">
             <span className="text-[10px] bg-purple-100 text-purple-600 py-[2px] px-[4px] rounded-xl">
-              Learning: {learningLanguage}
+              {t("learning")}:{" "}
+              {t(`languages.${learningLanguage}`, {
+                defaultValue: learningLanguage,
+              })}
             </span>
             {countryOrigin && (
               <div className="flex flex-col gap-2">
                 <span className="text-[10px] bg-red-100 text-red-600 py-[2px] px-[4px] rounded-xl">
-                  From: {countryOrigin}
+                  {t("from")}:{" "}
+                  {t(`originCountries.${countryOrigin}`, {
+                    defaultValue: countryOrigin,
+                  })}
                 </span>
               </div>
             )}
@@ -115,7 +127,8 @@ const UserCard = ({
             {country && (
               <div className="flex flex-col gap-2">
                 <span className="text-[10px] bg-orange-100 text-orange-600 py-[2px] px-[4px] rounded-xl">
-                  Lives: {country}
+                  {t("lives")}:{" "}
+                  {t(`originCountries.${country}`, { defaultValue: country })}
                 </span>
               </div>
             )}
@@ -123,7 +136,7 @@ const UserCard = ({
         </div>
       </div>
       <div className="mt-4">
-        <h3 className="font-semibold">Self-Introduction</h3>
+        <h3 className="font-semibold">{t("selfIntroductionLabel")}</h3>
         <p className="text-gray-700 mt-2 break-words">
           {showFullIntroduction ? selfIntroduction : shortenedIntroduction}
         </p>
@@ -134,11 +147,11 @@ const UserCard = ({
           >
             {showFullIntroduction ? (
               <>
-                <ChevronUp className="w-4 h-4" /> Show Less
+                <ChevronUp className="w-4 h-4" /> {t("showLess")}
               </>
             ) : (
               <>
-                <ChevronDown className="w-4 h-4" /> Show More
+                <ChevronDown className="w-4 h-4" /> {t("showMore")}
               </>
             )}
           </button>
