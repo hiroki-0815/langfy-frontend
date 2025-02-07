@@ -1,7 +1,4 @@
 import { Timer } from "lucide-react";
-import { useSocket } from "@/context/SocketContext";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux-elements/reducers/rootReducers";
 
 type TimerToggleButtonProps = {
   onToggle: (newVisibility: boolean) => void;
@@ -12,20 +9,9 @@ export default function TimerToggleButton({
   onToggle,
   currentVisibility,
 }: TimerToggleButtonProps) {
-  const { socket } = useSocket();
-  const callerId = useSelector((state: RootState) => state.callStatus.callerId);
-  const receiverId = useSelector(
-    (state: RootState) => state.callStatus.receiverId
-  );
-
   const handleClick = () => {
     const newVisibility = !currentVisibility;
     onToggle(newVisibility);
-    socket?.emit("toggleTimerVisibility", {
-      isTimerVisible: newVisibility,
-      callerId,
-      receiverId,
-    });
   };
 
   return (
