@@ -14,9 +14,13 @@ import {
 import PaginationSelector from "@/components/PaginationSlector";
 import UserCardSkeleton from "@/skeletons/UserCardSkeleton";
 
+import { useTranslation } from "react-i18next";
+
 const SearchLanguagePartnersPage = () => {
   const [page, setPage] = useState(1);
   const pageSize = 10;
+
+  const { t } = useTranslation();
 
   const DEFAULT_FILTERS: {
     nativeLanguage: Language | "";
@@ -88,7 +92,7 @@ const SearchLanguagePartnersPage = () => {
             onClick={resetFilters}
             className="px-4 py-2 text-sm bg-blue-400 text-white hover:bg-blue-500 transition rounded-md"
           >
-            Reset Filters
+            {t("resetFilters")}
           </button>
         </div>
         {isLoading ? (
@@ -134,7 +138,7 @@ const SearchLanguagePartnersPage = () => {
             </div>
           </div>
         ) : (
-          <div className="text-center text-gray-600">No users found.</div>
+          <div className="text-center text-gray-600">{t("noUsersFound")}</div>
         )}
       </main>
     </div>

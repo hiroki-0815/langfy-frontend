@@ -4,6 +4,7 @@ import { initReactI18next } from "react-i18next";
 const resources = {
   en: {
     translation: {
+      // HomePage
       headline_part1: "Looking for a",
       headline_part2: "language partner",
       headline_question1: "??",
@@ -44,7 +45,9 @@ const resources = {
       agePlaceholder: "Enter your age",
       emailLabel: "Email",
       cityLabel: "City",
+      cityPlaceholder: "Enter your city",
       countryLabel: "Country",
+      countryPlaceholder: "Enter your country",
       originCountryLabel: "Origin Country",
       originCountryPlaceholder: "Select your origin country",
       nativeLanguageLabel: "Native Language",
@@ -58,6 +61,10 @@ const resources = {
       selfIntroductionLabel: "Self Introduction",
       selfIntroductionPlaceholder: "Introduce yourself...",
       submitButton: "Submit",
+
+      // ImageSection
+      Image:"Image",
+      ImageFescription: "Add an image that will be displayed on the search results. Adding a new image will overwrite the existing one.",
 
       // Enums Translations
       genders: {
@@ -93,6 +100,11 @@ const resources = {
         "wanna chat": "Wanna Chat",
         "wanna call": "Wanna Call",
       },
+
+      // Search Langugae Partner Page
+      resetFilters: "Reset Filters",
+      noUsersFound: "No users found.",
+
       // LanguageFilterSidebar
       filterByLanguage: "Filter By Your Target Language!",
 
@@ -147,7 +159,7 @@ const resources = {
 
       // User Profile Form
       detailsTitle: "詳細",
-      detailsDescription: "あなたの詳細を入力",
+      detailsDescription: "詳細を入力",
       nameLabel: "名前",
       genderLabel: "性別",
       genderPlaceholder: "性別を選択（任意）",
@@ -155,7 +167,9 @@ const resources = {
       agePlaceholder: "年齢を入力",
       emailLabel: "メールアドレス",
       cityLabel: "市区町村",
+      cityPlaceholder: "住んでいる地域を入力",
       countryLabel: "住んでいる国",
+      countryPlaceholder: "住んでいる国を入力",
       originCountryLabel: "出身国",
       originCountryPlaceholder: "出身国を選択",
       nativeLanguageLabel: "母国語",
@@ -163,12 +177,15 @@ const resources = {
       learningLanguageLabel: "学習言語",
       learningLanguagePlaceholder: "学習する言語を選択",
       fluencyLabel: "レベル",
-      fluencyPlaceholder: "習熟度を選択",
+      fluencyPlaceholder: "レベルを選択",
       motivationLabel: "学習目的",
       motivationPlaceholder: "目的を選択",
       selfIntroductionLabel: "自己紹介",
       selfIntroductionPlaceholder: "自己紹介を入力...",
       submitButton: "送信",
+
+      Image:"画像",
+      ImageFescription: "検索結果に表示される画像を追加します。新しい画像を追加すると、既存のものが上書きされます。",
 
       // Enums Translations
       genders: {
@@ -204,8 +221,13 @@ const resources = {
         "wanna chat": "チャットしたい",
         "wanna call": "通話したい",
       },
+
+      // Search Langugae Partner Page
+      resetFilters: "リセット",
+      noUsersFound: "該当ユーザーなし。",
+
       // LanguageFilterSidebar
-    filterByLanguage: "学習言語でフィルター",
+      filterByLanguage: "学習言語でフィルター",
 
       ageMinLabel: "最小年齢",
       ageMaxLabel: "最大年齢",

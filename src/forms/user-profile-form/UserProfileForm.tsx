@@ -157,8 +157,8 @@ const UserProfileForm: React.FC<Props> = ({
           className="space-y-6 bg-gray-50 rounded-lg p-4 md:p-10"
         >
           <div className="text-center md:text-left">
-            <h2 className="text-2xl font-bold">Details</h2>
-            <FormDescription>Enter the details about yourself</FormDescription>
+            <h2 className="text-2xl font-bold">{t("detailsTitle")}</h2>
+            <FormDescription>{t("detailsDescription")}</FormDescription>
           </div>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             <FormField
@@ -176,31 +176,6 @@ const UserProfileForm: React.FC<Props> = ({
                 </FormItem>
               )}
             />
-            {/* <FormField
-              control={form.control}
-              name="gender"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("genderLabel")}</FormLabel>
-                  <Select
-                    onValueChange={(value) => field.onChange(value)}
-                    defaultValue={field.value || undefined}
-                  >
-                    <SelectTrigger className="bg-white">
-                      <SelectValue placeholder="Select your gender(optinal)" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {GENDERS.map((gender) => (
-                        <SelectItem key={gender} value={gender}>
-                          {gender}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            /> */}
             <FormField
               control={form.control}
               name="gender"
@@ -238,7 +213,7 @@ const UserProfileForm: React.FC<Props> = ({
                       type="number"
                       min="1"
                       className="bg-white"
-                      placeholder="Enter your age"
+                      placeholder={t("agePlaceholder")}
                     />
                   </FormControl>
                   <FormMessage />
@@ -267,7 +242,11 @@ const UserProfileForm: React.FC<Props> = ({
                 <FormItem>
                   <FormLabel>{t("cityLabel")}</FormLabel>
                   <FormControl>
-                    <Input {...field} className="bg-white" />
+                    <Input
+                      {...field}
+                      className="bg-white"
+                      placeholder={t("cityPlaceholder")}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -280,12 +259,17 @@ const UserProfileForm: React.FC<Props> = ({
                 <FormItem>
                   <FormLabel>{t("countryLabel")}</FormLabel>
                   <FormControl>
-                    <Input {...field} className="bg-white" />
+                    <Input
+                      {...field}
+                      className="bg-white"
+                      placeholder={t("countryPlaceholder")}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="originCountry"
@@ -351,7 +335,10 @@ const UserProfileForm: React.FC<Props> = ({
               name="learningLanguage"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t("learningLanguageLabel")}</FormLabel>
+                  <FormLabel>
+                    {t("learningLanguageLabel")}
+                    <span className="text-red-500">*</span>
+                  </FormLabel>
                   <Select
                     onValueChange={(value) => field.onChange(value)}
                     defaultValue={field.value || undefined}
@@ -403,7 +390,10 @@ const UserProfileForm: React.FC<Props> = ({
               name="motivation"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t("motivationLabel")}</FormLabel>
+                  <FormLabel>
+                    {t("motivationLabel")}
+                    <span className="text-red-500">*</span>
+                  </FormLabel>
                   <Select
                     onValueChange={(value) => field.onChange(value)}
                     defaultValue={field.value || undefined}
@@ -435,7 +425,7 @@ const UserProfileForm: React.FC<Props> = ({
                     {...field}
                     className="bg-white block w-full p-2 border rounded"
                     rows={3}
-                    placeholder="Introduce yourself..."
+                    placeholder={t("selfIntroductionPlaceholder")}
                   />
                 </FormControl>
                 <FormMessage />
