@@ -13,6 +13,7 @@ import calleeSocketListeners from "@/WebRTCUutilities/CalleeSocketListeners";
 import { StreamsType } from "@/redux-elements/type";
 import TimerApp from "@/components/LanguageTimer";
 import { useTranslation } from "react-i18next";
+import TopicPicker from "@/components/TopicPicker";
 
 const ProMainVideoPage = () => {
   const { t } = useTranslation();
@@ -29,6 +30,8 @@ const ProMainVideoPage = () => {
   const [showMessage, setShowMessage] = useState(true);
   const [isTimerVisible, setIsTimerVisible] = useState(false);
   const currentStreamsRef = useRef(streams);
+  const [isTopicPickerVisible, setIsTopicPickerVisible] = useState(false);
+
   useEffect(() => {
     currentStreamsRef.current = streams;
   }, [streams]);
@@ -280,14 +283,23 @@ const ProMainVideoPage = () => {
         smallFeedEl={smallFeedEl}
         largeFeedEl={largeFeedEl}
         isTimerVisible={isTimerVisible}
+        isTopicPickerVisible={isTopicPickerVisible}
         setIsTimerVisible={setIsTimerVisible}
+        setIsTopicPickerVisible={setIsTopicPickerVisible}
       />
       <div
-        className={`absolute left-4 top-4 ${
-          isTimerVisible ? "block" : "hidden"
-        }`}
+        className={`absolute right-4 top-[250px] w-[300px] md:w-[320px] rounded-md  p-4 
+        md:left-[50px] md:top-[80px] ${isTimerVisible ? "block" : "hidden"}`}
       >
         <TimerApp />
+      </div>
+      <div
+        className={`absolute right-4 top-[500px] w-[300px] md:w-[320px] rounded-md  p-4 
+        md:left-[50px] md:top-[350px] ${
+          isTopicPickerVisible ? "block" : "hidden"
+        }`}
+      >
+        <TopicPicker />
       </div>
     </div>
   );
