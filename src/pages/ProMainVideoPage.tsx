@@ -288,13 +288,13 @@ const ProMainVideoPage = () => {
         setIsTopicPickerVisible={setIsTopicPickerVisible}
       />
       <div
-        className={`absolute right-4 top-[250px] w-[300px] md:w-[320px] rounded-md  p-4 
+        className={`absolute right-4 top-[150px] w-[300px] md:w-[320px] rounded-md  p-4 
         md:left-[50px] md:top-[80px] ${isTimerVisible ? "block" : "hidden"}`}
       >
         <TimerApp />
       </div>
       <div
-        className={`absolute right-4 top-[500px] w-[300px] md:w-[320px] rounded-md  p-4 
+        className={`absolute right-4 top-[300px] w-[300px] md:w-[320px] rounded-md  p-4 
         md:left-[50px] md:top-[350px] ${
           isTopicPickerVisible ? "block" : "hidden"
         }`}
