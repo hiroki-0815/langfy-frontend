@@ -138,7 +138,19 @@ const resources = {
       switchLanguage: "Language to switch:",
       duration: "Duration (minutes):",
       sets: "Sets:",
-      close: "Close"
+      close: "Close",
+
+    // TopicPicker
+      title: "Topic Picker",
+      pickTopicButton: "Pick a Topic",
+      rouletteSpinning: "The roulette is spinning...",
+      yourTopic: "👉 Your topic:",
+      clickToPick: "Click the button to pick a topic!",
+      topic1: "What is your name?",
+      topic2: "What are your hobbies?",
+      topic3: "Tell us about your favorite language learning experience",
+      topic4: "How do you say 'hello' in your language?",
+      topic5: "What is a fun fact about you?"
     },
   },
   ja: {
@@ -278,8 +290,21 @@ const resources = {
       switchLanguage: "切り替える言語:",
       duration: "時間（分）:",
       sets: "セット数:",
-      close: "閉じる"
+      close: "閉じる",
+      
+      // TopicPicker
+      title: "トピックピッカー",
+      pickTopicButton: "トピックを選ぶ",
+      rouletteSpinning: "ルーレットが回っています...",
+      yourTopic: "👉 あなたのトピック:",
+      clickToPick: "ボタンをクリックしてトピックを選んでください！",
+      topic1: "あなたの名前は何ですか？",
+      topic2: "あなたの趣味は何ですか？",
+      topic3: "あなたのお気に入りの言語学習経験を教えてください",
+      topic4: "あなたの言語で「こんにちは」はどう言いますか？",
+      topic5: "あなたについての面白い事実は何ですか？"
     },
+
     
   },
 };
