@@ -17,11 +17,13 @@ export default function TimerToggleButton({
   return (
     <button
       onClick={handleClick}
-      className={`p-2 transition-all duration-300 ${
+      className={`w-12 h-12 flex items-center justify-center transition-all duration-300 ${
         currentVisibility ? "bg-green-500" : "bg-gray-700"
       } rounded-full`}
     >
-      <Timer className={currentVisibility ? "text-black" : "text-white"} />
+      <Timer
+        className={`w-6 h-6 ${currentVisibility ? "text-black" : "text-white"}`}
+      />
     </button>
   );
 }
