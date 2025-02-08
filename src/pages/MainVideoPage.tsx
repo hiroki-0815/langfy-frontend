@@ -262,9 +262,9 @@ const MainVideoPage = () => {
       <video
         ref={smallFeedEl}
         className="
-          absolute border border-blue-400 
-          right-4 top-4 w-[320px] rounded-md scale-x-[-1]
-          md:right-[50px] md:top-[80px] 
+        absolute border border-blue-400 
+        right-4 top-4 w-[160px] rounded-md scale-x-[-1]
+        md:right-[50px] md:top-[100px] md:w-[320px]
         "
         autoPlay
         controls
