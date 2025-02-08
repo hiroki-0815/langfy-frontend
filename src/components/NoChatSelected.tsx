@@ -23,13 +23,13 @@ const NoChatSelected = () => {
 
         <h2
           onClick={handleNavigation}
-          className="text-2xl font-bold text-white bg-blue-500 px-6 py-3 rounded-lg shadow-md cursor-pointer 
+          className="text-[14px] md:2xl font-bold text-white bg-blue-500 px-6 py-3 rounded-lg shadow-md cursor-pointer 
              hover:bg-blue-600 hover:scale-105 transition-all duration-300 ease-in-out"
         >
           {t("findLanguagePartner")}
         </h2>
 
-        <p className="text-base-content/60">{t("selectConversation")}</p>
+        <p className="text-[10px]">{t("selectConversation")}</p>
       </div>
     </div>
   );

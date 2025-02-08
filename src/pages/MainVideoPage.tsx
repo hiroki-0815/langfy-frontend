@@ -243,7 +243,7 @@ const MainVideoPage = () => {
       <div
         className="absolute border border-blue-400 
           right-4 top-4 w-[320px] rounded-md scale-x-[-1]
-          md:right-[50px] md:top-[80px] "
+          md:right-[50px] md:top-[80px] px-2"
       ></div>
       <div className="relative">
         <video
@@ -279,13 +279,13 @@ const MainVideoPage = () => {
         setIsTopicPickerVisible={setIsTopicPickerVisible}
       />
       <div
-        className={`absolute right-4 top-[150px] w-[300px] md:w-[320px] rounded-md  p-4 
+        className={`absolute right-4 top-[150px] w-[250px] md:w-[320px] rounded-md  p-4 
         md:left-[50px] md:top-[80px] ${isTimerVisible ? "block" : "hidden"}`}
       >
         <TimerApp />
       </div>
       <div
-        className={`absolute right-4 top-[300px] w-[300px] md:w-[320px] rounded-md  p-4 
+        className={`absolute right-4 top-[300px] w-[250px] md:w-[320px] rounded-md  p-4 
         md:left-[50px] md:top-[350px] ${
           isTopicPickerVisible ? "block" : "hidden"
         }`}
