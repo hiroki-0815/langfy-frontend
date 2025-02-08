@@ -121,7 +121,10 @@ const resources = {
       lives: "Lives",
       showMore: "Show More",
       showLess: "Show Less",
-      noSelfIntroduction: "No self-introduction provided."
+      noSelfIntroduction: "No self-introduction provided.",
+      
+      // ProMainVideoPage && MainVideoPage
+      videoCallMessage: "To start the video call, please turn on your camera and microphone.",
     },
   },
   ja: {
@@ -187,6 +190,7 @@ const resources = {
       Image:"画像",
       ImageFescription: "検索結果に表示される画像を追加します。新しい画像を追加すると、既存のものが上書きされます。",
 
+
       // Enums Translations
       genders: {
         male: "男性",
@@ -243,7 +247,11 @@ const resources = {
       lives: "居住地",
       showMore: "もっと見る",
       showLess: "閉じる",
-      noSelfIntroduction: "自己紹介がありません。"    
+      noSelfIntroduction: "自己紹介がありません。",
+      
+      // ProMainVideoPage && MainVideoPage
+      videoCallMessage: "ビデオ通話を開始するには、カメラとマイクをオンにしてください。"
+            
     },
     
   },

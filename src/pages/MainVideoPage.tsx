@@ -15,8 +15,10 @@ import { createPeerConnection } from "@/WebRTCUutilities/createPeerConnection";
 import callerSocketListeners from "@/WebRTCUutilities/CallerSocketListeners";
 import { StreamsType } from "@/redux-elements/type";
 import TimerApp from "@/components/LanguageTimer";
+import { useTranslation } from "react-i18next";
 
 const MainVideoPage = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const streams = useAppSelector((state: RootState) => state.stream);
   const smallFeedEl = useRef<HTMLVideoElement | null>(null);
@@ -31,9 +33,8 @@ const MainVideoPage = () => {
   const offerIdRef = useRef<string | null>(null);
   const streamsRef = useRef<StreamsType | null>(null);
   const localStreamRef = useRef<MediaStream | null>(null);
-
+  const [showMessage, setShowMessage] = useState(true);
   const [isTimerVisible, setIsTimerVisible] = useState(false);
-
   const currentStreamsRef = useRef(streams);
   useEffect(() => {
     currentStreamsRef.current = streams;
@@ -44,6 +45,7 @@ const MainVideoPage = () => {
       const constraints = { video: true, audio: true };
       try {
         const stream = await navigator.mediaDevices.getUserMedia(constraints);
+
         dispatch(updateCallStatus("haveMedia", true));
         dispatch(addStream("localStream", stream));
         localStreamRef.current = stream;
@@ -60,7 +62,6 @@ const MainVideoPage = () => {
       }
     };
     fetchMedia();
-    console.log("Fetching media and creating peer connections.");
   }, []);
 
   useEffect(() => {
@@ -109,6 +110,7 @@ const MainVideoPage = () => {
         }
 
         dispatch(updateCallStatus("haveCreatedOffer", true));
+        setShowMessage(false);
       } catch (error) {
         console.error(`Error in createOffer function: ${error}`);
       }
@@ -221,17 +223,6 @@ const MainVideoPage = () => {
     };
   }, [location.pathname]);
 
-  useEffect(() => {
-    const handleToggleTimerVisibility = (data: { isTimerVisible: boolean }) => {
-      setIsTimerVisible(data.isTimerVisible);
-      console.log("Received toggleTimerVisibility event:", data);
-    };
-    socket?.on("toggleTimerVisibility", handleToggleTimerVisibility);
-    return () => {
-      socket?.off("toggleTimerVisibility", handleToggleTimerVisibility);
-    };
-  }, [socket]);
-
   const addIce = (iceC: RTCIceCandidate) => {
     const offerId = offerIdRef.current;
     if (!offerId) {
@@ -247,12 +238,20 @@ const MainVideoPage = () => {
 
   return (
     <div className="relative">
-      <video
-        ref={largeFeedEl}
-        className="h-[100vh] w-full object-cover scale-x-[-1] bg-black"
-        autoPlay
-        playsInline
-      ></video>
+      <div className="relative">
+        <video
+          ref={largeFeedEl}
+          className="h-[100vh] w-full object-cover scale-x-[-1] bg-black"
+          autoPlay
+          playsInline
+        ></video>
+
+        {showMessage && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 text-white text-lg">
+            <p>{t("videoCallMessage")}</p>
+          </div>
+        )}
+      </div>
       <video
         ref={smallFeedEl}
         className="

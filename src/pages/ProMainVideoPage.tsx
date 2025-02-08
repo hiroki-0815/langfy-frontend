@@ -12,8 +12,10 @@ import { createPeerConnection } from "@/WebRTCUutilities/createPeerConnection";
 import calleeSocketListeners from "@/WebRTCUutilities/CalleeSocketListeners";
 import { StreamsType } from "@/redux-elements/type";
 import TimerApp from "@/components/LanguageTimer";
+import { useTranslation } from "react-i18next";
 
 const ProMainVideoPage = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const streams = useAppSelector((state: RootState) => state.stream);
   const smallFeedEl = useRef(null);
@@ -24,9 +26,8 @@ const ProMainVideoPage = () => {
   const [haveGottenIce, setHaveGottenIce] = useState<boolean>(false);
   const streamsRef = useRef<StreamsType | null>(null);
   const localStreamRef = useRef<MediaStream | null>(null);
-
+  const [showMessage, setShowMessage] = useState(true);
   const [isTimerVisible, setIsTimerVisible] = useState(false);
-
   const currentStreamsRef = useRef(streams);
   useEffect(() => {
     currentStreamsRef.current = streams;
@@ -142,6 +143,7 @@ const ProMainVideoPage = () => {
               console.log("Emitting newAnswer with offerId:", offerId);
               console.log("Emitting newAnswer with callerId:", callerId);
               socket?.emit("newAnswer", { answer, callerId, offerId });
+              setShowMessage(false);
             } catch (error) {
               console.error("Error creating or setting answer:", error);
             }
@@ -247,25 +249,22 @@ const ProMainVideoPage = () => {
     };
   }, [location.pathname]);
 
-  useEffect(() => {
-    const handleToggleTimerVisibility = (data: { isTimerVisible: boolean }) => {
-      setIsTimerVisible(data.isTimerVisible);
-      console.log("Received toggleTimerVisibility event:", data);
-    };
-    socket?.on("toggleTimerVisibility", handleToggleTimerVisibility);
-    return () => {
-      socket?.off("toggleTimerVisibility", handleToggleTimerVisibility);
-    };
-  }, [socket]);
-
   return (
     <div className="relative">
-      <video
-        ref={largeFeedEl}
-        className="h-[100vh] w-full object-cover scale-x-[-1] bg-black"
-        autoPlay
-        playsInline
-      ></video>
+      <div className="relative">
+        <video
+          ref={largeFeedEl}
+          className="h-[100vh] w-full object-cover scale-x-[-1] bg-black"
+          autoPlay
+          playsInline
+        ></video>
+
+        {showMessage && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50 text-white text-lg">
+            <p>{t("videoCallMessage")}</p>
+          </div>
+        )}
+      </div>
       <video
         ref={smallFeedEl}
         className="
