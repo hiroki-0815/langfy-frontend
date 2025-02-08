@@ -256,8 +256,8 @@ const MainVideoPage = () => {
         ref={smallFeedEl}
         className="
           absolute border border-blue-400 
-          right-4 top-4 w-[160px] rounded-md scale-x-[-1]
-          md:right-[50px] md:top-[80px] md:w-[320px]
+          right-4 top-4 w-[320px] rounded-md scale-x-[-1]
+          md:right-[50px] md:top-[80px] 
         "
         autoPlay
         controls
@@ -270,7 +270,7 @@ const MainVideoPage = () => {
         setIsTimerVisible={setIsTimerVisible}
       />
       <div
-        className={`absolute left-4 top-4 w-[160px] md:w-[320px] rounded-md 
+        className={`absolute right-4 top-[250px] w-[300px] md:w-[320px] rounded-md 
         md:left-[50px] md:top-[80px] ${isTimerVisible ? "block" : "hidden"}`}
       >
         <TimerApp />
