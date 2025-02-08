@@ -16,6 +16,7 @@ import callerSocketListeners from "@/WebRTCUutilities/CallerSocketListeners";
 import { StreamsType } from "@/redux-elements/type";
 import TimerApp from "@/components/LanguageTimer";
 import { useTranslation } from "react-i18next";
+import TopicPicker from "@/components/TopicPicker";
 
 const MainVideoPage = () => {
   const { t } = useTranslation();
@@ -35,6 +36,7 @@ const MainVideoPage = () => {
   const localStreamRef = useRef<MediaStream | null>(null);
   const [showMessage, setShowMessage] = useState(true);
   const [isTimerVisible, setIsTimerVisible] = useState(false);
+  const [isTopicPickerVisible, setIsTopicPickerVisible] = useState(false);
   const currentStreamsRef = useRef(streams);
   useEffect(() => {
     currentStreamsRef.current = streams;
@@ -238,6 +240,11 @@ const MainVideoPage = () => {
 
   return (
     <div className="relative">
+      <div
+        className="absolute border border-blue-400 
+          right-4 top-4 w-[320px] rounded-md scale-x-[-1]
+          md:right-[50px] md:top-[80px] "
+      ></div>
       <div className="relative">
         <video
           ref={largeFeedEl}
@@ -267,13 +274,23 @@ const MainVideoPage = () => {
         smallFeedEl={smallFeedEl}
         largeFeedEl={largeFeedEl}
         isTimerVisible={isTimerVisible}
+        isTopicPickerVisible={isTopicPickerVisible}
         setIsTimerVisible={setIsTimerVisible}
+        setIsTopicPickerVisible={setIsTopicPickerVisible}
       />
       <div
-        className={`absolute right-4 top-[250px] w-[300px] md:w-[320px] rounded-md 
+        className={`absolute right-4 top-[250px] w-[300px] md:w-[320px] rounded-md  p-4 
         md:left-[50px] md:top-[80px] ${isTimerVisible ? "block" : "hidden"}`}
       >
         <TimerApp />
+      </div>
+      <div
+        className={`absolute right-4 top-[500px] w-[300px] md:w-[320px] rounded-md  p-4 
+        md:left-[50px] md:top-[350px] ${
+          isTopicPickerVisible ? "block" : "hidden"
+        }`}
+      >
+        <TopicPicker />
       </div>
     </div>
   );
