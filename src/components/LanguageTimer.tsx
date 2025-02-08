@@ -1,6 +1,7 @@
 import { useSocket } from "@/context/SocketContext";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 export default function TimerApp() {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -16,21 +17,13 @@ export default function TimerApp() {
   const [isRunning, setIsRunning] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const { socket } = useSocket();
-
   const [searchParams] = useSearchParams();
-
-  // Determine which query parameter is present:
   const callerIdFromUrl = searchParams.get("callerId");
   const receiverIdFromUrl = searchParams.get("receiverId");
-
-  // If on the caller side, the URL carries receiverId.
-  // If on the callee side, the URL carries callerId.
   const role = receiverIdFromUrl ? "caller" : "callee";
   const targetId = receiverIdFromUrl ? receiverIdFromUrl : callerIdFromUrl;
+  const { t } = useTranslation();
 
-  console.log("TimerApp role:", role, "targetId:", targetId);
-
-  // --- Listening for incoming events remains unchanged ---
   useEffect(() => {
     const languageUpdateHandler = ({
       language: newLang,
@@ -130,7 +123,6 @@ export default function TimerApp() {
     };
   }, [socket]);
 
-  // --- Emit events using only the targetId (the remote party) ---
   const handleStartPause = () => {
     let newIsRunning: boolean;
     let newIsPaused: boolean;
@@ -200,10 +192,10 @@ export default function TimerApp() {
   };
 
   return (
-    <div className="p-4 font-sans max-w-sm mx-auto bg-white rounded">
+    <div className="p-4 sm:p-6 font-sans w-full max-w-md mx-auto bg-white rounded shadow">
       <div className="mb-4 flex flex-col items-center ">
         <div className="flex items-center mb-4">
-          <span className="mr-2">Time to speak:</span>
+          <span className="mr-2">{t("timeToSpeak")}</span>
           <strong className="mr-2 text-lg">
             {isFirstLanguageActive ? firstLanguage : secondLanguage}
           </strong>
@@ -211,14 +203,17 @@ export default function TimerApp() {
             onClick={() => setDialogOpen(true)}
             className="bg-sky-500 text-white px-3 py-1 rounded"
           >
-            set
+            {t("setButton")}
           </button>
         </div>
 
-        <div className="text-4xl font-bold ">{formatTime(timeLeft)}</div>
+        {/* Updated timer font size: smaller on mobile, larger on bigger screens */}
+        <div className="text-3xl sm:text-4xl font-bold">
+          {formatTime(timeLeft)}
+        </div>
 
         <div className="mt-2 text-sm text-gray-700 mb-4">
-          Set {currentSet} of {selectedSets}
+          {t("setInfo", { currentSet, selectedSets })}
         </div>
 
         <button
@@ -229,17 +224,18 @@ export default function TimerApp() {
               : "bg-sky-500 hover:bg-sky-600"
           } text-white`}
         >
-          {isRunning ? (isPaused ? "Resume" : "Pause") : "Start"}
+          {isRunning ? (isPaused ? t("resume") : t("pause")) : t("start")}
         </button>
       </div>
 
       {dialogOpen && (
-        <div className="absolute top-20 left-1/2 -translate-x-1/2 p-4 border border-gray-300 bg-white rounded shadow-md w-64 text-center">
-          <h4 className="text-lg font-semibold mb-2">Pick Languages & Time</h4>
+        // Updated dialog: responsive width (almost full width on mobile, fixed width on larger screens)
+        <div className="absolute top-20 left-1/2 transform -translate-x-1/2 p-4 border border-gray-300 bg-white rounded shadow-md w-11/12 sm:w-64 text-center">
+          <h4 className="text-lg font-semibold mb-2">{t("pickLanguages")}</h4>
 
           <div className="mb-2">
             <label className="block text-sm font-medium mb-1">
-              First language:
+              {t("firstLanguage")}
             </label>
             <input
               type="text"
@@ -251,7 +247,7 @@ export default function TimerApp() {
 
           <div className="mb-2">
             <label className="block text-sm font-medium mb-1">
-              Language to switch:
+              {t("switchLanguage")}
             </label>
             <input
               type="text"
@@ -263,7 +259,7 @@ export default function TimerApp() {
 
           <div className="mb-2">
             <label className="block text-sm font-medium mb-1">
-              Duration (minutes):
+              {t("duration")}
             </label>
             <select
               value={selectedDuration}
@@ -279,7 +275,9 @@ export default function TimerApp() {
           </div>
 
           <div className="mb-2">
-            <label className="block text-sm font-medium mb-1">Sets:</label>
+            <label className="block text-sm font-medium mb-1">
+              {t("sets")}
+            </label>
             <select
               value={selectedSets}
               onChange={(e) => handleSetsChange(Number(e.target.value))}
@@ -297,7 +295,7 @@ export default function TimerApp() {
             onClick={() => setDialogOpen(false)}
             className="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded"
           >
-            Close
+            {t("close")}
           </button>
         </div>
       )}
