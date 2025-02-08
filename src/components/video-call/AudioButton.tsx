@@ -41,7 +41,6 @@ const AudioButton = ({ smallFeedEl }: AudioButtonProps) => {
       }
     } else if (audioType === "input") {
       try {
-        // If deviceId is "default", just request audio without an exact constraint.
         const audioConstraints =
           deviceId === "default" ? true : { deviceId: { exact: deviceId } };
 
