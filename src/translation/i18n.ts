@@ -125,6 +125,20 @@ const resources = {
       
       // ProMainVideoPage && MainVideoPage
       videoCallMessage: "To start the video call, please turn on your camera and microphone.",
+
+      // LanguageTimer
+      timeToSpeak: "Time to speak:",
+      setButton: "Set",
+      setInfo: "Set {{currentSet}} of {{selectedSets}}",
+      resume: "Resume",
+      pause: "Pause",
+      start: "Start",
+      pickLanguages: "Pick Languages & Time",
+      firstLanguage: "First language:",
+      switchLanguage: "Language to switch:",
+      duration: "Duration (minutes):",
+      sets: "Sets:",
+      close: "Close"
     },
   },
   ja: {
@@ -250,8 +264,21 @@ const resources = {
       noSelfIntroduction: "自己紹介がありません。",
       
       // ProMainVideoPage && MainVideoPage
-      videoCallMessage: "ビデオ通話を開始するには、カメラとマイクをオンにしてください。"
+      videoCallMessage: "ビデオ通話を開始するには、カメラとマイクをオンにしてください。",
             
+      // LanguageTimer
+      timeToSpeak: "話す言語:",
+      setButton: "設定",
+      setInfo: "セット {{currentSet}} / {{selectedSets}}",
+      resume: "再開",
+      pause: "一時停止",
+      start: "開始",
+      pickLanguages: "言語と時間を選択",
+      firstLanguage: "第一言語:",
+      switchLanguage: "切り替える言語:",
+      duration: "時間（分）:",
+      sets: "セット数:",
+      close: "閉じる"
     },
     
   },
