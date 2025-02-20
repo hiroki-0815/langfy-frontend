@@ -20,7 +20,7 @@ const Sidebar = ({ users, onUserSelect, selectedUserId }: Props) => {
   const { socket } = useSocket();
   const dispatch = useAppDispatch();
   const [isOfferSet, setIsOfferSet] = useState<boolean>(false);
-  const roomId = uuidv4(); // Keeping your original roomId logic
+  const roomId = uuidv4();
   const navigate = useNavigate();
   const [callerId, setCallerId] = useState<string | null>(null);
 
@@ -77,7 +77,6 @@ const Sidebar = ({ users, onUserSelect, selectedUserId }: Props) => {
             onClick={() => onUserSelect(user._id)}
           >
             <div className="relative mx-auto lg:mx-0">
-              {/* Profile Image */}
               {user.imageUrl ? (
                 <img
                   src={user.imageUrl}
