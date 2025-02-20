@@ -2,7 +2,7 @@ import { ChevronUp, ChevronDown } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGetChatUser } from "@/api/UseChatApi";
-import { useTranslation } from "react-i18next"; // ✅ Import i18n
+import { useTranslation } from "react-i18next";
 
 type UserCardProps = {
   name: string;
@@ -31,7 +31,7 @@ const UserCard = ({
   learningLanguage,
   userId,
 }: UserCardProps) => {
-  const { t } = useTranslation(); // ✅ Use i18n
+  const { t } = useTranslation();
   const [showFullIntroduction, setShowFullIntroduction] = useState(false);
   const navigate = useNavigate();
 
