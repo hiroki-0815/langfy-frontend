@@ -8,12 +8,11 @@ const HomePage = () => {
   return (
     <main className="flex justify-center flex-col min-h-full px-2 py-3 pt-10 pb-20 md:pt-20 md:px-20">
       <div>
-        <h1 className="mb-15 text-2xl text-left py-10 font-extrabold md:text-4xl lg:text-5xl">
-          {t("headline_part1")}{" "}
-          <span className="text-sky-400">{t("headline_part2")}</span>
+        <h1 className="mb-15 text-2xl text-left py-10 font-extrabold md:text-4xl lg:text-5xl text-sky-400">
+          {t("headline_part1")} <span>{t("headline_part2")}</span>
           {t("headline_question1")} <br />
           {t("headline_question2")}
-          <span className="text-sky-400">{t("headline_question3")}</span>
+          <span>{t("headline_question3")}</span>
           {t("headline_question4")}
         </h1>
 

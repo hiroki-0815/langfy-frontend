@@ -21,13 +21,13 @@ const resources = {
       thoughts_section: {
         title: "Have you ever thought about these?",
         thought1: "I'm taking Japanese classes from tutors but the classes are boring and I want more casual conversation.",
-        thought2: "I'm looking for a language partner on a language exchange app, but it's a pain to message random people."
+        thought2: "I'm looking for a language partner but don't know how"
       },
 
       langfy_benefits: {
         title: "If you have thought about these, Langfy is for you!",
         reasoning_title: "Because",
-        no_messaging: "You don't have to send a message to people for a call.",
+        no_messaging: "You can find good people who speak your target language.",
         free_usage: "Everything you can do on this platform is free."
       },
 
@@ -177,9 +177,9 @@ const resources = {
 
       langfy_benefits: {
         title: "そんなあなたにぴったりなのが Langfy です！",
-        reasoning_title: "その理由は…",
-        no_messaging: "メッセージのやり取りなしで、すぐに通話できます。",
-        free_usage: "このプラットフォームの機能はすべて無料で使えます。"
+        reasoning_title: "なぜなら",
+        no_messaging: "チューターではないからカジュアルな会話を楽しめます。",
+        free_usage: "あなたが学びたい言語を話す人と簡単に出会えます。"
       },
 
       // NoChatSelected Component
