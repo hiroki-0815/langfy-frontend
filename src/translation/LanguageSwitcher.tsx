@@ -4,16 +4,12 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"; // Adjust the import path based on your project
+} from "@/components/ui/select";
 import { useTranslation } from "react-i18next";
 
-// Define your language options
 const languages = [
-  { value: "en", label: "EN" },
-  { value: "ja", label: "JP" },
-  { value: "zh", label: "中文" },
-  { value: "es", label: "ES" },
-  { value: "fr", label: "FR" },
+  { value: "en", label: "English" },
+  { value: "ja", label: "日本語" },
 ];
 
 const LanguageSwitcher = () => {
