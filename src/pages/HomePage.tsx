@@ -1,10 +1,22 @@
+import { useAuth0 } from "@auth0/auth0-react";
 import ellipseBullet from "../assets/bulletpoint/Ellipse.png";
 import person1 from "../assets/users/person-1.jpeg";
 import person2 from "../assets/users/person-2.jpeg";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const HomePage = () => {
   const { t } = useTranslation();
+  const { isAuthenticated } = useAuth0();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/search-language-partners");
+    }
+  }, [isAuthenticated, navigate]);
+
   return (
     <main className="flex justify-center flex-col min-h-full px-2 py-3 pt-10 pb-20 md:pt-20 md:px-20">
       <div>
