@@ -12,7 +12,8 @@ const HomePage = () => {
         <h1 className="mb-15 text-2xl text-left py-10 font-extrabold md:text-4xl lg:text-5xl text-sky-400">
           {t("headline_part1")} <span>{t("headline_part2")}</span>
           {t("headline_question1")} <br />
-          {t("headline_question2")} <span>{t("headline_question3")}</span>
+          {t("headline_question2")}
+          <span>{t("headline_question3")}</span>
           {t("headline_question4")}
         </h1>
 

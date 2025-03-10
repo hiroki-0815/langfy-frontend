@@ -157,11 +157,11 @@ const resources = {
     translation: {
       // Homepage
       headline_part1: "言語パートナーを",
-      headline_part2: "探していませんか？",
-      headline_question1: "",
-      headline_question2: "もっと気軽に",
-      headline_question3: "会話できる相手がいたら",
-      headline_question4: "嬉しくないですか？",
+      headline_part2: "見つけよう",
+      headline_question1: "!!",
+      headline_question2: "気軽に",
+      headline_question3: "スピーキングの練習",
+      headline_question4: "相手を見つけよう！",
 
       benefits: {
         find_partner: "あなたに合った言語パートナーが簡単に見つかります。",
@@ -176,7 +176,7 @@ const resources = {
       },
 
       langfy_benefits: {
-        title: "そんなあなたにぴったりなのが Langfy です！",
+        title: "そんなあなたにぴったりなのがLangfyです!",
         reasoning_title: "なぜなら",
         no_messaging: "チューターではないからカジュアルな会話を楽しめます。",
         free_usage: "あなたが学びたい言語を話す人と簡単に出会えます。"
