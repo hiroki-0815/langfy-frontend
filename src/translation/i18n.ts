@@ -5,8 +5,8 @@ const resources = {
   en: {
     translation: {
       // HomePage
-      headline_part1: "Looking for a",
-      headline_part2: "language partner",
+      headline_part1: "Looking for ",
+      headline_part2: "language partners",
       headline_question1: "??",
       headline_question2: "Want to improve",
       headline_question3: "your speaking skills",
@@ -161,7 +161,7 @@ const resources = {
       headline_question1: "!!",
       headline_question2: "気軽に",
       headline_question3: "スピーキングの練習",
-      headline_question4: "相手を見つけよう！",
+      headline_question4: "しよう！",
 
       benefits: {
         find_partner: "あなたに合った言語パートナーが簡単に見つかります。",
@@ -311,8 +311,8 @@ const resources = {
 
 i18n.use(initReactI18next).init({
   resources,
-  lng: "en",
-  fallbackLng: "en",
+  lng: "ja",
+  fallbackLng: "ja",
   interpolation: {
     escapeValue: false,
   },
