@@ -20,7 +20,7 @@ const LanguageSwitcher = () => {
   };
 
   return (
-    <Select defaultValue="en" onValueChange={handleChangeLanguage}>
+    <Select defaultValue="ja" onValueChange={handleChangeLanguage}>
       <SelectTrigger className="w-32">
         <SelectValue placeholder="Language" />
       </SelectTrigger>
