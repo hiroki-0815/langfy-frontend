@@ -152,3 +152,42 @@ export const useUnlikePost = () => {
 
   return { unlikePostRequest, loading };
 };
+
+export const useGetSelfPosts = () => {
+  const { getAccessTokenSilently } = useAuth0();
+  const [loading, setLoading] = useState(false);
+
+  const getSelfPostsRequest = useCallback(
+    async (page: number = 1, limit: number = 10): Promise<Post[]> => {
+      setLoading(true);
+      try {
+        const accessToken = await getAccessTokenSilently();
+        // Assuming the self-post endpoint is /api/posts/self
+        const url = new URL(`${API_BASE_URL}/api/posts/self`);
+        url.searchParams.append("page", page.toString());
+        url.searchParams.append("limit", limit.toString());
+
+        const response = await fetch(url.toString(), {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Error: ${response.status}`);
+        }
+
+        const posts: Post[] = await response.json();
+        return posts;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [getAccessTokenSilently]
+  );
+
+  return { getSelfPostsRequest, loading };
+};
