@@ -1,13 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import { Post } from "@/model/post";
 import { cn, formatTime, timeAgo } from "@/utilities/timeFmt";
 import { ArrowLeftRight, Heart, MessageSquare } from "lucide-react";
+import { useLikePost, useUnlikePost } from "@/api/PostApi";
 
 interface PostProps {
   post: Post;
 }
 
 const PostComponent: React.FC<PostProps> = ({ post }) => {
+  // Local state for like toggling
+  const [liked, setLiked] = useState<boolean>(false);
+  const [likesCount, setLikesCount] = useState<number>(post.likesCount);
+
+  // Hooks for calling the APIs
+  const { likePostRequest } = useLikePost();
+  const { unlikePostRequest } = useUnlikePost();
+
+  const handleLikeToggle = async () => {
+    try {
+      if (liked) {
+        const updatedPost = await unlikePostRequest(post.id);
+        setLiked(false);
+        setLikesCount(updatedPost.likesCount);
+      } else {
+        const updatedPost = await likePostRequest(post.id);
+        setLiked(true);
+        setLikesCount(updatedPost.likesCount);
+      }
+    } catch (error) {
+      console.error("Error toggling like:", error);
+    }
+  };
+
   return (
     <div
       className={cn(
@@ -39,10 +64,16 @@ const PostComponent: React.FC<PostProps> = ({ post }) => {
       </div>
 
       <div className="mt-4 flex items-center space-x-4 text-gray-600 text-sm">
-        <div className="flex items-center space-x-1">
-          <Heart className="w-4 h-4" />
-          <span>{post.likesCount}</span>
-        </div>
+        {/* Clickable heart icon */}
+        <button
+          onClick={handleLikeToggle}
+          className="flex items-center space-x-1 focus:outline-none"
+        >
+          <Heart
+            className={`w-4 h-4 ${liked ? "text-red-500" : "text-gray-600"}`}
+          />
+          <span>{likesCount}</span>
+        </button>
         <div className="flex items-center space-x-1">
           <MessageSquare className="w-4 h-4" />
           <span>0</span>
