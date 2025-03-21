@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useGetMessages } from "@/api/UseChatApi";
 import { useSocket } from "@/context/SocketContext";
-import { Message, User } from "@/model/types";
 import ChatHeader from "./ChatHeader";
 import MessageInput from "./MessageInput";
 import { formatTime } from "@/utilities/timeFmt";
+import { User } from "@/model/user";
+import { Message } from "@/model/messsage";
 
 type Props = {
   user: User;
