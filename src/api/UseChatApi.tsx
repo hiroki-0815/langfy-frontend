@@ -1,4 +1,5 @@
-import { Message, User } from "@/model/types";
+import { Message } from "@/model/messsage";
+import { User } from "@/model/user";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { toast } from "sonner";
