@@ -8,6 +8,8 @@ import ChatPage from "./pages/ChatPage";
 import ProMainVideoPage from "./pages/ProMainVideoPage";
 import MainVideoPage from "./pages/MainVideoPage";
 import Layout from "./layouts/layout";
+import MomentsPage from "./pages/MomentsPage";
+import UserPage from "./pages/UserPage";
 
 const AppRoutes = () => {
   return (
@@ -36,6 +38,22 @@ const AppRoutes = () => {
           element={
             <Layout showNavigation>
               <SearchLanguagePartners />
+            </Layout>
+          }
+        />
+        <Route
+          path="/moments"
+          element={
+            <Layout showNavigation>
+              <MomentsPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/user-page"
+          element={
+            <Layout showNavigation>
+              <UserPage />
             </Layout>
           }
         />

@@ -6,6 +6,8 @@ import {
   MessageSquareIcon,
   User,
   UserIcon,
+  Clock,
+  ClockIcon,
 } from "lucide-react";
 
 const Navigation = () => {
@@ -58,21 +60,40 @@ const Navigation = () => {
           </Link>
         </li>
 
+        {/* New Moments Nav Item */}
         <li className="flex flex-col items-center">
           <Link
-            to="/user-profile"
+            to="/moments"
             className="cursor-pointer transition-colors flex flex-col items-center"
           >
-            {location.pathname === "/user-profile" ? (
+            {location.pathname === "/moments" ? (
+              <ClockIcon className="w-6 h-6 text-black" />
+            ) : (
+              <Clock className="w-6 h-6 text-white hover:text-black transition-colors" />
+            )}
+            <div
+              className={`text-xs ${
+                location.pathname === "/moments" ? "text-black" : "text-white"
+              }`}
+            >
+              Moments
+            </div>
+          </Link>
+        </li>
+
+        <li className="flex flex-col items-center">
+          <Link
+            to="/user-page"
+            className="cursor-pointer transition-colors flex flex-col items-center"
+          >
+            {location.pathname === "/user-page" ? (
               <UserIcon className="w-6 h-6 text-black" />
             ) : (
               <User className="w-6 h-6 text-white hover:text-black transition-colors" />
             )}
             <div
               className={`text-xs ${
-                location.pathname === "/user-profile"
-                  ? "text-black"
-                  : "text-white"
+                location.pathname === "/user-page" ? "text-black" : "text-white"
               }`}
             >
               Profile

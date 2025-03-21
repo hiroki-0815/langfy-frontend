@@ -1,6 +1,6 @@
+import { User } from "@/model/user";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
-import { User } from "@/model/types";
 
 type SocketContextType = {
   socket: Socket | null;

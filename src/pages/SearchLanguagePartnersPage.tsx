@@ -2,7 +2,7 @@ import { useState } from "react";
 import LanguageFilterSidebar from "@/components/LanguageFilterSidebar";
 import Filters from "@/components/Filters";
 import { useSortUsers } from "@/api/AllUsersApi";
-import { User } from "@/model/types";
+
 import UserCard from "@/components/UserCard";
 import {
   Language,
@@ -15,6 +15,7 @@ import PaginationSelector from "@/components/PaginationSlector";
 import UserCardSkeleton from "@/skeletons/UserCardSkeleton";
 
 import { useTranslation } from "react-i18next";
+import { User } from "@/model/user";
 
 const SearchLanguagePartnersPage = () => {
   const [page, setPage] = useState(1);

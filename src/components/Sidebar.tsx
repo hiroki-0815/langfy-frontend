@@ -1,4 +1,3 @@
-import { User } from "@/model/types";
 import { PhoneIcon, Users } from "lucide-react";
 import { Separator } from "./ui/separator";
 import { useEffect, useState } from "react";
@@ -9,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import updateCallStatus, {
   setCallDescription,
 } from "@/redux-elements/actions/updateCallStatus";
+import { User } from "@/model/user";
 
 type Props = {
   users?: User[];
