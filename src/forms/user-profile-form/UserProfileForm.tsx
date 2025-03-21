@@ -25,7 +25,6 @@ import { Button } from "@/components/ui/button";
 import LoadingButton from "@/components/LoadingButton";
 
 import ImageSection from "./ImageSection";
-import { User } from "@/model/types";
 import {
   FLUENCY_LEVELS,
   GENDERS,
@@ -35,6 +34,7 @@ import {
 } from "@/model/constants";
 
 import { useTranslation } from "react-i18next";
+import { User } from "@/model/user";
 
 export const formSchema = z
   .object({
