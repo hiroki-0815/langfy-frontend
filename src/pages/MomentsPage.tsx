@@ -11,33 +11,37 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import Loading from "@/Loading/Loading";
+import PostSkeleton from "@/skeletons/PostSkeleton";
 
 const MomentsPage: React.FC = () => {
-  const { getAllPostsRequest } = useGetAllPosts();
-  const { createPostRequest } = useCreatePost();
+  const { getAllPostsRequest, loading: getUserLoading } = useGetAllPosts();
+  const { createPostRequest, loading: createPostLoading } = useCreatePost();
   const [posts, setPosts] = useState<Post[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [content, setContent] = useState<string>("");
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
 
-  const fetchPosts = async () => {
-    try {
-      const fetchedPosts = await getAllPostsRequest();
-      setPosts(fetchedPosts);
-    } catch (err: any) {
-      setError(err.message || "Failed to fetch posts");
-    }
-  };
-
   useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const fetchedPosts = await getAllPostsRequest();
+        setPosts(fetchedPosts);
+      } catch (err: any) {
+        setError(err.message || "Failed to fetch posts");
+      }
+    };
     fetchPosts();
   }, [getAllPostsRequest]);
+
+  if (getUserLoading) {
+    return <Loading />;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Ensure content length is less than 200
     if (content.trim().length >= 200) {
       setErrorMessage("Content must be less than 200 characters.");
       return;
@@ -48,7 +52,6 @@ const MomentsPage: React.FC = () => {
       toast.success("Post created successfully!");
       setContent("");
       setDialogOpen(false);
-      fetchPosts();
       setErrorMessage("");
     } catch (err: any) {
       setError(err.message || "Failed to create post");
@@ -69,7 +72,9 @@ const MomentsPage: React.FC = () => {
     <div className="container min-h-[1000px] mx-auto p-4 relative">
       <h1 className="text-2xl font-bold mb-4">Moments</h1>
       {error && <div className="text-red-500 mb-4">{error}</div>}
+
       <div className="space-y-4">
+        {createPostLoading && <PostSkeleton />}
         {posts.map((post) => (
           <PostComponent key={post.id} post={post} />
         ))}
@@ -93,7 +98,6 @@ const MomentsPage: React.FC = () => {
               onChange={handleContentChange}
               required
             />
-            {/* Character Count & Error Message */}
             <div className="text-sm flex justify-between text-gray-500">
               <span>{content.trim().length}/200</span>
               {errorMessage && (
