@@ -19,6 +19,7 @@ const MomentsPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [content, setContent] = useState<string>("");
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const fetchPosts = async () => {
     try {
@@ -35,15 +36,32 @@ const MomentsPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Ensure content length is less than 200
+    if (content.trim().length >= 200) {
+      setErrorMessage("Content must be less than 200 characters.");
+      return;
+    }
+
     try {
       await createPostRequest(content);
       toast.success("Post created successfully!");
       setContent("");
       setDialogOpen(false);
       fetchPosts();
+      setErrorMessage("");
     } catch (err: any) {
       setError(err.message || "Failed to create post");
-      toast.error("Something went wrong");
+      toast.error(err.message || "Failed to create post");
+    }
+  };
+
+  const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newValue = e.target.value;
+    setContent(newValue);
+
+    if (newValue.trim().length < 200) {
+      setErrorMessage("");
     }
   };
 
@@ -57,7 +75,6 @@ const MomentsPage: React.FC = () => {
         ))}
       </div>
 
-      {/* Floating SquarePen icon triggers the dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogTrigger asChild>
           <button className="fixed bottom-20 right-20 bg-blue-500 hover:bg-blue-600 text-white p-3 rounded-full shadow-lg">
@@ -73,15 +90,23 @@ const MomentsPage: React.FC = () => {
               className="w-full border border-gray-300 rounded-md p-2"
               placeholder="How are you feeling..."
               value={content}
-              onChange={(e) => setContent(e.target.value)}
+              onChange={handleContentChange}
               required
             />
+            {/* Character Count & Error Message */}
+            <div className="text-sm flex justify-between text-gray-500">
+              <span>{content.trim().length}/200</span>
+              {errorMessage && (
+                <span className="text-red-500 ml-2">{errorMessage}</span>
+              )}
+            </div>
             <div className="flex justify-end space-x-2">
               <button
                 type="button"
                 onClick={() => {
                   setContent("");
-                  setDialogOpen(false); // Close the dialog on Cancel
+                  setDialogOpen(false);
+                  setErrorMessage("");
                 }}
                 className="px-4 py-2 bg-gray-200 rounded-md"
               >
