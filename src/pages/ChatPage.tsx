@@ -4,9 +4,9 @@ import { useGetChatUser } from "@/api/UseChatApi";
 import Sidebar from "@/components/Sidebar";
 import ChatContainer from "@/components/ChatContainer";
 import NoChatSelected from "@/components/NoChatSelected";
-import { User } from "@/model/types";
 import { useParams } from "react-router-dom";
 import Loading from "@/Loading/Loading";
+import { User } from "@/model/user";
 
 const ChatPage = () => {
   const { userId } = useParams<{ userId: string }>();
