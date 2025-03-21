@@ -1,29 +1,10 @@
 // apiClient.ts
 
+import { Post } from "@/model/post";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useCallback } from "react";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
-export interface Post {
-  id: string;
-  content: string;
-  authorId: string;
-  // These properties are populated when fetching posts:
-  nativeLanguage: string;
-  learningLanguage: string;
-  likesCount: number;
-  createdAt: string;
-}
-
-// Response type for a newly created post (without language details)
-export interface NewPostResponse {
-  id: string;
-  content: string;
-  authorId: string;
-  likesCount: number;
-  createdAt: string;
-}
 
 export const useGetAllPosts = () => {
   const { getAccessTokenSilently } = useAuth0();
@@ -51,7 +32,6 @@ export const useGetAllPosts = () => {
         throw new Error(errorData.error || `Error: ${response.status}`);
       }
 
-      // Parse and return the JSON data as an array of Post objects
       const posts: Post[] = await response.json();
       return posts;
     },
