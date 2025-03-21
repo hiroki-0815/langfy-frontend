@@ -1,4 +1,5 @@
-import { useAuth0, User } from "@auth0/auth0-react";
+import { User } from "@/model/user";
+import { useAuth0 } from "@auth0/auth0-react";
 import { useQuery } from "react-query";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
