@@ -78,3 +78,77 @@ export const useCreatePost = () => {
 
   return { createPostRequest, loading };
 };
+
+export const useLikePost = () => {
+  const { getAccessTokenSilently } = useAuth0();
+  const [loading, setLoading] = useState(false);
+
+  const likePostRequest = useCallback(
+    async (postId: string): Promise<Post> => {
+      setLoading(true);
+      try {
+        const accessToken = await getAccessTokenSilently();
+        // Assuming the endpoint is: POST /api/posts/:postId/like
+        const url = new URL(`${API_BASE_URL}/api/posts/${postId}/like`);
+
+        const response = await fetch(url.toString(), {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Error: ${response.status}`);
+        }
+
+        const updatedPost: Post = await response.json();
+        return updatedPost;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [getAccessTokenSilently]
+  );
+
+  return { likePostRequest, loading };
+};
+
+export const useUnlikePost = () => {
+  const { getAccessTokenSilently } = useAuth0();
+  const [loading, setLoading] = useState(false);
+
+  const unlikePostRequest = useCallback(
+    async (postId: string): Promise<Post> => {
+      setLoading(true);
+      try {
+        const accessToken = await getAccessTokenSilently();
+        // Assuming the endpoint is: POST /api/posts/:postId/unlike
+        const url = new URL(`${API_BASE_URL}/api/posts/${postId}/unlike`);
+
+        const response = await fetch(url.toString(), {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Error: ${response.status}`);
+        }
+
+        const updatedPost: Post = await response.json();
+        return updatedPost;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [getAccessTokenSilently]
+  );
+
+  return { unlikePostRequest, loading };
+};
