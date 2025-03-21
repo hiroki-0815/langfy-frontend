@@ -6,6 +6,8 @@ import {
   MessageSquareIcon,
   User,
   UserIcon,
+  Clock,
+  ClockIcon,
 } from "lucide-react";
 
 const Navigation = () => {
@@ -54,6 +56,27 @@ const Navigation = () => {
               }`}
             >
               Chat
+            </div>
+          </Link>
+        </li>
+
+        {/* New Moments Nav Item */}
+        <li className="flex flex-col items-center">
+          <Link
+            to="/moments"
+            className="cursor-pointer transition-colors flex flex-col items-center"
+          >
+            {location.pathname === "/moments" ? (
+              <ClockIcon className="w-6 h-6 text-black" />
+            ) : (
+              <Clock className="w-6 h-6 text-white hover:text-black transition-colors" />
+            )}
+            <div
+              className={`text-xs ${
+                location.pathname === "/moments" ? "text-black" : "text-white"
+              }`}
+            >
+              Moments
             </div>
           </Link>
         </li>
