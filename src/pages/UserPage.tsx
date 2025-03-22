@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import Loading from "@/Loading/Loading";
 import { useGetMyUser } from "@/api/MyUserApi";
 import { useGetSelfPosts } from "@/api/PostApi";
-import PostComponent from "@/components/MomentsPage.tsx/PostComponent";
 import { Post } from "@/model/post";
+import PostComponentForUserPage from "@/components/MomentsPage.tsx/PostComponentForUserPage";
 
 const UserPage: React.FC = () => {
   const { currentUser, isLoading } = useGetMyUser();
@@ -23,6 +23,10 @@ const UserPage: React.FC = () => {
     };
     fetchSelfPosts();
   }, [getSelfPostsRequest]);
+
+  const handleDeletePost = (postId: string) => {
+    setSelfPosts((prevPosts) => prevPosts.filter((post) => post.id !== postId));
+  };
 
   if (isLoading) {
     return <Loading />;
@@ -143,7 +147,6 @@ const UserPage: React.FC = () => {
         </div>
       </div>
 
-      {/* My Posts Section */}
       <div className="mt-6">
         <h2 className="text-lg font-bold mb-4">My Posts</h2>
         {selfPostsLoading ? (
@@ -153,7 +156,11 @@ const UserPage: React.FC = () => {
         ) : (
           <div className="space-y-4">
             {selfPosts.map((post) => (
-              <PostComponent key={post.id} post={post} />
+              <PostComponentForUserPage
+                key={post.id}
+                post={post}
+                onDelete={handleDeletePost}
+              />
             ))}
           </div>
         )}
