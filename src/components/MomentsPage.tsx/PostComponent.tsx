@@ -5,12 +5,14 @@ import { ArrowLeftRight, Heart, MessageSquare } from "lucide-react";
 import { useLikePost, useUnlikePost } from "@/api/PostApi";
 
 interface PostProps {
-  post: Post;
+  post: Post & { isLikedByCurrentUser?: boolean };
 }
 
 const PostComponent: React.FC<PostProps> = ({ post }) => {
-  // Local state for like toggling
-  const [liked, setLiked] = useState<boolean>(false);
+  // Initialize liked from the API-provided isLikedByCurrentUser flag
+  const [liked, setLiked] = useState<boolean>(
+    post.isLikedByCurrentUser || false
+  );
   const [likesCount, setLikesCount] = useState<number>(post.likesCount);
 
   // Hooks for calling the APIs
