@@ -191,3 +191,38 @@ export const useGetSelfPosts = () => {
 
   return { getSelfPostsRequest, loading };
 };
+
+export const useDeletePost = () => {
+  const { getAccessTokenSilently } = useAuth0();
+  const [loading, setLoading] = useState(false);
+
+  const deletePostRequest = useCallback(
+    async (postId: string): Promise<{ message: string }> => {
+      setLoading(true);
+      try {
+        const accessToken = await getAccessTokenSilently();
+        const url = new URL(`${API_BASE_URL}/api/posts/${postId}`);
+        const response = await fetch(url.toString(), {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [getAccessTokenSilently]
+  );
+
+  return { deletePostRequest, loading };
+};
