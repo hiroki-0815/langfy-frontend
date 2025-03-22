@@ -9,13 +9,11 @@ interface PostProps {
 }
 
 const PostComponent: React.FC<PostProps> = ({ post }) => {
-  // Initialize liked from the API-provided isLikedByCurrentUser flag
   const [liked, setLiked] = useState<boolean>(
     post.isLikedByCurrentUser || false
   );
   const [likesCount, setLikesCount] = useState<number>(post.likesCount);
 
-  // Hooks for calling the APIs
   const { likePostRequest } = useLikePost();
   const { unlikePostRequest } = useUnlikePost();
 
