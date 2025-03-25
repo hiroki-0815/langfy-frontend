@@ -83,17 +83,19 @@ const Navigation = () => {
 
         <li className="flex flex-col items-center">
           <Link
-            to="/user-page"
+            to="/user-self-page"
             className="cursor-pointer transition-colors flex flex-col items-center"
           >
-            {location.pathname === "/user-page" ? (
+            {location.pathname === "/user-self-page" ? (
               <UserIcon className="w-6 h-6 text-black" />
             ) : (
               <User className="w-6 h-6 text-white hover:text-black transition-colors" />
             )}
             <div
               className={`text-xs ${
-                location.pathname === "/user-page" ? "text-black" : "text-white"
+                location.pathname === "/user-self-page"
+                  ? "text-black"
+                  : "text-white"
               }`}
             >
               Profile
