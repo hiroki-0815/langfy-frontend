@@ -9,6 +9,9 @@ import ProMainVideoPage from "./pages/ProMainVideoPage";
 import MainVideoPage from "./pages/MainVideoPage";
 import Layout from "./layouts/layout";
 import MomentsPage from "./pages/MomentsPage";
+
+import PostPage from "./pages/PostPage";
+import UserSelfPage from "./pages/UserSelfPage";
 import UserPage from "./pages/UserPage";
 
 const AppRoutes = () => {
@@ -42,7 +45,7 @@ const AppRoutes = () => {
           }
         />
         <Route
-          path="/moments"
+          path="/moments/"
           element={
             <Layout showNavigation>
               <MomentsPage />
@@ -50,7 +53,23 @@ const AppRoutes = () => {
           }
         />
         <Route
-          path="/user-page"
+          path="/moments/:postId"
+          element={
+            <Layout showNavigation>
+              <PostPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/user-self-page"
+          element={
+            <Layout showNavigation>
+              <UserSelfPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/user-page/:userId?"
           element={
             <Layout showNavigation>
               <UserPage />

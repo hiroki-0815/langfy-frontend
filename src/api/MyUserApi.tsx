@@ -121,3 +121,40 @@ export const useUpdateUser = () => {
     isLoading,
   };
 };
+
+export const useGetUserByQuery = (userId: string) => {
+  const getUserByQueryRequest = async (): Promise<User> => {
+    const response = await fetch(
+      `${API_BASE_URL}/api/my/user/byQuery?userId=${userId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    if (!response.ok) {
+      throw new Error("Failed to fetch user by query");
+    }
+    return response.json();
+  };
+
+  const {
+    data: user,
+    isLoading,
+    error,
+  } = useQuery<User, Error>(
+    ["fetchUserByQuery", userId],
+    getUserByQueryRequest,
+    { enabled: !!userId }
+  );
+
+  if (error) {
+    toast.error(error.message);
+  }
+
+  return {
+    user,
+    isLoading,
+  };
+};

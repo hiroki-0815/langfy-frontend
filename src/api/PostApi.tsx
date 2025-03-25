@@ -191,3 +191,111 @@ export const useGetSelfPosts = () => {
 
   return { getSelfPostsRequest, loading };
 };
+
+export const useDeletePost = () => {
+  const { getAccessTokenSilently } = useAuth0();
+  const [loading, setLoading] = useState(false);
+
+  const deletePostRequest = useCallback(
+    async (postId: string): Promise<{ message: string }> => {
+      setLoading(true);
+      try {
+        const accessToken = await getAccessTokenSilently();
+        const url = new URL(`${API_BASE_URL}/api/posts/${postId}`);
+        const response = await fetch(url.toString(), {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return data;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [getAccessTokenSilently]
+  );
+
+  return { deletePostRequest, loading };
+};
+
+export const useGetPost = () => {
+  const { getAccessTokenSilently } = useAuth0();
+  const [loading, setLoading] = useState(false);
+
+  const getPostRequest = useCallback(
+    async (postId: string): Promise<Post> => {
+      setLoading(true);
+      try {
+        const accessToken = await getAccessTokenSilently();
+        const url = new URL(`${API_BASE_URL}/api/posts/${postId}`);
+        const response = await fetch(url.toString(), {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Error: ${response.status}`);
+        }
+
+        const post: Post = await response.json();
+        return post;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [getAccessTokenSilently]
+  );
+
+  return { getPostRequest, loading };
+};
+
+export const useGetUserPosts = (userId: string) => {
+  const { getAccessTokenSilently } = useAuth0();
+  const [loading, setLoading] = useState(false);
+
+  const getUserPostsRequest = useCallback(
+    async (page = 1, limit = 10): Promise<Post[]> => {
+      setLoading(true);
+      try {
+        const accessToken = await getAccessTokenSilently();
+        const url = new URL(`${API_BASE_URL}/api/posts/user/${userId}`);
+        url.searchParams.append("page", page.toString());
+        url.searchParams.append("limit", limit.toString());
+
+        const response = await fetch(url.toString(), {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || `Error: ${response.status}`);
+        }
+
+        const posts: Post[] = await response.json();
+        return posts;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [getAccessTokenSilently, userId]
+  );
+
+  return { getUserPostsRequest, loading };
+};

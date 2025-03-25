@@ -7,10 +7,10 @@ import { useNavigate } from "react-router-dom";
 
 interface PostProps {
   post: Post;
+  onDelete?: (postId: string) => void;
 }
 
-const PostComponent: React.FC<PostProps> = ({ post }) => {
-  const navigate = useNavigate();
+const PostComponentForUserPage: React.FC<PostProps> = ({ post }) => {
   const [liked, setLiked] = useState<boolean>(
     post.isLikedByCurrentUser || false
   );
@@ -18,6 +18,7 @@ const PostComponent: React.FC<PostProps> = ({ post }) => {
 
   const { likePostRequest } = useLikePost();
   const { unlikePostRequest } = useUnlikePost();
+  const navigate = useNavigate();
 
   const handleLikeToggle = async () => {
     try {
@@ -39,22 +40,16 @@ const PostComponent: React.FC<PostProps> = ({ post }) => {
     navigate(`/moments/${post.id}`);
   };
 
-  const handleUserClick = (e: React.MouseEvent<HTMLImageElement>) => {
-    e.stopPropagation();
-    navigate(`/user-page/${post.authorId}`);
-  };
-
   return (
     <div
       className={cn(
         "relative bg-white shadow rounded-md p-4 w-full max-w-2xl mx-auto mb-4"
       )}
     >
-      <div className="" onClick={handleContainerClick}>
-        <div className="flex items-start space-x-3 cursor-pointer">
+      <div onClick={handleContainerClick} className="cursor-pointer">
+        <div className="flex items-start space-x-3">
           {post.imageUrl && (
             <img
-              onClick={handleUserClick}
               src={post.imageUrl}
               alt="User avatar"
               className="w-12 h-12 rounded-full object-cover"
@@ -78,6 +73,7 @@ const PostComponent: React.FC<PostProps> = ({ post }) => {
       </div>
 
       <div className="mt-4 flex items-center space-x-4 text-gray-600 text-sm">
+        {/* Clickable heart icon */}
         <button
           onClick={handleLikeToggle}
           className="flex items-center space-x-1 focus:outline-none"
@@ -101,4 +97,4 @@ const PostComponent: React.FC<PostProps> = ({ post }) => {
   );
 };
 
-export default PostComponent;
+export default PostComponentForUserPage;

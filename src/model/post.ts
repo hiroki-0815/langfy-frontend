@@ -5,7 +5,9 @@ export type Post = {
   name: string;
   nativeLanguage: string;
   learningLanguage: string;
-  imageUrl: string;
+  imageUrl?: string;
   likesCount: number;
   createdAt: string;
-}
+  isLikedByCurrentUser?: boolean;
+  commentsCount?: number; 
+};
