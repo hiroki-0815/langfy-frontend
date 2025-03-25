@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Post } from "@/model/post";
 import { cn, formatTime, timeAgo } from "@/utilities/timeFmt";
-import { ArrowLeftRight, Heart, MessageSquare } from "lucide-react";
-import { useLikePost, useUnlikePost } from "@/api/PostApi";
+import { ArrowLeftRight, Heart, MessageSquare, Trash2 } from "lucide-react";
+import { useDeletePost, useLikePost, useUnlikePost } from "@/api/PostApi";
 import { useNavigate } from "react-router-dom";
 
 interface PostProps {
@@ -10,7 +10,7 @@ interface PostProps {
   onDelete?: (postId: string) => void;
 }
 
-const PostComponentForUserPage: React.FC<PostProps> = ({ post }) => {
+const PostComponentForUserPage: React.FC<PostProps> = ({ post, onDelete }) => {
   const [liked, setLiked] = useState<boolean>(
     post.isLikedByCurrentUser || false
   );
@@ -18,6 +18,8 @@ const PostComponentForUserPage: React.FC<PostProps> = ({ post }) => {
 
   const { likePostRequest } = useLikePost();
   const { unlikePostRequest } = useUnlikePost();
+  const { deletePostRequest, loading: deleteLoading } = useDeletePost();
+
   const navigate = useNavigate();
 
   const handleLikeToggle = async () => {
@@ -36,6 +38,22 @@ const PostComponentForUserPage: React.FC<PostProps> = ({ post }) => {
     }
   };
 
+  const handleDelete = async () => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this post?"
+    );
+    if (!confirmed) return;
+    try {
+      await deletePostRequest(post.id);
+      console.log("Post deleted successfully!");
+      if (onDelete) {
+        onDelete(post.id);
+      }
+    } catch (error) {
+      console.error("Error deleting post:", error);
+    }
+  };
+
   const handleContainerClick = () => {
     navigate(`/moments/${post.id}`);
   };
@@ -46,6 +64,13 @@ const PostComponentForUserPage: React.FC<PostProps> = ({ post }) => {
         "relative bg-white shadow rounded-md p-4 w-full max-w-2xl mx-auto mb-4"
       )}
     >
+      <button
+        onClick={handleDelete}
+        disabled={deleteLoading}
+        className="absolute top-4 right-4 focus:outline-none text-red-500"
+      >
+        <Trash2 className="w-4 h-4" />
+      </button>
       <div onClick={handleContainerClick} className="cursor-pointer">
         <div className="flex items-start space-x-3">
           {post.imageUrl && (
@@ -73,7 +98,7 @@ const PostComponentForUserPage: React.FC<PostProps> = ({ post }) => {
       </div>
 
       <div className="mt-4 flex items-center space-x-4 text-gray-600 text-sm">
-        {/* Clickable heart icon */}
+        {/* Like button */}
         <button
           onClick={handleLikeToggle}
           className="flex items-center space-x-1 focus:outline-none"
@@ -83,6 +108,7 @@ const PostComponentForUserPage: React.FC<PostProps> = ({ post }) => {
           />
           <span>{likesCount}</span>
         </button>
+
         <div className="flex items-center space-x-1">
           <MessageSquare className="w-4 h-4" />
           <span>{post.commentsCount}</span>
