@@ -123,12 +123,15 @@ export const useUpdateUser = () => {
 };
 
 export const useGetUserByQuery = (userId: string) => {
+  const { getAccessTokenSilently } = useAuth0();
   const getUserByQueryRequest = async (): Promise<User> => {
+    const accessToken = await getAccessTokenSilently();
     const response = await fetch(
       `${API_BASE_URL}/api/my/user/byQuery?userId=${userId}`,
       {
         method: "GET",
         headers: {
+          Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json",
         },
       }
