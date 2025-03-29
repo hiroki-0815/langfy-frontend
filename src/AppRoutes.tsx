@@ -25,14 +25,6 @@ const AppRoutes = () => {
           </Layout>
         }
       />
-      <Route
-        path="/join-video/:roomId?"
-        element={
-          <Layout showFooter={false}>
-            <MainVideoPage />
-          </Layout>
-        }
-      />
       <Route path="/auth-callback" element={<AuthCallbackPage />} />
 
       <Route element={<ProtectedRoute />}>
@@ -92,6 +84,14 @@ const AppRoutes = () => {
           element={
             <Layout showNavigation>
               <ChatPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/join-video/:roomId?"
+          element={
+            <Layout showFooter={false}>
+              <MainVideoPage />
             </Layout>
           }
         />
