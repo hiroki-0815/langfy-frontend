@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LanguageFilterSidebar from "@/components/LanguageFilterSidebar";
 import Filters from "@/components/Filters";
 import { useSortUsers } from "@/api/AllUsersApi";
@@ -16,6 +16,12 @@ import UserCardSkeleton from "@/skeletons/UserCardSkeleton";
 
 import { useTranslation } from "react-i18next";
 import { User } from "@/model/user";
+
+declare global {
+  interface Window {
+    gtag: (...args: any[]) => void;
+  }
+}
 
 const SearchLanguagePartnersPage = () => {
   const [page, setPage] = useState(1);
@@ -75,6 +81,14 @@ const SearchLanguagePartnersPage = () => {
     setFilters(DEFAULT_FILTERS);
     setPage(1);
   };
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.gtag) {
+      window.gtag("event", "conversion", {
+        send_to: "AW-11183106071/awmdCNigorIaEJfQwtQp",
+      });
+    }
+  }, []);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-[250px_1fr] gap-4 py-3 px-5 md:py-6 md:px-16 bg-slate-50">
